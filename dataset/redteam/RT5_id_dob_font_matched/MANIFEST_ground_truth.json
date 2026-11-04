@@ -1,0 +1,20 @@
+{
+  "scenario": "RT5",
+  "by": "Gemini 4 Argon",
+  "manipulated": true,
+  "brief": "ID card year of birth digits '96' replaced by '93' in a different sans font, matched in height, blur and noise; the application declares the same forged DOB.",
+  "region_px": [
+    536,
+    285,
+    575,
+    317
+  ],
+  "targets": [
+    {
+      "doc": "04_",
+      "fields": [
+        "dob"
+      ]
+    }
+  ]
+}

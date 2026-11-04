@@ -1,0 +1,143 @@
+{
+  "case": "case_tampered",
+  "tampered": true,
+  "documents": {
+    "01_payslip_oct2026.pdf": "salary_slip / born-digital PDF",
+    "02_bank_statement_sep_oct2026.pdf": "bank_statement / scanned image-only PDF",
+    "03_loan_application_form.jpg": "application_form / scanned JPG",
+    "04_identity_card.jpg": "identity_card / scanned JPG",
+    "05_employment_letter.jpg": "employment_letter / scanned JPG"
+  },
+  "planted": [
+    {
+      "doc": "01_payslip_oct2026.pdf",
+      "field": "net_pay",
+      "type": "white-box overlay + retyped value in different font",
+      "original": "68,500.00",
+      "shown": "86,500.00",
+      "rect_pt": [
+        163.5,
+        406.6,
+        220.376,
+        421.6
+      ],
+      "expected_detections": [
+        "occluded_text",
+        "font_mix",
+        "arithmetic_break",
+        "amount_words_mismatch",
+        "cross_doc_value_mismatch",
+        "incremental_update"
+      ]
+    },
+    {
+      "doc": "02_bank_statement_sep_oct2026.pdf",
+      "field": "row 05-10-2026 debit",
+      "type": "copy-move digit replacement (24,500.00 -> 14,500.00), balance column left unchanged",
+      "original": "24,500.00",
+      "shown": "14,500.00",
+      "target_px": [
+        957,
+        1113,
+        976,
+        1147
+      ],
+      "donor_px": [
+        973,
+        1358,
+        992,
+        1392
+      ],
+      "expected_detections": [
+        "copy_move",
+        "balance_chain_break",
+        "statement_totals_mismatch",
+        "recurring_amount_mismatch"
+      ]
+    },
+    {
+      "doc": "03_loan_application_form.jpg",
+      "field": "existing_monthly_emis",
+      "type": "digital white-out + retyped value (font/size/baseline differ)",
+      "original": "24,500.00",
+      "shown": "14,500.00",
+      "overwrite_px": [
+        636,
+        1013,
+        769,
+        1047
+      ],
+      "expected_detections": [
+        "noise_inconsistency",
+        "glyph_outlier",
+        "layout_rhythm_break",
+        "cross_doc_value_mismatch"
+      ]
+    },
+    {
+      "doc": "03_loan_application_form.jpg",
+      "field": "net_monthly_income",
+      "type": "false declaration (claim, no visual edit)",
+      "declared": "86,500.00",
+      "evidence": "68,500.00",
+      "expected_detections": [
+        "claim_vs_evidence"
+      ]
+    },
+    {
+      "doc": "03_loan_application_form.jpg",
+      "field": "date_of_birth",
+      "type": "declared DOB differs from ID card",
+      "declared": "14-08-1996",
+      "id_card": "14-03-1996",
+      "expected_detections": [
+        "date_mismatch (kept as INCONSISTENCY: single-digit, could be a typo)"
+      ]
+    },
+    {
+      "doc": "04_identity_card.jpg",
+      "field": "photo",
+      "type": "photo region spliced from another image (different noise + JPEG history)",
+      "splice_px": [
+        63,
+        173,
+        357,
+        557
+      ],
+      "expected_detections": [
+        "noise_inconsistency"
+      ]
+    },
+    {
+      "doc": "05_employment_letter.jpg",
+      "field": "signature",
+      "type": "wet signature on scanned letter is a shape-identical copy of the payslip's printed signature",
+      "expected_detections": [
+        "signature_identical"
+      ]
+    },
+    {
+      "doc": "05_employment_letter.jpg",
+      "field": "date_of_joining",
+      "type": "tenure inflated (since 01-07-2019 vs payslip 01-07-2021)",
+      "expected_detections": [
+        "cross_doc_date_mismatch"
+      ]
+    },
+    {
+      "doc": "05_employment_letter.jpg",
+      "field": "salary",
+      "type": "letter salary 86,500.00 contradicts bank salary credits",
+      "expected_detections": [
+        "claim_vs_evidence"
+      ]
+    }
+  ],
+  "benign_decoys": [
+    {
+      "doc": "02_bank_statement_sep_oct2026.pdf",
+      "what": "account holder written 'MOHD ARIF KHAN'",
+      "expected": "name variant explained as transliteration, not escalated"
+    }
+  ]
+}

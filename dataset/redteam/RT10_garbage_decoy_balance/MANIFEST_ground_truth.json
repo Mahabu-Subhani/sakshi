@@ -1,0 +1,12 @@
+{
+  "scenario": "RT10",
+  "by": "Argon (final check) / built by Claude",
+  "manipulated": true,
+  "brief": "Born-digital statement. Balance cells of three small rows smudged with garbage characters (decoy to make the parse look unreliable); October salary credit changed 68,500 -> 88,500 without fixing the running balance. Application declares 88,500.",
+  "targets": [
+    {
+      "doc": "02_",
+      "fields": []
+    }
+  ]
+}

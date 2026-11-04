@@ -1,0 +1,19 @@
+{
+  "scenario": "RT7",
+  "by": "Claude",
+  "manipulated": true,
+  "needs_registry": true,
+  "brief": "New applicant 'Rahul Verma' whose ID card reuses the photo image of applicant Mohammed Arif Khan (case_genuine) and whose application lists the same salary account number. Each document is internally clean.",
+  "targets": [
+    {
+      "doc": "04_",
+      "fields": []
+    },
+    {
+      "doc": "03_",
+      "fields": [
+        "account_no"
+      ]
+    }
+  ]
+}

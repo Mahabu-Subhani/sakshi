@@ -1,0 +1,2 @@
+# Store every file byte-for-byte: PDFs, images and hash-chained audit logs must not get line-ending conversion.
+* -text

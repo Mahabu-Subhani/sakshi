@@ -1,0 +1,86 @@
+{
+  "_source": "Written by Gemini (gemini-2.5-pro) during the design debate, extended by Claude while wiring each test into code. Every explanation maps to a deterministic test in devils_advocate.py.",
+  "arithmetic_break": [
+    {"id": "rounding", "explanation": "Rounding differences in payroll software", "test": "absolute error below Rs. 1.00"},
+    {"id": "unlisted_component", "explanation": "One-off component not shown as its own line (bonus, arrears, adjustment, reimbursement)", "test": "keywords bonus/arrears/adjustment/reimbursement/recovery present in the document text"},
+    {"id": "ocr_misread", "explanation": "OCR misread a digit", "test": "a blamed field has OCR confidence below 0.60, or the repaired value differs from the read value by one character"}
+  ],
+  "amount_words_mismatch": [
+    {"id": "ocr_misread", "explanation": "OCR misread a digit or a number word", "test": "OCR confidence below 0.60 on either value"},
+    {"id": "words_template", "explanation": "Amount-in-words field generated from a different line (e.g. gross)", "test": "the words value equals another amount on the same document"}
+  ],
+  "balance_chain_break": [
+    {"id": "ocr_misread", "explanation": "OCR misread a balance or amount", "test": "OCR confidence below 0.60 on a blamed cell, or repaired value is one character away"},
+    {"id": "missed_row", "explanation": "A transaction row was not parsed (wrapped narration, page break)", "test": "the residual equals the amount of a known row, or rows are not contiguous"},
+    {"id": "rounding", "explanation": "Paise rounding", "test": "absolute error below Rs. 1.00"}
+  ],
+  "statement_totals_mismatch": [
+    {"id": "missed_row", "explanation": "Totals include rows on a page that was not analysed", "test": "document has more pages than were analysed"},
+    {"id": "ocr_misread", "explanation": "OCR misread a total", "test": "OCR confidence below 0.60 on the total"}
+  ],
+  "recurring_amount_mismatch": [
+    {"id": "emi_revision", "explanation": "EMI changed after an interest-rate reset or part-prepayment", "test": "narration mentions prepayment / part payment / rate revision, or the change is not linked to a broken balance"},
+    {"id": "salary_revision", "explanation": "Salary revised, arrears or bonus paid", "test": "transaction is a salary credit (treated as soft)"}
+  ],
+  "cross_doc_value_mismatch": [
+    {"id": "timing", "explanation": "Slip month M credited in month M+1", "test": "matched credit falls within 7 days of the pay date"},
+    {"id": "pro_rata", "explanation": "Pro-rated salary for joining or leaving mid-month", "test": "keywords pro-rata/joining/final settlement/LOP"},
+    {"id": "basis", "explanation": "One document states gross, the other net", "test": "letter's salary basis matches the compared figure"},
+    {"id": "ocr_misread", "explanation": "OCR misread a digit", "test": "OCR confidence below 0.60 on either value"}
+  ],
+  "claim_vs_evidence": [
+    {"id": "different_period", "explanation": "Applicant declared a different month's or an average figure", "test": "declared value matches another month's evidence"},
+    {"id": "ocr_misread", "explanation": "OCR misread the declared figure", "test": "OCR confidence below 0.60 on the declared value"}
+  ],
+  "name_mismatch": [
+    {"id": "transliteration", "explanation": "Common transliteration or abbreviation (Mohd / Mohammed, Kr / Kumar)", "test": "names equal after transliteration dictionary"},
+    {"id": "token_order", "explanation": "Name order differs (Khan Arif vs Arif Khan)", "test": "same set of name tokens"},
+    {"id": "initials", "explanation": "Initials used for some names", "test": "every token is equal or an initial of the other"}
+  ],
+  "date_mismatch": [
+    {"id": "format", "explanation": "Day and month swapped (DD-MM vs MM-DD)", "test": "swapping day and month makes them equal"},
+    {"id": "typo", "explanation": "Typing error of one character in a non-binding document", "test": "dates differ in exactly one character"}
+  ],
+  "id_mismatch": [
+    {"id": "ocr_confusion", "explanation": "OCR confused similar characters (O/0, I/1, S/5, B/8)", "test": "equal after OCR-confusion mapping, or one edit apart with low OCR confidence"}
+  ],
+  "font_mix": [
+    {"id": "symbol_fallback", "explanation": "System fallback font for symbols such as the Rupee sign", "test": "token contains non-digit symbols"},
+    {"id": "form_field", "explanation": "Fillable PDF form fields use a different font than the template", "test": "PDF has AcroForm widgets"}
+  ],
+  "occluded_text": [
+    {"id": "stamp", "explanation": "Bank stamp or seal placed over text", "test": "occluding shape is coloured or not rectangular"},
+    {"id": "watermark", "explanation": "Watermark or template layer", "test": "occluder is translucent"},
+    {"id": "template", "explanation": "Enterprise template rendering (static layer + data layer)", "test": "nothing different is written on top of the covered value"}
+  ],
+  "noise_inconsistency": [
+    {"id": "crease", "explanation": "Physical crease, fold or staple hole", "test": "region is long and thin, or very small"},
+    {"id": "lighting", "explanation": "Non-uniform lighting from a phone capture", "test": "region covers more than 25% of the page"},
+    {"id": "saturation", "explanation": "Solid print saturating the scanner (no measurable noise)", "test": "region mean brightness above 248 or below 8"}
+  ],
+  "glyph_outlier": [
+    {"id": "style", "explanation": "Different but legitimate style (bold totals, headings)", "test": "another value on the page shares the deviation"},
+    {"id": "print_defect", "explanation": "Ink bleed or faint print", "test": "only ink darkness deviates"}
+  ],
+  "layout_rhythm_break": [
+    {"id": "skew", "explanation": "Scanner skew", "test": "deviation remains after skew-corrected robust fit"},
+    {"id": "handwritten", "explanation": "Value written by hand", "test": "not testable in prototype"}
+  ],
+  "copy_move": [
+    {"id": "jbig2", "explanation": "JBIG2 symbol substitution in scanned PDFs makes repeated glyphs identical", "test": "the PDF image uses the JBIG2Decode filter"},
+    {"id": "template", "explanation": "Pre-printed template element repeated on the page", "test": "both glyphs belong to identical, pre-printed text"}
+  ],
+  "signature_identical": [
+    {"id": "digital_insertion", "explanation": "Software inserted the same signature image into born-digital documents from one issuer", "test": "both documents are born-digital PDFs"},
+    {"id": "printed_stored_image", "explanation": "Issuer printed a letter carrying a stored signature image, which was then scanned", "test": "not testable from pixels; ask the issuer how the letter was signed"}
+  ],
+  "missing_field": [
+    {"id": "optional", "explanation": "Field is optional on this template", "test": "field not in the required list for the document type"}
+  ],
+  "incremental_update": [
+    {"id": "esign", "explanation": "E-signature or form-fill tools append revisions", "test": "PDF contains a signature field or AcroForm"}
+  ],
+  "metadata_dates": [
+    {"id": "reexport", "explanation": "Document re-exported or re-saved by the issuer", "test": "not testable from the file alone"}
+  ]
+}
