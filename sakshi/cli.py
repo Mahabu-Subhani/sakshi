@@ -1,7 +1,7 @@
 """Command line interface.
 
   python -m sakshi demo                         generate the demo dataset and investigate both cases
-  python -m sakshi run FILE [FILE ...] --out DIR [--case-id ID] [--lang eng+hin] [--memory registry.json]
+  python -m sakshi run FILE [FILE ...] --out DIR [--case-id ID] [--lang eng+hin] [--memory registry.json] [--password PW ...]
   python -m sakshi redteam                      build the blind red-team cases and score SAKSHI on them
   python -m sakshi verify-audit DIR/audit.jsonl
 """
@@ -37,6 +37,8 @@ def main(argv=None):
     r.add_argument("--case-id")
     r.add_argument("--lang", default="eng", help="Tesseract languages, e.g. eng or eng+hin")
     r.add_argument("--memory", help="cross-case memory file (remembers fingerprints of earlier cases)")
+    r.add_argument("--password", action="append", default=[],
+                   help="password for a locked PDF (repeat for several); tried on every locked PDF, never stored")
     sub.add_parser("redteam", help="build the blind red-team cases and score SAKSHI on them")
     sub.add_parser("demo", help="generate the demo dataset and investigate both cases")
     v = sub.add_parser("verify-audit", help="verify a hash-chained audit log")
@@ -45,7 +47,8 @@ def main(argv=None):
 
     from .pipeline import run_case
     if a.cmd == "run":
-        d = run_case(a.files, a.out, case_id=a.case_id, progress=_progress, lang=a.lang, registry_path=a.memory)
+        d = run_case(a.files, a.out, case_id=a.case_id, progress=_progress, lang=a.lang, registry_path=a.memory,
+                     passwords=a.password)
         _report(d)
         print(f"\nDossier: {Path(a.out) / 'dossier.html'}")
     elif a.cmd == "demo":

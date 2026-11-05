@@ -21,6 +21,7 @@ import numpy as np
 import pymupdf as fitz
 
 from ..forensics import copy_move, noise, pdf_layers
+from ..ingest import open_pdf
 
 
 def run(doc, seed: int = 7) -> dict:
@@ -78,7 +79,7 @@ def run(doc, seed: int = 7) -> dict:
 
 def _pdf_canary(doc) -> str:
     try:
-        pdf = fitz.open(doc.path)
+        pdf = open_pdf(doc.path)
         page = pdf[0]
         words = [w for w in page.get_text("words") if any(c.isdigit() for c in w[4])]
         if not words:

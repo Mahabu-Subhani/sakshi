@@ -35,6 +35,7 @@ with right:
     rt_cases = sorted(p.name for p in RT.glob("*_*") if (p / "MANIFEST_ground_truth.json").exists()) if RT.exists() else []
     demo = st.selectbox("Demo case", ["none", "tampered application", "genuine control"] + [f"red team: {c}" for c in rt_cases])
     lang = st.selectbox("OCR languages", ["eng", "eng+hin"], index=0)
+    pdf_password = st.text_input("PDF password (only if a statement PDF is locked; never stored)", type="password")
     memory = st.checkbox("Cross-case memory (remember fingerprints of earlier cases on this machine)", value=True)
     try:
         import json as _json
@@ -82,7 +83,8 @@ if go:
         bar.progress((i + 1) / n, text=f"{stage}{(' · ' + note) if note else ''}")
         log.markdown(" → ".join(f"**{s}**" if s == stage else s for s in done))
 
-    d = run_case(files, work / "out", case_id=cid, progress=progress, lang=lang, registry_path=REG if memory else None)
+    d = run_case(files, work / "out", case_id=cid, progress=progress, lang=lang, registry_path=REG if memory else None,
+                 passwords=[pdf_password] if pdf_password else None)
     st.session_state["last"] = (str(work / "out"), d)
 
 if "last" in st.session_state:

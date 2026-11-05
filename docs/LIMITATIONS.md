@@ -25,7 +25,9 @@
 | Intra- and cross-document rules, counterfactual repair, odd-one-out | Implemented |
 | Coverage map, coordinated attacks, forgery canaries | Implemented |
 | Issuer verification (bank / employer / registry / Account Aggregator) | **Unsupported**, modelled as witness levels L3-L4 |
-| Multi-page documents | Up to 6 pages per document |
+| Multi-page documents | Up to 40 pages read per document; pixel forensics on the first 6 (v1.0.1) |
+| Password-protected PDFs | Implemented with an analyst-supplied password, kept in memory only (v1.0.1) |
+| Low-resolution thermal receipts and similar single images | Poor: on a public real-receipt dataset, INCONSISTENCY flags fire on about half of forged **and** half of genuine receipts (README); no genuine receipt reached POTENTIAL MANIPULATION |
 | Perspective correction for phone photos | Planned (only rotation deskew today); forwarded phone photos are read and checked logically, ink sensors report blind |
 
 ## Assumptions
@@ -35,6 +37,7 @@
 * The applicant is an individual (PAN 4th character P).
 
 ## Known false-positive risks
+* **Glyph, intra-number stroke and noise sensors on low-resolution prints** (measured): on real thermal receipts these sensors raise INCONSISTENCY flags on more than half of genuine documents. The glyph sensor has no glyph-height gate yet (the stroke and optics sensors go blind below 16 and 18 px). A fix is designed (resolution-dependent gating that keeps red-team case RT5) but not applied, because it changes detection logic and needs evaluation on data we have not inspected.
 * **Noise sensor**: stickers or photos physically pasted onto a card before scanning, laminated areas, strong JPEG re-compression of the whole page, stamps with solid ink fills.
 * **Copy-move**: scanners or PDF producers using JBIG2 symbol coding make repeated glyphs identical (tested and reported as an innocent explanation); de-noising filters in phone scanner apps.
 * **Typography**: genuinely mixed fonts in a form (pre-printed vs typed); faint carbon copies.
