@@ -51,7 +51,7 @@ def build(work: Path) -> dict:
     return f
 
 
-def run(path: Path, out: Path, name: str, **kw) -> dict:
+def run(path: Path | str, out: Path, name: str, **kw) -> dict:
     return run_case([str(path)], out / name, case_id=name, html=False, registry_path=None, **kw)
 
 
@@ -103,6 +103,18 @@ def main():
     leaked = PASSWORD in (out / "locked_right_password" / "dossier.json").read_text(encoding="utf-8") + \
         (out / "locked_right_password" / "audit.jsonl").read_text(encoding="utf-8")
     check("password not written to the dossier or audit trail", not leaked)
+    check("password forgotten after the case", not ingest_mod._PASSWORDS)
+    slash = run(f["locked"].as_posix(), out, "locked_forward_slashes", passwords=[PASSWORD])  # a str, kept as typed
+    check("password forgotten for a forward-slash path too", not slash["rejected"] and not ingest_mod._PASSWORDS)
+    real = run_case.__globals__["engine"].run
+    run_case.__globals__["engine"].run = lambda *a, **k: (_ for _ in ()).throw(RuntimeError("simulated crash"))
+    try:
+        run(f["locked"], out, "locked_crash", passwords=[PASSWORD])
+    except RuntimeError:
+        pass
+    finally:
+        run_case.__globals__["engine"].run = real
+    check("password forgotten when a case crashes", not ingest_mod._PASSWORDS)
     print("\nRESULT:", "ALL PASS" if ok else "FAILURES")
 
 
