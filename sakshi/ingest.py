@@ -268,7 +268,7 @@ def ingest(path: str, doc_id: str, work: Path, lang: str = "eng", passwords=()) 
                 if base is not None:
                     # Render what a READER sees on the scan's own pixel grid and compare it with the bare scan.
                     # Pixel difference catches what the object list cannot: annotations (FreeText comments),
-                    # edits nested in Form XObjects, pasted image patches (Argon round 4).
+                    # edits nested in Form XObjects, pasted image patches.
                     h0, w0 = base.shape[:2]
                     sx, sy = w0 / rect.width, h0 / rect.height
                     seen = None
@@ -357,7 +357,7 @@ def dual_read(doc: Document, lang: str = "eng") -> None:
 
 def make_reocr(doc: Document):
     """Independent second reader for one table cell: the crop only, upscaled, digits whitelist.
-    It never sees the ledger or the expected value (Argon's guard against biased re-reads)."""
+    It never sees the ledger or the expected value (a guard against biased re-reads)."""
     cache = {}
 
     def reocr(page_index: int, bbox) -> tuple[str, float]:

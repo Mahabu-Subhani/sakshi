@@ -1,6 +1,5 @@
 {
   "scenario": "RT2",
-  "by": "Gemini 4 Argon",
   "manipulated": true,
   "brief": "Statement with Date | Narration | Chq/Ref No | Amount | Dr/Cr | Balance; the 05-10-2026 EMI row (24,500 Dr) deleted without fixing the running balance; applicant declares no EMIs.",
   "targets": [

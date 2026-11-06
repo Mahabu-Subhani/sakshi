@@ -3,11 +3,10 @@
 For every critical field we ask: if a forger changed only this value, would the
 rules notice (detected), and would the repair solver point at this field
 (localized)? Fields no rule touches are BLIND and are disclosed to the analyst.
-The map is internal to the dossier and never shown to applicants (Gemini's
-point that it is otherwise a roadmap for forgers).
+The map is internal to the dossier and never shown to applicants (it would
+otherwise be a roadmap for forgers).
 
-Coordinated attacks (Gemini's red-team point that single-field mutation misses
-correlated forgeries) are simulated as named recipes.
+Coordinated attacks (single-field mutation misses correlated forgeries) are simulated as named recipes.
 """
 from __future__ import annotations
 

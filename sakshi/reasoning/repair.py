@@ -6,7 +6,7 @@ Question asked for every cluster of broken rules:
      values have been?"
 
 Search: subsets of size 1, 2, 3 (Reiter-style minimal diagnoses, brute force is
-enough at document scale, as agreed with Gemini). For each subset we solve the
+enough at document scale). For each subset we solve the
 linear system exactly. Cost of blaming a field = witness weight x confidence:
 low-confidence OCR reads and self-declared claims are cheap to blame, a
 high-confidence bank-statement figure is expensive. Ties are reported, never

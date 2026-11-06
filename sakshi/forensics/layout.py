@@ -1,7 +1,7 @@
 """Layout self-consistency ("document rhythm").
 
-No template library is needed (Gemini's original idea used known templates;
-Claude flipped it to self-consistency so it works on any issuer's layout).
+No template library is needed: the check is self-consistency, so it works on any
+issuer's layout.
 A document is compared with itself:
   * form values share a left edge; table amounts share a right edge per column;
   * value text sits on the same baseline as its label;

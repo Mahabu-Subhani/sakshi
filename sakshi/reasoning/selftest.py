@@ -2,8 +2,8 @@
 
 Before trusting a sensor's silence on an uploaded document, SAKSHI forges that
 document itself, in memory, using the document's own pixels (same-source, so
-texture and compression match by construction, which fixes the weakness Gemini
-found in the first version of this idea):
+texture and compression match by construction, which fixes a weakness of
+the first version of this idea):
 
   copy-move canary  - copy a real digit glyph from one value onto another value's digit
   white-out canary  - flatten the paper between the glyphs of one value

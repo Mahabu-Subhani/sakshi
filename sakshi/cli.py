@@ -2,7 +2,7 @@
 
   python -m sakshi demo                         generate the demo dataset and investigate both cases
   python -m sakshi run FILE [FILE ...] --out DIR [--case-id ID] [--lang eng+hin] [--memory registry.json] [--password PW ...]
-  python -m sakshi redteam                      build the blind red-team cases and score SAKSHI on them
+  python -m sakshi redteam                      build the red-team cases and score SAKSHI on them
   python -m sakshi verify-audit DIR/audit.jsonl
 """
 from __future__ import annotations
@@ -39,7 +39,7 @@ def main(argv=None):
     r.add_argument("--memory", help="cross-case memory file (remembers fingerprints of earlier cases)")
     r.add_argument("--password", action="append", default=[],
                    help="password for a locked PDF (repeat for several); tried on every locked PDF, never stored")
-    sub.add_parser("redteam", help="build the blind red-team cases and score SAKSHI on them")
+    sub.add_parser("redteam", help="build the red-team cases and score SAKSHI on them")
     sub.add_parser("demo", help="generate the demo dataset and investigate both cases")
     v = sub.add_parser("verify-audit", help="verify a hash-chained audit log")
     v.add_argument("path")

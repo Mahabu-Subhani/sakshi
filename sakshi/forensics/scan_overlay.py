@@ -125,7 +125,7 @@ def analyse(doc: Document, new_id, evidence_dir: Path | None = None) -> list[Fin
                            kind="peel", crop=crop, value=over),
                   Evidence(doc.doc_id, P.index, (x0, y0, x1, y1), "region as submitted", kind="region", value=over)]
             kinds = sorted({o["kind"] for o in g["objs"]})
-            # Argon round 4 guards. (1) Redaction: masking characters on top, or a dark box with nothing on top,
+            # Guards. (1) Redaction: masking characters on top, or a dark box with nothing on top,
             # hides information on purpose; that is recorded, never treated as a replaced value.
             hidden_mask = ((b < 130) & (r > 200)).astype(np.uint8)
             n_cc, _, st_cc, _ = cv2.connectedComponentsWithStats(hidden_mask)

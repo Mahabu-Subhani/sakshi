@@ -1,6 +1,5 @@
 {
   "scenario": "RT8",
-  "by": "Claude",
   "manipulated": true,
   "brief": "Scanned payslip PDF edited in a PDF editor: grey-white box over Net Pay 68,500.00 and '88,500.00' typed on top as vector text. The scan image inside the file is untouched. Application declares 88,500.",
   "targets": [

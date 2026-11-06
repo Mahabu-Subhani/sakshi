@@ -217,7 +217,7 @@ def run(docs: dict, new_id) -> tuple[list[Finding], dict]:
                     "all_refs": list(refs)},
             verify_next="Check the original of the suspect document, or ask the issuer to confirm the value."))
 
-    # ------------------------------------------------------------ expectations (Gemini's counterfactual idea, deterministic)
+    # ------------------------------------------------------------ expectations (counterfactual, deterministic)
     for j, ex in enumerate(rules.expectations):
         if ex["found"]:
             continue
@@ -371,7 +371,7 @@ def income_triangulation(docs, rules, fields, vals, findings, new_id) -> list:
 
     def support(c):
         # one physical document can add at most 2.0 to one value, however many months it repeats it
-        # (Argon round 3: a 3-month forged statement must not outvote an honest letter on its own)
+        # (a 3-month forged statement must not outvote an honest letter on its own)
         per = {}
         for x in c:
             per[x["doc"]] = per.get(x["doc"], 0.0) + x["weight"]

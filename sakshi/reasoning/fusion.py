@@ -7,7 +7,7 @@
                          external records) converge on the same field, or a smoking gun, AND every
                          testable innocent explanation was ruled out
 
-Severity is a score, not a gate (Gemini's refinement): a lone smoking gun still
+Severity is a score, not a gate: a lone smoking gun still
 surfaces loudly; two or more independent witnesses raise it further.
 SAKSHI never outputs "fraud". Decisions stay with the analyst.
 """
@@ -20,7 +20,7 @@ OBS_ONLY = {"metadata_dates", "incremental_update", "hidden_text", "duplicate_fi
             "salary_pass_through", "same_amount_in_out", "salary_variation", "cross_case_resubmission",
             "scan_annotation", "unreadable_field",
             "cross_case_reused_by_other", "statement_unverified"}
-# Visual evidence is split by the physics it measures (v1.0, agreed with Gemini 4 Argon). Pixel statistics
+# Visual evidence is split by the physics it measures (v1.0). Pixel statistics
 # (sensor noise, duplication, compression) count as ONE witness because one paste moves them all together.
 PHYSICS = {"noise_inconsistency": "pixel", "copy_move": "pixel", "zero_variance_patch": "pixel",
            "compression_ghost": "pixel", "scan_clone": "pixel",
@@ -114,7 +114,7 @@ def fuse(findings: list[Finding], docs: dict, ctx: dict, new_id) -> list[Finding
             continue  # a false declaration is not a manipulated document
         if f.smoking_gun or len(fams & INDEPENDENT) >= 2:
             # weak sensors (alignment, typography) corroborate but cannot lead on their own
-            # (Gemini's review: a 7px shift alone is not evidence of manipulation)
+            # (a 7px shift alone is not evidence of manipulation)
             strong = f.smoking_gun or f.sensor == "repair_solver" or f.confidence >= 0.8
             if f.localized and strong:
                 f.tier = Tier.POTENTIAL_MANIPULATION

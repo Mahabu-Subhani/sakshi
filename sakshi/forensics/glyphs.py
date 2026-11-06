@@ -3,8 +3,7 @@
 Forgers touch amounts and dates. A retyped value rarely matches the original
 print exactly: ink darkness, stroke thickness, digit height and baseline drift.
 Each numeric token is compared only with the other numeric tokens of the same
-document (so dot-matrix or faded prints form their own population, per
-Gemini's red-team note).
+document (so dot-matrix or faded prints form their own population).
 
 Guard: a deviation shared by two or more tokens is a style (bold headings,
 larger totals), not an anomaly. Only singletons are reported.

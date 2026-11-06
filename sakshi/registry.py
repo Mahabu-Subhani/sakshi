@@ -7,7 +7,7 @@ application can look clean while the second application from the same ring is ob
 Stored per case (no images, no raw documents): normalized applicant name, identifiers (PAN,
 account, mobile, ID number, employer + employee ID), SHA-256 of every file, a 64-bit
 perceptual hash of each ID-card photo, and a coarse stroke-density grid of each signature
-(Gemini 4 Argon's advice: DCT hashes collide on sparse signature masks, grids do not).
+(DCT hashes collide on sparse signature masks, grids do not).
 """
 from __future__ import annotations
 
@@ -155,7 +155,7 @@ class Registry:
             same = [(fname, of) for fname, h in fp["files"].items() for of, oh in c["files"].items() if h == oh]
             if same and not other_person(c):
                 # the same applicant re-submitting their own documents (a re-run, a second application, a rehearsal):
-                # recorded, never escalated (Argon round 3: a demo re-run must not look like an identity ring)
+                # recorded, never escalated (a demo re-run must not look like an identity ring)
                 full = len(same) == len(fp["files"]) == len(c["files"])
                 did = next(d.doc_id for d in docs.values() if d.filename == same[0][0])
                 out.append(Finding(

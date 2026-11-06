@@ -8,7 +8,7 @@ SAKSHI runs the ten stages from the brief. Each finding is weighed by how reliab
 
 3
 00:00:38,330 --> 00:00:45,240
-A tampered loan application: five documents, fourteen planted edits. Memory is cleared first, so nothing is remembered from earlier runs.
+A tampered loan application: five documents, nine planted manipulations. Memory is cleared first, so nothing is remembered from earlier runs.
 
 4
 00:00:45,240 --> 00:00:51,403
@@ -48,7 +48,7 @@ No potential manipulation and no inconsistency. One observation, explained.
 
 13
 00:01:49,178 --> 00:02:03,048
-Case three is a blind red-team attack: a scanned payslip edited in a PDF editor. The scan is untouched; a box hides the real figure and new text sits on top.
+Case three is a red-team attack: a scanned payslip edited in a PDF editor. The scan is untouched; a box hides the real figure and new text sits on top.
 
 14
 00:02:03,048 --> 00:02:08,978
@@ -60,7 +60,7 @@ Ten stages run on this laptop: documents are read one by one, then judged togeth
 
 16
 00:02:14,436 --> 00:02:17,946
-Five potential-manipulation findings on the payslip.
+Five potential-manipulation findings.
 
 17
 00:02:22,236 --> 00:02:27,756

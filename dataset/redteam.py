@@ -1,7 +1,7 @@
-"""Blind red-team cases designed by Gemini 4 Argon (v1.0 round 1), synthesized by Claude
-without looking at SAKSHI's thresholds, plus layout-varied genuine controls.
+"""Red-team cases: each attack was written as a brief and synthesized without looking at
+SAKSHI's thresholds, plus layout-varied genuine controls.
 
-Argon's brief for each scenario is quoted in MANIFEST_ground_truth.json. All documents are
+The brief for each scenario is quoted in MANIFEST_ground_truth.json. All documents are
 fictional and labelled SYNTHETIC SPECIMEN.
 
     python dataset/redteam.py      -> dataset/redteam/<case>/...
@@ -180,7 +180,7 @@ def fresh(name):
 
 
 def rt1():
-    """Argon S1: internally consistent payslip inflation + regenerated statement + matching declaration."""
+    """S1: internally consistent payslip inflation + regenerated statement + matching declaration."""
     d, w = fresh("RT1_coordinated_inflation")
     earn = [("Basic Salary", 60000), ("House Rent Allowance", 16000), ("Special Allowance", 17800),
             ("Conveyance Allowance", 1600), ("Medical Allowance", 1250)]
@@ -195,14 +195,14 @@ def rt1():
     scan_to_jpg(w / "ap.pdf", d / "03_loan_application_form.jpg", seed=102)
     G.build_letter(w / "lt.pdf", G.NET, P["doj"], G.signature_strokes(3, 1, 0.012))
     scan_to_jpg(w / "lt.pdf", d / "05_employment_letter.jpg", seed=103)
-    _write_manifest(d, {"scenario": "RT1", "by": "Gemini 4 Argon", "manipulated": True,
+    _write_manifest(d, {"scenario": "RT1", "manipulated": True,
                         "brief": "Basic +20,000 with gross, net and words updated so the payslip math holds; salary credit +20,000 and every later balance and total regenerated; declared income updated; clean born-digital PDFs (no layers, no incremental update).",
                         "targets": [{"doc": "01_", "fields": ["net_pay", "basic_salary", "provident_fund", "gross"]},
                                     {"doc": "02_", "fields": ["credit"]}, {"doc": "03_", "fields": ["declared_income"]}]})
 
 
 def rt2():
-    """Argon S2: single Amount + Dr/Cr column statement, an EMI row deleted, balances not fixed."""
+    """S2: single Amount + Dr/Cr column statement, an EMI row deleted, balances not fixed."""
     d, w = fresh("RT2_drcr_deleted_emi")
     G.build_payslip(d / "01_payslip_oct2026.pdf", G.signature_strokes(3))
     full = BASE_TXNS
@@ -217,7 +217,7 @@ def rt2():
     scanned_pdf(w / "st.pdf", d / "02_bank_statement_sep_oct2026.pdf", seed=201)
     G.build_application(w / "ap.pdf", G.NET, 0.0, P["dob"], G.signature_strokes(7, 2, 0.006))
     scan_to_jpg(w / "ap.pdf", d / "03_loan_application_form.jpg", seed=202)
-    _write_manifest(d, {"scenario": "RT2", "by": "Gemini 4 Argon", "manipulated": True,
+    _write_manifest(d, {"scenario": "RT2", "manipulated": True,
                         "brief": "Statement with Date | Narration | Chq/Ref No | Amount | Dr/Cr | Balance; the 05-10-2026 EMI row (24,500 Dr) deleted without fixing the running balance; applicant declares no EMIs.",
                         "targets": [{"doc": "02_", "fields": ["balance", "debit"]}, {"doc": "03_", "fields": ["declared_emi"]}]})
 
@@ -227,7 +227,7 @@ def _letter_ctc(path, ctc_text, sig):
 
 
 def rt3():
-    """Argon S3: pure-white MS Paint patch over the CTC on a scanned letter, retyped, saved at JPEG 70."""
+    """S3: pure-white MS Paint patch over the CTC on a scanned letter, retyped, saved at JPEG 70."""
     d, w = fresh("RT3_letter_paint_patch")
     _letter_ctc(w / "lt.pdf", "6,00,000", G.signature_strokes(3, 1, 0.012))
     im, M = G.simulate_scan(G.render_pdf(w / "lt.pdf"), seed=301, angle=0.35)
@@ -246,14 +246,14 @@ def rt3():
     dr.rectangle([x0, y0, x1, y1], fill=(255, 255, 255))
     dr.text((x0 + 3, y0 + 3), "9,50,000/-.", font=G._font("sans", int(11 * G.SCALE * 0.98)), fill=(20, 20, 20))
     G.save_jpeg(np.array(pil), d / "05_employment_letter.jpg", 70)
-    _write_manifest(d, {"scenario": "RT3", "by": "Gemini 4 Argon", "manipulated": True,
+    _write_manifest(d, {"scenario": "RT3", "manipulated": True,
                         "brief": "Single scanned letter, no internal math. Pure white rectangle over 'Rs. 6,00,000/-', retyped '9,50,000' in a matching sans at matching height, whole page saved at JPEG quality 70. Amounts have no paise.",
                         "region_px": [x0, y0, x1, y1],
                         "targets": [{"doc": "05_", "fields": ["letter_salary"]}]})
 
 
 def rt4():
-    """Argon S4: October payslip = clone of the September scan with month and pay date patched in."""
+    """S4: October payslip = clone of the September scan with month and pay date patched in."""
     d, w = fresh("RT4_cloned_payslip_scans")
     G.build_payslip(w / "sep.pdf", G.signature_strokes(3), month_label="SEPTEMBER 2026", pay_date="30-09-2026")
     G.build_payslip(w / "oct.pdf", G.signature_strokes(3), month_label="OCTOBER 2026", pay_date="31-10-2026")
@@ -274,13 +274,13 @@ def rt4():
     tx = [t for t in BASE_TXNS if not (t[0].endswith("-10-2026") and int(t[0][:2]) > 25)]
     build_statement2(w / "st.pdf", tx, period="01-09-2026 to 25-10-2026")
     scanned_pdf(w / "st.pdf", d / "02_bank_statement_sep_oct2026.pdf", seed=403)
-    _write_manifest(d, {"scenario": "RT4", "by": "Gemini 4 Argon", "manipulated": True,
+    _write_manifest(d, {"scenario": "RT4", "manipulated": True,
                         "brief": "Two payslip scans in one packet. The October slip is the September scan with only the month and pay date replaced by patches from another scan; every number identical. Statement ends 25-10-2026, so no October salary credit can be checked.",
                         "targets": [{"doc": "01b_", "fields": []}]})
 
 
 def rt5():
-    """Argon S5: ID card year of birth changed 1996 -> 1993 with font-matched digits; application agrees."""
+    """S5: ID card year of birth changed 1996 -> 1993 with font-matched digits; application agrees."""
     d, w = fresh("RT5_id_dob_font_matched")
     card, meta = G.build_id_card(seed=5)
     im, M = G.simulate_scan(card, seed=501, angle=0.15, noise=5.5)
@@ -305,14 +305,14 @@ def rt5():
     G.save_jpeg(im, d / "04_identity_card.jpg", 88)
     G.build_application(w / "ap.pdf", G.NET, G.EMI, "14-03-1993", G.signature_strokes(7, 2, 0.006))
     scan_to_jpg(w / "ap.pdf", d / "03_loan_application_form.jpg", seed=502)
-    _write_manifest(d, {"scenario": "RT5", "by": "Gemini 4 Argon", "manipulated": True,
+    _write_manifest(d, {"scenario": "RT5", "manipulated": True,
                         "brief": "ID card year of birth digits '96' replaced by '93' in a different sans font, matched in height, blur and noise; the application declares the same forged DOB.",
                         "region_px": [bx0, by0, bx1, by1],
                         "targets": [{"doc": "04_", "fields": ["dob"]}]})
 
 
 def rt6():
-    """Argon S6 (false-positive trap): genuine 2-page statement with B/F, C/F, wrapped narrations, references."""
+    """S6 (false-positive trap): genuine 2-page statement with B/F, C/F, wrapped narrations, references."""
     d, w = fresh("RT6_genuine_two_page_trap")
     tx = []
     for i, (dd, desc, dr, cr) in enumerate(G.TXNS):
@@ -326,7 +326,7 @@ def rt6():
     G.build_payslip(d / "01_payslip_oct2026.pdf", G.signature_strokes(3))
     G.build_application(w / "ap.pdf", G.NET, G.EMI, P["dob"], G.signature_strokes(7, 2, 0.006))
     scan_to_jpg(w / "ap.pdf", d / "03_loan_application_form.jpg", seed=602)
-    _write_manifest(d, {"scenario": "RT6", "by": "Gemini 4 Argon", "manipulated": False,
+    _write_manifest(d, {"scenario": "RT6", "manipulated": False,
                         "brief": "Genuine. Two-page statement, header only on page 1, C/F and B/F rows, UPI references and wrapped narrations with numbers near the amount columns."})
 
 
@@ -344,7 +344,7 @@ def g7():
     scan_to_jpg(w / "lt.pdf", d / "05_employment_letter.jpg", seed=703)
     G.build_application(w / "ap.pdf", G.NET, G.EMI, P["dob"], G.signature_strokes(7, 2, 0.006))
     scan_to_jpg(w / "ap.pdf", d / "03_loan_application_form.jpg", seed=702)
-    _write_manifest(d, {"scenario": "G7", "by": "Claude", "manipulated": False,
+    _write_manifest(d, {"scenario": "G7", "manipulated": False,
                         "brief": "Genuine. Single Amount + Dr/Cr statement with cheque numbers, dates like 05-Oct-2026, letter salary written 'Rs. 68,500/-'."})
 
 
@@ -357,12 +357,12 @@ def g8():
     scan_to_jpg(w / "oct.pdf", d / "01b_payslip_oct2026.jpg", seed=802, angle=-0.15)
     build_statement2(w / "st.pdf", BASE_TXNS)
     scanned_pdf(w / "st.pdf", d / "02_bank_statement_sep_oct2026.pdf", seed=803)
-    _write_manifest(d, {"scenario": "G8", "by": "Claude", "manipulated": False,
+    _write_manifest(d, {"scenario": "G8", "manipulated": False,
                         "brief": "Genuine. Two payslips printed by the same payroll system (identical signature image and layout) but scanned separately, plus the statement."})
 
 
 def rt7():
-    """Claude's scenario: an identity ring. A different applicant reuses the ID photo of an earlier
+    """Scenario: an identity ring. A different applicant reuses the ID photo of an earlier
     applicant and the same salary account. Only detectable with cross-case memory."""
     d, w = fresh("RT7_identity_ring")
     saved = dict(G.PERSON)
@@ -378,7 +378,7 @@ def rt7():
     finally:
         G.PERSON.clear()
         G.PERSON.update(saved)
-    _write_manifest(d, {"scenario": "RT7", "by": "Claude", "manipulated": True, "needs_registry": True,
+    _write_manifest(d, {"scenario": "RT7", "manipulated": True, "needs_registry": True,
                         "brief": "New applicant 'Rahul Verma' whose ID card reuses the photo image of applicant Mohammed Arif Khan (case_genuine) and whose application lists the same salary account number. Each document is internally clean.",
                         "targets": [{"doc": "04_", "fields": []}, {"doc": "03_", "fields": ["account_no"]}]})
 
@@ -424,7 +424,7 @@ def phone_forward(img: np.ndarray, seed: int, long_edge: int = 1280) -> np.ndarr
 
 
 def rt8():
-    """Claude's scenario (round 3): the most common real edit. A scanned payslip PDF is opened in a PDF
+    """Scenario: the most common real edit. A scanned payslip PDF is opened in a PDF
     editor; a white box is drawn over Net Pay and a new number typed on top. The scanned image inside
     the file is untouched. The application declares the new figure."""
     d, w = fresh("RT8_scanned_pdf_editor")
@@ -444,7 +444,7 @@ def rt8():
     scanned_pdf(w / "st.pdf", d / "02_bank_statement_sep_oct2026.pdf", seed=1102)
     G.build_application(w / "ap.pdf", 88500, G.EMI, P["dob"], G.signature_strokes(7, 2, 0.006))
     scan_to_jpg(w / "ap.pdf", d / "03_loan_application_form.jpg", seed=1103)
-    _write_manifest(d, {"scenario": "RT8", "by": "Claude", "manipulated": True,
+    _write_manifest(d, {"scenario": "RT8", "manipulated": True,
                         "brief": "Scanned payslip PDF edited in a PDF editor: grey-white box over Net Pay 68,500.00 and "
                                  "'88,500.00' typed on top as vector text. The scan image inside the file is untouched. "
                                  "Application declares 88,500.",
@@ -464,13 +464,13 @@ def g9():
     _searchable(w / "st_scan.pdf", w / "st.pdf", d / "02_bank_statement_sep_oct2026.pdf")
     G.build_application(w / "ap.pdf", G.NET, G.EMI, P["dob"], G.signature_strokes(7, 2, 0.006))
     scan_to_jpg(w / "ap.pdf", d / "03_loan_application_form.jpg", seed=1203)
-    _write_manifest(d, {"scenario": "G9", "by": "Claude (from Argon's round-3 MRC warning)", "manipulated": False,
+    _write_manifest(d, {"scenario": "G9", "manipulated": False,
                         "brief": "Genuine. Payslip and statement are searchable scans with an invisible OCR text layer; the "
                                  "payslip carries a digital e-sign stamp drawn in a blank margin."})
 
 
 def g10():
-    """Genuine control (Argon round 3): phone photos forwarded on WhatsApp, 1280 px, JPEG ~75 twice."""
+    """Genuine control: phone photos forwarded on WhatsApp, 1280 px, JPEG ~75 twice."""
     d, w = fresh("G10_genuine_whatsapp_photos")
     G.build_payslip(w / "ps.pdf", G.signature_strokes(3))
     cv2.imwrite(str(d / "01_payslip_oct2026.jpg"), phone_forward(G.render_pdf(w / "ps.pdf")[:, :, ::-1], seed=1301))
@@ -478,24 +478,24 @@ def g10():
     cv2.imwrite(str(d / "05_employment_letter.jpg"), phone_forward(G.render_pdf(w / "lt.pdf")[:, :, ::-1], seed=1302))
     build_statement2(w / "st.pdf", BASE_TXNS)
     shutil.copy(w / "st.pdf", d / "02_bank_statement_sep_oct2026.pdf")
-    _write_manifest(d, {"scenario": "G10", "by": "Argon (round 3) / built by Claude", "manipulated": False,
+    _write_manifest(d, {"scenario": "G10", "manipulated": False,
                         "brief": "Genuine. Payslip and employment letter are phone photos forwarded on WhatsApp (perspective, "
                                  "uneven light, 1280 px long edge, JPEG 75 then 72). Statement is the bank's PDF."})
 
 
 def g11():
-    """Genuine control (Argon round 3): the genuine demo case submitted a second time under a new case ID."""
+    """Genuine control: the genuine demo case submitted a second time under a new case ID."""
     d, w = fresh("G11_genuine_resubmission")
     for p in sorted((Path(__file__).resolve().parent / "cases" / "case_genuine").glob("0*")):
         shutil.copy(p, d / p.name)
-    _write_manifest(d, {"scenario": "G11", "by": "Argon (round 3) / built by Claude", "manipulated": False,
+    _write_manifest(d, {"scenario": "G11", "manipulated": False,
                         "needs_registry": True,
                         "brief": "Genuine. The exact files of case_genuine, run again under a new case ID with cross-case "
                                  "memory on (a rehearsal re-run). Must not look like an identity ring."})
 
 
 def rt9():
-    """Argon round 4, attack C: the edit hides where an object-list parser does not look. The Oct salary
+    """Attack C: the edit hides where an object-list parser does not look. The Oct salary
     credit on a scanned statement is covered by an Acrobat-style comment (FreeText annotation, white
     fill) showing a new figure. Annotations are not page content: only a pixel comparison sees it."""
     d, w = fresh("RT9_annotation_overlay")
@@ -514,7 +514,7 @@ def rt9():
     doc.close()
     G.build_application(w / "ap.pdf", 88500, G.EMI, P["dob"], G.signature_strokes(7, 2, 0.006))
     scan_to_jpg(w / "ap.pdf", d / "03_loan_application_form.jpg", seed=1402)
-    _write_manifest(d, {"scenario": "RT9", "by": "Argon (round 4) / built by Claude", "manipulated": True,
+    _write_manifest(d, {"scenario": "RT9", "manipulated": True,
                         "brief": "October salary credit 68,500.00 on a scanned statement hidden under a FreeText comment "
                                  "annotation (white fill) that shows 88,500.00. The page content stream is untouched. "
                                  "Application declares 88,500.",
@@ -522,7 +522,7 @@ def rt9():
 
 
 def g12():
-    """Genuine control (Argon round 4 FP risk): the applicant redacted their own PAN on a scanned payslip
+    """Genuine control: the applicant redacted their own PAN on a scanned payslip
     with a white box and 'XXXXXX821Q' typed on top, and added a 'Self-attested' comment."""
     d, w = fresh("G12_genuine_redacted_pan")
     G.build_payslip(w / "ps.pdf", G.signature_strokes(3))
@@ -541,13 +541,13 @@ def g12():
     doc.close()
     build_statement2(w / "st.pdf", BASE_TXNS)
     scanned_pdf(w / "st.pdf", d / "02_bank_statement_sep_oct2026.pdf", seed=1502)
-    _write_manifest(d, {"scenario": "G12", "by": "Argon (round 4) / built by Claude", "manipulated": False,
+    _write_manifest(d, {"scenario": "G12", "manipulated": False,
                         "brief": "Genuine. Applicant masked their PAN on the scanned payslip (white box + 'XXXXXX821Q') and "
                                  "added a 'Self-attested copy' comment. Redaction must not be read as a replaced value."})
 
 
 def rt10():
-    """Argon's final attack on the parse-quality gate: smudge the balance cells of three small rows so the
+    """Final attack on the parse-quality gate: smudge the balance cells of three small rows so the
     statement looks unparseable, hoping SAKSHI switches statement arithmetic off; then inflate the October
     salary credit without fixing the running balance. Born-digital statement, application declares 88,500."""
     d, w = fresh("RT10_garbage_decoy_balance")
@@ -568,7 +568,7 @@ def rt10():
         G.inr = orig
     G.build_application(w / "ap.pdf", 88500, G.EMI, P["dob"], G.signature_strokes(7, 2, 0.006))
     scan_to_jpg(w / "ap.pdf", d / "03_loan_application_form.jpg", seed=1601)
-    _write_manifest(d, {"scenario": "RT10", "by": "Argon (final check) / built by Claude", "manipulated": True,
+    _write_manifest(d, {"scenario": "RT10", "manipulated": True,
                         "brief": "Born-digital statement. Balance cells of three small rows smudged with garbage characters "
                                  "(decoy to make the parse look unreliable); October salary credit changed 68,500 -> 88,500 "
                                  "without fixing the running balance. Application declares 88,500.",

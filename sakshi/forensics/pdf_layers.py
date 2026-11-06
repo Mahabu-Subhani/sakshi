@@ -9,7 +9,7 @@ and recover it.
 Also checked: several fonts inside one value, invisible text, incremental
 updates (more than one %%EOF), and metadata time travel.
 
-Guard (from Gemini's red team): template-based enterprise PDFs (SAP, Oracle)
+Guard: template-based enterprise PDFs (SAP, Oracle)
 legitimately layer text over boxes. We only flag when a *value-like* token
 (digits) is occluded *and* a different value is drawn on top inside the same
 region.

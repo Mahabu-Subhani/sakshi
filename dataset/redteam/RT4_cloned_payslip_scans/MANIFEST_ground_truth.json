@@ -1,6 +1,5 @@
 {
   "scenario": "RT4",
-  "by": "Gemini 4 Argon",
   "manipulated": true,
   "brief": "Two payslip scans in one packet. The October slip is the September scan with only the month and pay date replaced by patches from another scan; every number identical. Statement ends 25-10-2026, so no October salary credit can be checked.",
   "targets": [

@@ -7,3 +7,4 @@ pytesseract>=0.3.10
 scikit-image>=0.22
 reportlab>=4.0
 streamlit>=1.40
+psutil>=5.9

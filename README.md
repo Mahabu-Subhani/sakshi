@@ -1,149 +1,228 @@
 # SAKSHI
 
 **Evidence-first document forensics and contextual intelligence for loan and KYC files.**
-*Sakshi* (साक्षी) means *witness*. Every line of evidence is treated as a witness, weighed by how reliable it is, and cross-examined before it is allowed to say anything.
 
-Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensics and Contextual Intelligence System*. v0.9 was designed in a four-round debate between Claude (Anthropic) and Gemini 2.5 Pro; **v1.0** was built with **Gemini 4 Argon** in four more rounds: Argon designed a blind red team, wrote two modules, and reviewed everything Claude wrote. See [`docs/COLLABORATION_LOG.md`](docs/COLLABORATION_LOG.md).
+*Sakshi* (साक्षी) is Hindi for *witness*. SAKSHI treats every document in an application as a witness: it reads each one, weighs how reliable it is, cross-examines it against the others, and reports what the evidence shows. It never says "fraud". It gives an analyst findings they can check in seconds, each tied to the exact pixels or PDF objects behind it, and leaves the decision to a human.
 
-**Demo video (2:50):** [`docs/demo/SAKSHI_demo.mp4`](docs/demo/SAKSHI_demo.mp4), recorded by driving the real console on a laptop: uploads, three cases, the dossier. Waits are sped up 10x and labelled; explanatory animations are labelled as such. Subtitles: [`SAKSHI_demo.srt`](docs/demo/SAKSHI_demo.srt); timed narration: [`voiceover_script.txt`](docs/demo/voiceover_script.txt).
+Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensics and Contextual Intelligence System*. Runs offline on a laptop CPU by default: no GPU, no cloud service, no training data. (An optional narrator can call an LLM API to reword the summary; it is off by default.)
 
-## Scoreboard (v1.0, all on synthetic data, reproducible with the commands below)
+**Demo video (2:50):** [`docs/demo/SAKSHI_demo.mp4`](docs/demo/SAKSHI_demo.mp4). It was recorded by driving the real console: file uploads, three cases, the dossier. Waits are sped up 10x and labelled; explanatory animations are labelled as such. Subtitles: [`SAKSHI_demo.srt`](docs/demo/SAKSHI_demo.srt). Timed narration: [`voiceover_script.txt`](docs/demo/voiceover_script.txt).
 
-| Test | v0.9 | v1.0 |
+---
+
+## The problem
+
+The forgery that matters in lending is rarely a fake document. It is one changed number in a real one: a net pay raised from 68,500 to 86,500, an EMI hidden from a bank statement, a retyped date of birth. Error-level heatmaps and opaque "fraud scores" often fire on benign noise and give an analyst nothing concrete to verify. SAKSHI asks a different question: *what would the documents have to say for every rule to hold?* The answer localises the edited field and often recovers its original value.
+
+## How it works
+
+### Ten stages
+
+`Document submission -> Document classification -> OCR & information extraction -> Structural understanding -> Visual forensic analysis -> Contextual verification -> Cross-document correlation -> Anomaly investigation -> Evidence generation -> Investigation dossier`
+
+Each document is first read on its own (type, text, fields, tables, pixels, PDF structure), then all documents are judged together (cross-document rules, repair, triangulation). [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) has the diagram and data flow, and [`docs/TECHNICAL.md`](docs/TECHNICAL.md) has every method and threshold.
+
+### Witness weight
+
+| Level | Source | Example |
 |---|---|---|
-| Regression (`tests/run_eval.py`): 14 planted manipulations, decoy, original value recovered, genuine case clean | all pass | all pass (genuine case: 0 inconsistencies; 1 to 3 explained observations, depending on the Tesseract build, see `docs/TECHNICAL.md` section 10) |
-| Red team (`tests/run_redteam.py`: Argon's blind briefs RT1-RT6, then later cases from both sides): manipulated cases detected | 3 of 5 (1 at potential manipulation) | **9 of 9** (6 at potential manipulation); on Argon's original five, 5 of 5 (3 at potential manipulation) |
-| Red team: genuine traps with **no** inconsistency or potential manipulation | 0 of 2 | **7 of 7** |
-| Forgery Lab (`tests/forgery_lab.py`, 2 seeds): forgeries detected | | 12 of 12 (9 at potential manipulation); the regenerated-statement recipe is a planned miss (0 of 2) |
-| Forgery Lab: genuine re-scans clean | | 2 of 2 |
-| Cross-case memory chain (`tests/run_registry_chain.py`): every case back to back, only the identity ring flagged | | all pass (20 runs, including the genuine applicant returning after the ring was remembered) |
+| L0 | Self-declared by the applicant | application form |
+| L1 | Scanned, unverifiable issuer document | employment letter |
+| L2 | Standard issuer document | payslip, bank statement, ID card |
+| L3 | Digitally signed by a trusted issuer | modelled, not verified in this prototype |
+| L4 | Fetched from the source (e.g. Account Aggregator) | modelled, out of scope |
 
-Forgery Lab figures above were measured on Linux with Liberation fonts. On Windows (v1.0.1, Arial in their place) it detects 12 of 12 forgeries (10 at potential manipulation), still misses the planned recipe (0 of 2), and keeps 1 of 2 genuine re-scans clean: on one seed, OCR did not read the "Valid till" label of the re-rendered ID card, which raises a missing-field inconsistency.
+A mismatch on an L0 claim is reported as a false declaration, never as a forged document.
 
-The genuine traps are the hard part: a Dr/Cr statement with `05-Oct-2026` dates, two separately scanned payslips from one payroll system, a two-page statement with C/F and B/F rows, searchable scans with an e-sign stamp, WhatsApp-forwarded phone photos, a self-redacted PAN and a re-submitted case. The one recipe SAKSHI misses (a statement row changed with every balance regenerated, no pixel trace) is a deliberate miss: nothing in the documents contradicts it, so SAKSHI lists that field as blind instead of guessing.
+### Three rungs, never a verdict
 
-## Real-data stress test (public dataset, not made by us)
+| Rung | Meaning | Example |
+|---|---|---|
+| OBSERVATION | Something differs, and an innocent reason explains it. | `MOHD ARIF KHAN` vs `Mohammed Arif Khan` |
+| INCONSISTENCY | A rule is broken, but an innocent reason is still possible. | a date of birth that differs between two documents |
+| POTENTIAL MANIPULATION | Two independent evidence families agree, or there is a smoking gun, and no innocent explanation survives. | demo payslip: 68,500 still in the file under a white box, 86,500 typed on top |
 
-Every number above comes from documents we generated. To test outside that echo chamber we ran SAKSHI, with detection code and thresholds unchanged, on [Find it again!](https://l3i-share.univ-lr.fr/2023Finditagain/index.html) (ICDAR 2023, L3i La Rochelle): real scanned receipts, some forged by people with image editors, with the forged regions annotated. Each receipt is investigated alone (`tests/run_findit.py`; the dataset is not bundled).
+Every finding faces a **devil's advocate** first: a catalogue of innocent explanations (rounding, OCR misread, transliteration, JBIG2 compression, salary revision, timing and more), each paired with a deterministic test. A finding cannot escalate while an innocent explanation is still plausible.
 
-| Split | Receipts (forged / genuine) | Forged flagged | Evidence on the forged region | Genuine falsely flagged | Genuine at potential manipulation |
+### Core techniques
+
+| Technique | What it does | Code |
+|---|---|---|
+| Counterfactual repair | Treats the documents as a program with invariants (gross = sum of earnings, net = gross - deductions, running balance chain, payslip net = salary credit, declared EMI = EMI debits). When rules break, it finds the smallest, most plausible set of field changes (up to 3, weighted by witness level and OCR confidence) that makes every rule hold. That localises the edited field and reconstructs its original value. | `reasoning/repair.py` |
+| PDF layer archaeology | Finds values covered by a white box in born-digital PDFs and recovers the hidden original from the content stream. | `forensics/pdf_layers.py` |
+| Overlay peel | For a scanned PDF edited in a PDF editor (red-team case RT8), renders what a reader sees, extracts the bare scan from the same file and compares the two: *88,500.00 on top, 68,500.00 on the paper underneath*. Covers objects, comment annotations and nested XObjects, and recognises redactions. | `forensics/scan_overlay.py` |
+| Nine pixel sensors | Paper noise, copy-move (scanner grain), scanner optics, glyph typography, intra-number strokes, erasure patches, JPEG ghosts, scan clones and blue-ink signatures. Each reads a physical trace an edit leaves behind. | `forensics/` |
+| Constraint-guided statement parser | Picks the column layout (debit/credit, credit/debit, amount + Dr/Cr, signed amount) that makes the running balance hold. Doubtful cells get a second OCR pass that never sees the expected value. | `forensics/table_parser.py` |
+| Income triangulation | Lists every independent witness to monthly income. A self-contradicting document is impeached, but the part that exposes the contradiction keeps full weight. Without a clear majority SAKSHI blames no one. | `reasoning/engine.py` |
+| Payroll physics and deleted rows | Employee PF must be at least 12% of the basic printed on the slip (PF 4,800 points to a basic of 40,000, not the 60,000 printed). A balance break whose gap equals a missing recurring EMI, with no printed line between the rows, is a removed row, not a parse error. | `reasoning/invariants.py`, `reasoning/engine.py` |
+| Forgery canaries | Before trusting a sensor's silence, SAKSHI forges each upload in memory from its own pixels. A sensor that misses its own canary reports "blind on this document", not "clean". | `reasoning/selftest.py` |
+| Coverage map | Changes each field in memory and asks whether any rule would notice. Every field is marked strong, weak or blind; coordinated attacks are simulated too. | `reasoning/coverage.py` |
+| Cross-case memory | Remembers fingerprints of earlier cases on the machine (photo hash, PAN, account numbers, file hashes, signature grids). A new applicant using an earlier applicant's ID photo or salary account is an identity ring. | `registry.py` |
+| Hash-chained audit trail | Every stage and finding is logged with the hash of the previous entry; `verify-audit` detects any later edit. | `audit.py` |
+
+On the demo case, the repair solver (pure arithmetic over extracted numbers) and PDF layer archaeology (pure file structure) arrive independently at the same original net pay, 68,500.00.
+
+---
+
+## Results
+
+All numbers below were measured on a Windows 11 laptop on 6-7 November 2026 and can be rerun with the commands in [Tests](#tests). Detection code and thresholds were the same for every run reported here, and nothing was tuned on the public receipts.
+
+| Suite | Data | Result |
+|---|---|---|
+| Regression, `tests/run_eval.py` | synthetic demo case: 9 planted manipulations + 1 benign decoy | all 9 found, through 14 of 14 expected detections; original net pay 68,500.00 recovered; the MOHD/Mohammed decoy stays an observation; genuine control: 0 potential manipulation, 0 inconsistencies, 1 explained observation |
+| Red team, `tests/run_redteam.py` | 16 cases: 9 attacks, 7 genuine look-alikes | 9 of 9 manipulated cases detected (6 at POTENTIAL MANIPULATION); 7 of 7 genuine cases clean |
+| Forgery Lab, `tests/forgery_lab.py` | 6 forgery recipes x 2 seeds + a planned miss, on fresh documents | 12 of 12 detected (10 at POTENTIAL MANIPULATION); planned miss 0 of 2; genuine re-scans clean 1 of 2 |
+| Long and locked statements, `tests/run_long_statement.py` | 13-page statement edited on page 8; password-locked copy | all pass: the page-8 edit is caught; passwords are never written to the dossier or audit trail and are forgotten even after a crash |
+| Cross-case memory, `tests/run_registry_chain.py` | every case back to back into one memory | all pass (20 runs): only the identity ring is flagged |
+| Console isolation, `tests/run_console_worker.py` | demo case through the console's worker process | all pass |
+
+How to read these honestly:
+
+* The red-team cases were written as attack briefs without looking at SAKSHI's thresholds, but the detectors were then improved against them (the first version caught 3 of the first 5). Treat 9 of 9 as a regression test for known attacks, not a blind test.
+* The one genuine re-scan that Forgery Lab flags: on one seed, OCR did not read the "Valid till" label of the re-rendered ID card, which raises a missing-field inconsistency. (On Linux with Liberation fonts the same suite kept 2 of 2 genuine re-scans clean and detected 12 of 12, 9 at the top rung.)
+* The planned miss is a statement row changed with every later balance regenerated. Nothing in the documents contradicts it, so SAKSHI marks that field blind instead of guessing.
+
+### Public data: Find it again! receipts
+
+To test outside synthetic data, SAKSHI ran unchanged on [Find it again!](https://l3i-share.univ-lr.fr/2023Finditagain/index.html) (ICDAR 2023, L3i La Rochelle): real scanned receipts, some forged with image editors, with forged regions annotated. Each receipt is investigated alone (`tests/run_findit.py`; the dataset is not bundled).
+
+| Split | Receipts (forged / genuine) | Forged flagged | Evidence on the forged region | Genuine flagged | Genuine at POTENTIAL MANIPULATION |
 |---|---|---|---|---|---|
 | test | 218 (35 / 183) | 18 (51%) | 6 | 102 (56%) | 0 |
 | val | 193 (34 / 159) | 19 (56%) | 12 | 85 (53%) | 0 |
 
-The result is poor and we report it as such: at the INCONSISTENCY tier, SAKSHI flags forged and genuine receipts at the same rate. Receipts are single images, so the arithmetic, cross-document and PDF checks that carry our target cases cannot run; this tests the pixel sensors alone, outside the documents they were built for. Most false alarms come from the glyph, intra-number stroke and noise sensors on low-resolution thermal prints (the glyph sensor has no resolution gate yet). No genuine receipt was escalated to POTENTIAL MANIPULATION.
+This result is poor and is reported as such: at the INCONSISTENCY rung SAKSHI flags forged and genuine receipts at about the same rate. A receipt is a single low-resolution image, so the arithmetic, cross-document and PDF checks that carry loan files cannot run; this tests the pixel sensors alone, mostly the glyph, stroke and noise sensors on thermal prints. No genuine receipt reached POTENTIAL MANIPULATION. The 577-receipt train split is held out, unread, for one future evaluation of a resolution gate.
 
-## New in v1.0.2
+### Runtime
 
-| Change | What it does | Where |
-|---|---|---|
-| **Isolated console runs** | The review console runs each case in its own worker process with a hard timeout (`SAKSHI_CASE_TIMEOUT`, default 600 s). A stalled case is stopped with a clear message instead of freezing the console, nothing is left running, and a second click during a run is refused. This follows one console freeze seen during a long recording session on 2026-11-06 (stuck after Document submission on the 7th run; the CLI ran the same case fine); its cause was not found in about 25 replays with a stack-dump watchdog, so this is containment, not a root-cause fix. Detection code and thresholds are unchanged. | `sakshi/console_worker.py`, `app.py`, `tests/run_console_worker.py` |
-| **Demo video** | A 2:50 walkthrough recorded by driving the real console (uploads, three cases, dossier tour); waits are sped up 10x and labelled, explanatory animations are labelled as such. Subtitles and a timed voice-over script are included. | `docs/demo/` |
-
-## New in v1.0.1
-
-| Change | What it does | Where |
-|---|---|---|
-| **Long and locked statements** | Every page up to 40 is read, so arithmetic, cross-document, PDF-structure, layout and overlay checks see a 15-40 page statement; pixel forensics stay on the first 6 pages. Locked PDFs open with a password supplied by the analyst (`--password`, or the field in the console), which is kept in memory only and never written to the dossier or audit trail. An edited amount on page 8 of a 13-page statement was missed by the old 6-page limit and is now caught (`tests/run_long_statement.py`). | `ingest.py`, `pipeline.py` |
-| **Faster copy-move** | The nine alignment shifts of each glyph pair are scored in one array pass: copy-move scoring is 3.9x faster on 44,390 real pairs, with every score identical to the previous code; the whole 5-document demo case runs about 20% faster (69 s to 55 s). | `forensics/copy_move.py` |
-| **Cross-platform fonts** | The dataset generator and the evidence labels find Liberation fonts on Linux and Arial (metric-compatible) on Windows and macOS, so `dataset/generate.py` and `tests/forgery_lab.py` run outside Linux. | `dataset/generate.py`, `fonts.py` |
-
-## New in v1.0
-
-| Idea | What it does | Where |
-|---|---|---|
-| **Overlay peel** | The commonest real edit is a white box and a new number typed over a scanned PDF in a PDF editor. The scan inside the file is untouched. SAKSHI renders what a reader sees, extracts the bare scan from the same file, and shows both side by side: *88,500.00 on top, 68,500.00 on the paper underneath*. Objects, comment annotations and nested XObjects are all caught by a pixel comparison. Redactions are recognised and never called a replaced value. | `forensics/scan_overlay.py` |
-| **Income triangulation with impeachment** | Lists every independent witness to monthly income. A document that contradicts itself is impeached, but the part that exposes the contradiction (PF actually deducted, the scan under an overlay) is a *confession* and keeps full weight. One document cannot outvote others by repeating itself. With no clear majority SAKSHI refuses to blame anyone, so a coordinated forgery cannot trick it into accusing the honest employer letter. | `reasoning/engine.py` |
-| **Statutory payroll physics** | Payroll software computes PF from the basic it prints. PF 4,800 on a slip that says basic 60,000 means the basic was 40,000. | `reasoning/invariants.py` |
-| **Deleted-row detection** | A running-balance break whose gap equals an EMI that is missing that month, with no printed line between the rows, is a removed row, not a parsing error. | `reasoning/engine.py` |
-| **Scan-clone detection** | Two real scans never share paper grain. Align page B onto page A; if their grain correlates, one was made by editing the other, and the pixels where they differ are the edits. | `forensics/raster.py` |
-| **Intra-number stroke consistency** | Digits of one printed number share one font and one pass of ink. Two thinner digits inside a date of birth were retyped. | `forensics/raster.py` |
-| **Scanner optics** | Text typed onto an image after scanning never went through the scanner's lens, so its edges are sharper than every other word. Independent of paper-noise sensors. | `forensics/raster.py` |
-| **Constraint-guided statement parser** (Argon) | Picks the column layout (Dr/Cr, signed, debit/credit...) that makes the running balance hold; re-reads doubtful cells with a blind second OCR, never rewrites them. | `forensics/table_parser.py` |
-| **Erasure patches and JPEG ghosts** (Argon) | Painted-over paper has no scanner grain; pasted regions carry a different compression history. | `forensics/compression.py` |
-| **Cross-case memory** | Remembers fingerprints (photo hash, PAN, account, file hashes, signature grids) of earlier cases on the machine. A new applicant using someone else's ID photo or salary account is an identity ring. | `registry.py` |
-| **Safe failure everywhere** | Sensors report *blind* instead of guessing on small images, bimodal pages and unfamiliar statement layouts; unreadable fields are "could not be read", never "missing". | all |
+A five-document case takes 25-80 s on the test laptop, depending on load (console when idle 25-28 s; clean command-line medians 41 s for the tampered case and 35 s for the genuine one; up to 76 s under load). Version 1.0.1 made copy-move scoring 3.9x faster on 44,390 real glyph pairs with identical scores; back to back, the demo case went from about 69 s to about 55 s.
 
 ---
 
-## Core design (from v0.9)
-
-Most systems do OCR, a few regex checks, an error-level-analysis heatmap and an LLM summary. SAKSHI reasons like an investigator:
-
-| Idea | What it does | Where |
-|---|---|---|
-| **Counterfactual repair** | Treats every document as a program with invariants (gross = sum of earnings, net = gross - deductions, running balance chain, payslip net = bank salary credit, declared EMI = EMI debits...). When rules break, it searches for the *smallest, most plausible set of field changes that makes every rule hold again*, which both **localizes the forged field** and **reconstructs its original value**. | `reasoning/repair.py` |
-| **PDF layer archaeology** | Finds values painted over with a white box in born-digital PDFs and **recovers the hidden original** from the content stream. | `forensics/pdf_layers.py` |
-| **Independent convergence** | On the demo case the repair solver (pure logic over extracted numbers) and the PDF archaeology (pure file structure) independently arrive at the same original net pay, 68,500.00. | dossier, thread 1 |
-| **Witness levels L0-L4** | A self-declared application counts less than a bank statement. A mismatch on a claim is reported as a false declaration, never as a forged document. | `models.py`, `repair.py` |
-| **Devil's advocate** | Every finding faces innocent explanations (rounding, OCR misread, transliteration, JBIG2 compression, salary revision, timing...), each with a deterministic test. A finding cannot escalate while an innocent explanation is still plausible. | `reasoning/devils_advocate.py`, `benign_catalog.json` |
-| **Verification coverage map** | Mutation-tests SAKSHI's own reasoning: which fields are strongly verified, weakly verified, or **blind** (no rule can check them). Plus coordinated-attack simulations (internally consistent payslip inflation, regenerated balance column). | `reasoning/coverage.py` |
-| **Forgery canaries** | Before trusting a pixel sensor's silence, SAKSHI forges each uploaded document itself in memory, using its own pixels, and checks the sensor catches it. Otherwise it reports "blind on this document". | `reasoning/selftest.py` |
-| **Scanner-grain copy-move** | Two scanned glyphs never share sensor noise. Identical paper grain around two digits means one was copied after scanning. | `forensics/copy_move.py` |
-| **Epistemic ladder** | OBSERVATION -> INCONSISTENCY -> POTENTIAL MANIPULATION. Never "fraud". Decisions stay with the analyst. | `reasoning/fusion.py` |
-
 ## Quick start
 
-```bash
-# system dependency: Tesseract OCR 5 (with eng; hin optional)
-sudo apt install tesseract-ocr tesseract-ocr-hin   # Windows: UB Mannheim installer, add to PATH; macOS: brew install tesseract tesseract-lang
-pip install -r requirements.txt
+Requirements: Python 3.10+ and the Tesseract OCR 5 binary (English; Hindi optional).
 
-python -m sakshi demo                 # builds the demo dataset, investigates both cases, writes out/*/dossier.html
-python tests/run_eval.py              # checks every planted manipulation is found and the genuine case stays clean
-python -m sakshi redteam              # builds the blind red-team cases and scores SAKSHI on them
-python tests/forgery_lab.py --seeds 2 # forgery recipes on fresh genuine documents + genuine re-scans
-python tests/run_registry_chain.py    # every case back to back into one cross-case memory
-python tests/run_long_statement.py    # 13-page statement edited on page 8, and a password-locked copy
-python tests/run_findit.py --data PATH/TO/findit2   # real-data stress test (download the dataset first)
-streamlit run app.py                  # upload console with live progress and the interactive dossier
+```bash
+# Tesseract: Ubuntu
+sudo apt install tesseract-ocr tesseract-ocr-hin
+# Windows: UB Mannheim installer, then add it to PATH.  macOS: brew install tesseract tesseract-lang
+
+pip install -r requirements.txt
+```
+
+Review console (upload documents or pick a demo case, watch the stages, read the dossier):
+
+```bash
+streamlit run app.py
+```
+
+Command line:
+
+```bash
+python -m sakshi demo                     # build the demo dataset and investigate both demo cases
 python -m sakshi run a.pdf b.jpg --out out/mycase --case-id HL-123 [--lang eng+hin] [--memory registry.json] [--password PW]
 python -m sakshi verify-audit out/mycase/audit.jsonl
 ```
 
-Measured on a Windows 11 laptop (CPU only, no GPU, no internet): the 5-document demo case takes about 55 s with v1.0.1, against about 69 s with the previous copy-move code, run back to back under the same load (two runs each: 54.7 / 54.4 s vs 72.1 / 65.2 s). Times vary a lot with machine load: across runs on 6-7 Nov 2026 a five-document case took 25-80 s (console when idle 25-28 s; clean CLI medians 41 s tampered and 35 s genuine; up to 76 s under load), so the deck and video say 25-80 s. A profile put 38% of the time in the old copy-move pair loop and 24% in Tesseract. The original 15-20 s figure was measured on the authors' machine and is not reproduced here.
+In the console each case runs in its own worker process with a hard timeout (`SAKSHI_CASE_TIMEOUT`, default 600 s). A stalled case is stopped with a clear message, nothing is left running, and a second click during a run is refused.
 
-## Pipeline
+## Tests
 
-`Submission -> Classification -> OCR & extraction -> Structure -> Visual forensics -> Contextual verification -> Cross-document correlation -> Anomaly investigation -> Evidence -> Dossier`
-
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for the diagram and data flow, and [`docs/TECHNICAL.md`](docs/TECHNICAL.md) for every method and threshold.
+```bash
+python tests/run_eval.py                  # every planted manipulation found, genuine control clean
+python -m sakshi redteam                  # build the red-team cases and score them (or: python tests/run_redteam.py)
+python tests/forgery_lab.py --seeds 2     # forgery recipes on fresh documents + genuine re-scans
+python tests/run_long_statement.py        # 13-page statement edited on page 8, and a password-locked copy
+python tests/run_registry_chain.py        # every case back to back into one cross-case memory
+python tests/run_console_worker.py        # the console's isolated worker: results, timeout, no leftovers
+python tests/run_findit.py --data PATH/TO/findit2   # public receipts (download the dataset first)
+```
 
 ## Outputs (per case)
 
-| File | What |
+| File | Contents |
 |---|---|
-| `dossier.html` | Self-contained interactive dossier (sections 7.1 to 7.6 of the brief, plus coverage map and audit trail). Click any finding to see its evidence boxes on the original page. |
-| `dossier.json` | Machine-readable version of everything above. |
-| `audit.jsonl` | Hash-chained audit trail (chain of custody). `verify-audit` detects any edit. |
-| `evidence/` | Evidence crops, noise heatmaps, signature crops. |
-| `pages/` | Page rasters the analysis ran on (native resolution, no resampling). |
+| `dossier.html` | Self-contained interactive dossier: document overview, extracted information, contextual analysis, visual forensics, evidence and traceability, investigation summary, coverage map and audit trail. Click any finding to see its evidence boxes on the original page. |
+| `dossier.json` | Machine-readable version of the dossier (paths are relative, so a shared dossier leaks no local paths). |
+| `audit.jsonl` | Hash-chained audit trail; `python -m sakshi verify-audit` detects any edit. |
+| `evidence/` | Evidence crops, noise heatmaps, signature crops, before/after reconstructions. |
+| `pages/` | Page rasters the analysis ran on, at native resolution. |
 
-## Demo dataset
+Sample dossiers are in [`samples/`](samples): the tampered and genuine demo cases, and red-team case RT8 showing the overlay peel.
 
-`dataset/generate.py` builds two cases for one fictional applicant. Every document is synthetic, carries a visible SYNTHETIC SPECIMEN label and uses invented institutions.
+## Repository layout
 
-* `case_genuine`: five consistent documents (control). Expected: no potential-manipulation findings.
-* `dataset/redteam/`: 16 more cases (9 manipulated, 7 genuine traps), each with `MANIFEST_ground_truth.json` stating who designed it (Argon or Claude) and the brief. Built by `dataset/redteam.py`.
-* `case_tampered`: nine planted manipulations, listed in `MANIFEST_ground_truth.json`: payslip white-box overlay with a different font; copy-moved digit in a scanned statement (hiding a loan EMI); digital white-out and retyped value on the application; false income declaration; DOB mismatch; spliced ID photo; employer letter with a reproduced signature, inflated tenure and inflated salary. Plus one benign decoy (MOHD vs Mohammed) that must not escalate.
+```
+app.py                     Streamlit review console
+sakshi/
+  pipeline.py              the ten stages, run_case()
+  ingest.py, classify.py   reading PDFs and images, document type, OCR
+  extract.py               fields, tables, statement rows
+  console_worker.py        isolated worker process for the console
+  registry.py, audit.py    cross-case memory, hash-chained audit trail
+  forensics/               pixel sensors, PDF layers, overlay peel, statement parser
+  reasoning/               invariants, repair solver, devil's advocate, fusion, coverage, canaries, optional narrator
+  dossier/render.py        HTML dossier
+dataset/                   demo-case generator, red-team generator and cases, ground-truth manifests
+tests/                     the suites listed above
+samples/                   example dossiers and audit trails
+docs/                      architecture, technical detail, limitations, Forgery Lab results, demo script, demo video
+```
 
-## Deliverables map (brief section 9)
+## Tech stack
 
-| Deliverable | Where |
-|---|---|
-| Working prototype | `sakshi/`, `app.py`, CLI |
-| Architecture overview | `docs/ARCHITECTURE.md` |
-| Sample investigation dossier | `samples/DEMO-TAMPERED_dossier.html` (+ genuine control, + `RT8-SCANNED-PDF-EDITOR_dossier.html` showing the overlay peel) |
-| Source repository | this repo |
-| Demonstration dataset | `dataset/` (generator + generated cases + ground truth; `dataset/redteam/` blind red team) |
-| Technical documentation | `docs/TECHNICAL.md` |
-| Evidence traceability demonstration | dossier tab 7.5 and click-through; `docs/DEMO_SCRIPT.md` |
-| Limitations and assumptions | `docs/LIMITATIONS.md` |
+| Layer | Tools | Licence |
+|---|---|---|
+| Language | Python | |
+| PDF internals | PyMuPDF | AGPL-3.0 (or commercial licence from Artifex) |
+| OCR | Tesseract 5 (LSTM) via pytesseract | Apache-2.0 |
+| Image forensics | OpenCV, scikit-image, NumPy, Pillow | Apache-2.0, BSD-3, BSD, HPND |
+| Interface | Streamlit, command line, HTML dossier | Apache-2.0 |
+| Integrity | SHA-256 hash chain | |
+| Test data | ReportLab | BSD |
+| Optional narrator | Gemini or Claude API, off by default; rewrites the summary in plain language and never decides a rung | provider terms |
 
-## Licensing assumptions
+## Demo data
 
-SAKSHI's own code: MIT (see `LICENSE`). Dependencies keep their own licences: **PyMuPDF is AGPL-3.0** (or commercial licence from Artifex), which matters for any hosted or commercial deployment; Tesseract is Apache-2.0; OpenCV Apache-2.0; scikit-image BSD-3; NumPy BSD; Pillow HPND; ReportLab BSD; Streamlit Apache-2.0. Fonts used by the dataset generator are Liberation / FreeFont (SIL OFL / GPL with font exception). The optional LLM narrator calls the Gemini or Claude API under their providers' terms and is off by default.
+Every document is synthetic, carries a visible SYNTHETIC SPECIMEN label and uses invented institutions.
+
+* `dataset/cases/case_tampered`: five documents for one fictional applicant with 9 planted manipulations, listed in `MANIFEST_ground_truth.json`: a white-box overlay with a retyped net pay in a different font; a copy-moved digit in a scanned statement hiding an EMI; a digital white-out and retyped EMI on the application; a false income declaration; a date-of-birth mismatch; a spliced ID photo; an employment letter with a reproduced signature, an inflated tenure and an inflated salary. Plus one benign decoy (MOHD vs Mohammed) that must not escalate.
+* `dataset/cases/case_genuine`: the same applicant's five consistent documents, the control.
+* `dataset/redteam/`: 16 more cases (9 manipulated, 7 genuine look-alikes), each with its brief in `MANIFEST_ground_truth.json`, built by `dataset/redteam.py`. The genuine look-alikes are the hard part: a Dr/Cr statement with `05-Oct-2026` dates, two separately scanned payslips from one payroll system, a two-page statement with C/F and B/F rows, searchable scans with an e-sign stamp, WhatsApp-forwarded phone photos, a self-redacted PAN and a re-submitted case.
+
+## Limitations
+
+The full list is in [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md). The main ones:
+
+* Thresholds were calibrated on synthetic data; SAKSHI has not been tested on real Indian payslips or statements.
+* On low-resolution images such as thermal receipts, the middle rung does not separate forged from genuine.
+* A statement row changed with every later balance regenerated leaves no trace; that field is reported blind.
+* Pixel forensics run on the first 6 pages; up to 40 pages are read for arithmetic, cross-document, structure, layout and overlay checks.
+* No handwriting analysis; signature checks work on blue ink only.
+* Issuer verification (bank, UIDAI) is modelled as witness levels L3-L4, not connected.
+* Cross-case memory is a local file without per-applicant erasure yet.
+* The console froze once during a long recording session (stuck after Document submission on the 7th run; the command line ran the same case fine). The cause was not found in about 25 replays with a stack-dump watchdog; the isolated worker contains it rather than fixing a root cause.
+
+## Roadmap
+
+* A resolution gate for the pixel sensors, judged once on the unread 577-receipt train split.
+* Calibration on consented real Indian statements and payslips; portrait-based photo hashing.
+* Per-applicant erasure for India's DPDP Act.
+* Account Aggregator and UIDAI connected as L3-L4 witnesses that outrank any upload.
+* Configurable pixel-forensics page limit and parallel processing for volume.
+
+## Changes
+
+* **1.0.2**: isolated console worker with a hard timeout and its test; demo video; runtime stated as the measured 25-80 s range.
+* **1.0.1**: statements up to 40 pages and password-locked PDFs (passwords kept in memory only); copy-move scoring 3.9x faster with identical scores; cross-platform fonts for the generators.
+* **1.0**: overlay peel, income triangulation with impeachment, payroll physics, deleted-row detection, scan clones, intra-number strokes, scanner optics, constraint-guided statement parser, erasure patches and JPEG ghosts, cross-case memory, safe failure ("blind", never a guess).
 
 ## Safety and ethics
 
-Use only authorised or synthetic documents. SAKSHI never labels anything as fraud, never auto-rejects, treats OCR as a fallible witness, keeps a tamper-evident audit trail, and states what it could not check. See [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md).
+Use only authorised or synthetic documents. SAKSHI never labels anything as fraud and never auto-rejects. It treats OCR as a fallible witness, keeps a tamper-evident audit trail, never stores passwords, and states what it could not check.
+
+## Licence
+
+SAKSHI's code is MIT licensed (see [`LICENSE`](LICENSE)). Dependencies keep their own licences; note that **PyMuPDF is AGPL-3.0**, which matters for any hosted or commercial deployment. Fonts used by the dataset generator are Liberation / FreeFont (SIL OFL / GPL with font exception) on Linux, or the system's Arial on Windows and macOS.

@@ -1,5 +1,5 @@
 {
-  "_source": "Written by Gemini (gemini-2.5-pro) during the design debate, extended by Claude while wiring each test into code. Every explanation maps to a deterministic test in devils_advocate.py.",
+  "_source": "Every explanation maps to a deterministic test in devils_advocate.py.",
   "arithmetic_break": [
     {"id": "rounding", "explanation": "Rounding differences in payroll software", "test": "absolute error below Rs. 1.00"},
     {"id": "unlisted_component", "explanation": "One-off component not shown as its own line (bonus, arrears, adjustment, reimbursement)", "test": "keywords bonus/arrears/adjustment/reimbursement/recovery present in the document text"},
