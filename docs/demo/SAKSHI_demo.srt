@@ -1,75 +1,131 @@
 1
-00:00:00,050 --> 00:00:09,730
+00:00:00,009 --> 00:00:07,953
 A loan file rarely fakes a whole document. It changes one number. Here the payslip says 86,500, but its own arithmetic and its own words say 68,500.
 
 2
-00:00:09,730 --> 00:00:20,230
-SAKSHI runs the ten stages from the brief. Each finding is weighed by how reliable its witness is, must survive its innocent explanations, and lands on one of three rungs. It never says fraud.
+00:00:07,953 --> 00:00:15,099
+SAKSHI runs the ten stages from the brief. Each finding is weighed by how reliable its witness is, must survive its innocent explanations, and lands on one of three rungs.
 
 3
-00:00:20,230 --> 00:00:26,030
-A tampered loan application: five documents, nine planted manipulations. Memory is cleared first, so nothing is remembered from earlier runs.
+00:00:15,099 --> 00:00:19,840
+Five documents of one loan application: payslip, bank statement, application form, ID card, employment letter. Memory is cleared first.
 
 4
-00:00:26,030 --> 00:00:29,496
-Ten stages run on this laptop: documents are read one by one, then judged together.
+00:00:19,840 --> 00:00:22,583
+The progress bar walks the ten stages of the brief, on this laptop, offline.
 
 5
-00:00:29,496 --> 00:00:34,616
+00:00:22,583 --> 00:00:26,536
 Potential manipulation, inconsistencies, observations. The processing time is the real, unedited run time.
 
 6
-00:00:36,566 --> 00:00:43,626
-As submitted: 86,500. The smallest change that makes every rule hold: 68,500, the real salary, recovered.
+00:00:29,606 --> 00:00:32,968
+Type, confidence, cues, modality, witness level and SHA-256 for every file.
 
 7
-00:00:43,626 --> 00:00:48,376
-Nine pixel sensors plus the PDF’s own structure. A pasted or whited-out region shows up in the noise map.
+00:00:32,968 --> 00:00:39,024
+Every field with its raw and normalised value, confidence, extraction method and location on the page; text painted over inside the payslip file is listed too.
 
 8
-00:00:48,376 --> 00:00:52,646
-Each field is marked strong, weak or blind, so the analyst knows what still needs a human check.
+00:00:39,024 --> 00:00:45,897
+68,500.00 is still in the payslip file, under a filled shape, with 86,500.00 drawn on top.
 
 9
-00:00:52,646 --> 00:00:55,816
-Every step is logged with the hash of the step before it, so a later edit to the record is detectable.
+00:00:45,897 --> 00:00:52,047
+As submitted: 86,500. The smallest change that makes every rule hold: 68,500.
 
 10
-00:00:55,826 --> 00:00:59,786
-The same applicant’s genuine documents. A useful forensic tool stays quiet on honest paperwork.
+00:00:52,047 --> 00:00:58,742
+Net pay reads 86,500, but gross minus deductions and the amount written in words are consistent only with 68,500.
 
 11
-00:00:59,786 --> 00:01:03,013
-Same ten stages, same thresholds.
+00:00:58,742 --> 00:01:06,770
+The claim graph links each document to what it states; red lines are conflicts, such as the bank’s salary credit against the payslip.
 
 12
-00:01:03,013 --> 00:01:08,153
-No potential manipulation and no inconsistency. One observation, explained.
+00:01:06,770 --> 00:01:13,550
+Seven findings on the statement and the application converge on one hidden loan: an EMI of 24,500 shown as 14,500.
 
 13
-00:01:08,253 --> 00:01:15,663
-Case three is a red-team attack: a scanned payslip edited in a PDF editor. The scan is untouched; a box hides the real figure and new text sits on top.
+00:01:13,550 --> 00:01:20,254
+A digit in 14,500.00 is a pixel copy of a digit in 1,180.00: two numbered boxes on the scanned statement.
 
 14
-00:01:15,663 --> 00:01:20,233
-Red-team case RT8, loaded from the console’s demo list.
+00:01:20,254 --> 00:01:26,761
+Not everything escalates: a date of birth one digit apart stays an INCONSISTENCY, because a typo is still a plausible explanation.
 
 15
-00:01:20,233 --> 00:01:23,381
-The console runs each case in its own worker process, so a stalled case is stopped instead of freezing it.
+00:01:26,761 --> 00:01:33,531
+MOHD ARIF KHAN versus Mohammed Arif Khan is only an OBSERVATION: transliteration explains it, and the table shows each innocent explanation and its test.
 
 16
-00:01:23,381 --> 00:01:27,921
-Five potential-manipulation findings.
+00:01:33,531 --> 00:01:37,062
+Nine pixel sensors, with a noise map for every page.
 
 17
-00:01:29,701 --> 00:01:35,701
-What a reader sees: 88,500. The scan inside the same file, underneath: 68,500.
+00:01:37,062 --> 00:01:44,686
+Every evidence item with its document, page and pixel box. Click a location and the original page opens with that region boxed.
 
 18
-00:01:35,751 --> 00:01:46,371
-Every number comes from a test anyone can rerun, including where SAKSHI fails: on real receipts the middle tier cannot separate forged from genuine.
+00:01:44,686 --> 00:01:48,207
+Summary, hypotheses, areas that need verification and the limitations of this investigation.
 
 19
-00:01:46,371 --> 00:01:52,071
+00:01:48,207 --> 00:01:53,381
+Every step is logged with the hash of the step before it, so a later edit is detectable. Download it with the dossier as HTML and JSON.
+
+20
+00:01:53,381 --> 00:01:56,686
+The same applicant’s genuine documents, plus one damaged PDF.
+
+21
+00:01:56,686 --> 00:01:58,833
+Same ten stages, same thresholds.
+
+22
+00:01:58,833 --> 00:02:06,570
+The damaged file is rejected with a reason and the rest is analysed: no potential manipulation, no inconsistency.
+
+23
+00:02:06,570 --> 00:02:08,701
+Coverage map: every field marked strong, weak or blind.
+
+24
+00:02:08,710 --> 00:02:12,598
+A different applicant (red-team case RT7). SAKSHI remembers the cases it has already seen on this machine.
+
+25
+00:02:12,598 --> 00:02:13,832
+Same ten stages, same thresholds.
+
+26
+00:02:13,832 --> 00:02:23,494
+The ID photo and the salary account were already seen in an earlier case under a different name.
+
+27
+00:02:23,663 --> 00:02:29,109
+A red-team attack: a scanned payslip edited in a PDF editor. The scan is untouched; a box hides the real figure and new text sits on top.
+
+28
+00:02:29,109 --> 00:02:33,034
+Loaded from the console’s demo list.
+
+29
+00:02:33,034 --> 00:02:35,177
+Same ten stages, same thresholds.
+
+30
+00:02:35,177 --> 00:02:40,398
+Five potential-manipulation findings.
+
+31
+00:02:40,398 --> 00:02:45,562
+What a reader sees: 88,500. The scan inside the same file, underneath: 68,500.
+
+32
+00:02:45,600 --> 00:02:53,581
+Every number comes from a test anyone can rerun, including where SAKSHI fails: on real receipts the middle tier cannot separate forged from genuine.
+
+33
+00:02:53,581 --> 00:02:58,107
 SAKSHI. Evidence, not verdicts.

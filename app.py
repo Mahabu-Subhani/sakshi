@@ -111,7 +111,7 @@ if "last" in st.session_state:
     m4.metric("Processing time", f"{d['processing_seconds']} s")
     if d["rejected"]:
         for r in d["rejected"]:
-            st.error(f"{r['file']}: {r['reason']}")
+            st.error(r['reason'] if r['reason'].startswith(r['file']) else f"{r['file']}: {r['reason']}")
     with st.expander("What each sensor could and could not check on these documents"):
         for doc in d["documents"]:
             st.write(f"**{doc['filename']}** ({doc['type_label']}, {doc['modality'].replace('_', ' ')})")

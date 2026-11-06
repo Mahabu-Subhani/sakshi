@@ -6,7 +6,7 @@
 
 Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensics and Contextual Intelligence System*. Runs offline on a laptop CPU by default: no GPU, no cloud service, no training data. (An optional narrator can call an LLM API to reword the summary; it is off by default.)
 
-**Demo video (1:52):** [`docs/demo/SAKSHI_demo.mp4`](docs/demo/SAKSHI_demo.mp4). It was recorded by driving the real console: file uploads, three cases, the dossier. Page loads are cut, waits are sped up 12x and labelled; explanatory animations are labelled as such. Subtitles: [`SAKSHI_demo.srt`](docs/demo/SAKSHI_demo.srt). Timed narration: [`voiceover_script.txt`](docs/demo/voiceover_script.txt).
+**Demo video (2:58):** [`docs/demo/SAKSHI_demo.mp4`](docs/demo/SAKSHI_demo.mp4). It was recorded by driving the real console and walks through every item of the brief's live-demo checklist: uploads, classification, extraction, suspicious regions, cross-document checks, evidence, traceability, the final dossier, safe failure, plus cross-case memory and the overlay peel. Page loads are cut, waits are sped up and labelled; explanatory animations are labelled as such. Subtitles: [`SAKSHI_demo.srt`](docs/demo/SAKSHI_demo.srt). Timed narration: [`voiceover_script.txt`](docs/demo/voiceover_script.txt).
 
 ---
 

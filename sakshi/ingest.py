@@ -221,7 +221,7 @@ def ingest(path: str, doc_id: str, work: Path, lang: str = "eng", passwords=()) 
         try:
             pdf = fitz.open(str(p))
         except Exception as e:  # corrupt file: fail safely
-            raise UnsupportedInput(f"{p.name}: could not open PDF ({e})")
+            raise UnsupportedInput(f"{p.name}: could not open PDF: the file is damaged or is not a PDF ({type(e).__name__})")
         if pdf.needs_pass:
             # bank statements are commonly password-protected; the password itself is never logged or stored
             pw = next((pw for pw in passwords if pw and pdf.authenticate(pw)), None)
@@ -320,7 +320,7 @@ def ingest(path: str, doc_id: str, work: Path, lang: str = "eng", passwords=()) 
             im = Image.open(str(p))
             im.load()
         except Exception as e:
-            raise UnsupportedInput(f"{p.name}: could not decode image ({e})")
+            raise UnsupportedInput(f"{p.name}: could not decode image: the file is damaged or is not an image ({type(e).__name__})")
         arr = np.array(im.convert("RGB"))
         img_path = work / f"{doc_id}_p0.png"
         _save_rgb(arr, img_path)
