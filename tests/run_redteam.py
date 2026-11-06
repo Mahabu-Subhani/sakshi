@@ -1,4 +1,4 @@
-"""Score SAKSHI on the blind red-team cases (designed by Gemini 4 Argon) and the layout-varied genuine controls.
+"""Score SAKSHI on the red-team cases and the layout-varied genuine controls.
 
     python tests/run_redteam.py [--out OUTDIR] [--json results.json]
 

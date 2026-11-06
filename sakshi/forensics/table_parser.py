@@ -1,6 +1,5 @@
 # FILE: sakshi/forensics/table_parser.py
-# Written by Gemini 4 Argon (round 2 of the v1.0 design debate). Reviewed, fixed and integrated by Claude.
-# Claude's review fixes are marked "REVIEW FIX".
+# Review fixes are marked "REVIEW FIX".
 """Constraint-guided bank-statement table parser.
 
 Column roles are not trusted from layout alone: every plausible hypothesis

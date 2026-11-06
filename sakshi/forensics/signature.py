@@ -2,7 +2,7 @@
 
 Wet signatures vary every time a person signs. Two signatures whose stroke
 shapes are near-identical across documents mean one was reproduced (scanned,
-copied, pasted). Gemini's red-team guard: a signature image inserted by
+copied, pasted). Guard: a signature image inserted by
 software into two born-digital documents from the same issuer *is* expected
 to be identical, so identity is only escalated when at least one copy is on a
 scanned page (a supposed wet signature).

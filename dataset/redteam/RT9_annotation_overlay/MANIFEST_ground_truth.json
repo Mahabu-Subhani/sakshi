@@ -1,6 +1,5 @@
 {
   "scenario": "RT9",
-  "by": "Argon (round 4) / built by Claude",
   "manipulated": true,
   "brief": "October salary credit 68,500.00 on a scanned statement hidden under a FreeText comment annotation (white fill) that shows 88,500.00. The page content stream is untouched. Application declares 88,500.",
   "targets": [

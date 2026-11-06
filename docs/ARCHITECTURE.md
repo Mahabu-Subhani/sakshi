@@ -72,7 +72,7 @@ flowchart TB
 | Classification | `classify.py` | keyword evidence scorer | type + confidence + cues, witness level |
 | OCR & extraction | `ingest.py`, `extract.py` | Tesseract 5 (LSTM), PDF text layer | word boxes + confidence, label-anchored fields, table parsing, number-words parser |
 | Structural understanding | `extract.py` | layout geometry | sections, required/missing/duplicate fields, label-value relations, row/column structure |
-| Visual forensics | `forensics/*.py` | OpenCV, scikit-image, NumPy | noise consistency, copy-move, typography, layout rhythm, signatures, PDF archaeology; v1.0: `compression.py` (Argon), `raster.py` (stroke, optics, scan clones), `scan_overlay.py` (overlay peel), `table_parser.py` (Argon) |
+| Visual forensics | `forensics/*.py` | OpenCV, scikit-image, NumPy | noise consistency, copy-move, typography, layout rhythm, signatures, PDF archaeology; v1.0: `compression.py`, `raster.py` (stroke, optics, scan clones), `scan_overlay.py` (overlay peel), `table_parser.py` |
 | Cross-case memory | `registry.py` | pHash, SHA-256, stroke grids | identity rings across applications |
 | Contextual verification | `reasoning/invariants.py`, `engine.py` | rule library | arithmetic, balance chain, totals, formats (PAN/IFSC), dates, expectations |
 | Cross-document correlation | `invariants.py`, `repair.py` | linear algebra, entity matching | cross-doc numeric links, equality groups with transliteration and OCR-confusion handling |
@@ -96,4 +96,4 @@ Evidence families used for corroboration (v1.0): `file_structure`, `pixel`, `opt
 
 * Learned models: Tesseract's LSTM OCR. Statistical learning: robust z-scores, Theil-Sen fits, noise estimation, all per document (unsupervised, no training data needed, because judges bring unseen documents).
 * Reasoning: deterministic model-based diagnosis, so every conclusion can be replayed and audited.
-* LLMs: used to *design* the system (Claude + Gemini debate) and optionally to *rephrase* the final summary. Never to decide a tier, never on raw documents. This follows the "LLM proposes, code verifies" rule agreed in the design debate.
+* LLMs: optional, and only to *rephrase* the final summary. Never to decide a tier, never on raw documents: the LLM proposes wording, deterministic code decides.

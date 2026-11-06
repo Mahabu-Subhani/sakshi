@@ -194,7 +194,7 @@ def build(docs: dict, fields: dict) -> Rules:
         if basic and pf:
             wage = basic.value + (da.value if da else 0.0)
             # Only a PF BELOW 12% of the printed basic is a contradiction (the direction an inflated basic leaves).
-            # PF above 12% is legitimate: voluntary PF (VPF) or a PF wage that includes allowances (v1.0, Argon review).
+            # PF above 12% is legitimate: voluntary PF (VPF) or a PF wage that includes allowances (v1.0).
             ok = pf.value >= 0.12 * wage - 1.0 or abs(pf.value - 1800.0) <= 1.0 or abs(pf.value - 3600.0) <= 1.0
             R.statutory.append({"id": f"{s.doc_id}.S1", "ok": ok, "fields": [basic.key(), pf.key()],
                                 "text": f"{s.filename}: employee PF is at least 12% of basic (+DA) = {0.12 * wage:,.2f}, "

@@ -287,7 +287,7 @@ def extract_salary_slip(doc: Document):
 
 def extract_bank_statement(doc: Document, reocr=None):
     """Header fields by label; the transaction table by the constraint-guided parser
-    (forensics/table_parser.py, written by Gemini 4 Argon): it tries every column-role
+    (forensics/table_parser.py): it tries every column-role
     hypothesis against the running-balance equation and keeps the one that fits."""
     from .forensics.table_parser import parse_statement
     p0 = doc.pages[0]
@@ -336,7 +336,7 @@ def extract_bank_statement(doc: Document, reocr=None):
         if not row["date"] and not row["opening"]:
             continue
         rows.append(row)
-    # Column sanity (Argon's final attack): with a smudged balance cell the parser may take the row's amount as its
+    # Column sanity: with a smudged balance cell the parser may take the row's amount as its
     # balance. A cell that sits in another column's x-band is moved to that column, or dropped as unreadable.
     import statistics
     med = {}
@@ -365,7 +365,7 @@ def extract_bank_statement(doc: Document, reocr=None):
         doc.notes.append(f"Statement table: {moved} balance cell(s) were not in the balance column (smudged or unreadable "
                          "balance); the running-balance check bridges over those rows.")
     doc.tables["transactions"] = rows
-    # Balance fit over CONFIDENTLY read transitions only (Argon's final check): garbage typed into a few balance
+    # Balance fit over CONFIDENTLY read transitions only: garbage typed into a few balance
     # cells must not drag the fit down and switch statement arithmetic off for the one row that matters.
     good = tot = 0
     for a, b in zip(rows, rows[1:]):
@@ -474,7 +474,7 @@ def extract(doc: Document, reocr=None) -> None:
     else:
         EXTRACTORS.get(doc.doc_type, extract_generic)(doc)
     # identifiers the submitter masked ('XXXXXX821Q', '****7812') are not values: they never enter format or
-    # cross-document checks, and their absence is reported as masked, not missing (Argon round 4)
+    # cross-document checks, and their absence is reported as masked, not missing
     masked = []
     for name, f in list(doc.fields.items()):
         if name in ("pan", "account_no", "id_no", "mobile", "aadhaar", "employee_id") and re.search(r"[Xx*#]{3,}", str(f.raw)):

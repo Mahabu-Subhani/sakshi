@@ -1,6 +1,5 @@
 {
   "scenario": "RT1",
-  "by": "Gemini 4 Argon",
   "manipulated": true,
   "brief": "Basic +20,000 with gross, net and words updated so the payslip math holds; salary credit +20,000 and every later balance and total regenerated; declared income updated; clean born-digital PDFs (no layers, no incremental update).",
   "targets": [

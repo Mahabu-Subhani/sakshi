@@ -1,6 +1,6 @@
 """v1.0 raster sensors (scans and photos).
 
-* erasure patches and JPEG ghosts on value boxes: wraps Gemini 4 Argon's compression.py
+* erasure patches and JPEG ghosts on value boxes: wraps compression.py
 * intra-token font consistency: digits inside ONE printed number share one font, weight and ink.
   A number whose last two digits are thinner or lighter than its first ones was partly retyped.
 * scan-clone detection across documents: two different physical scans never share sensor noise.
@@ -17,7 +17,7 @@ from ..models import Document, Evidence, Finding
 from . import compression
 
 # Below this digit height (pixels) ink-level sensors are blind: forwarded/downscaled images alias
-# thin strokes (Argon round 3). SAKSHI says "blind" rather than guess.
+# thin strokes. SAKSHI says "blind" rather than guess.
 MIN_GLYPH_PX = 16
 # Optics: an edit is a handful of tokens. If many words are "sharper than the page", the page has
 # two rendering layers (mixed-raster PDF, scanner-app text enhancement) and the sensor is vetoed.
@@ -76,7 +76,7 @@ def erasure_and_ghosts(doc: Document, new_id) -> list[Finding]:
                 detail=(f"Between the glyphs of {label} the paper is flat: robust noise {z['inner_std']:.2f} against "
                         f"{z['ring_std']:.2f} in a ring just outside the box. Paper tone {tone_in:.0f} inside vs "
                         f"{tone_out:.0f} outside. A scanner cannot produce a noise-free rectangle; a paint or white-out "
-                        "tool can. (Detector written by Gemini 4 Argon.)"),
+                        "tool can."),
                 confidence=0.9 if z["inner_std"] < 0.15 * z["ring_std"] else 0.8, localized=True,
                 evidence=[Evidence(doc.doc_id, P.index, tuple(float(v) for v in z["bbox"]), z["note"], kind="field",
                                    value=f.raw if f else "")],
@@ -93,7 +93,7 @@ def erasure_and_ghosts(doc: Document, new_id) -> list[Finding]:
                       f"(JPEG ghost at Q{g['q_star_box']} vs page Q{g['q_star_page']})",
                 detail=("Re-compressing the page at a range of JPEG qualities, this box reaches its minimum error at a "
                         "different quality than the rest of the page (robust z = %.1f). Content pasted from another JPEG "
-                        "keeps its own compression history. (Detector written by Gemini 4 Argon.)" % g["z"]),
+                        "keeps its own compression history." % g["z"]),
                 confidence=0.65, localized=True,
                 evidence=[Evidence(doc.doc_id, P.index, tuple(float(v) for v in g["bbox"]), g["note"], kind="field",
                                    value=f.raw if f else "")],

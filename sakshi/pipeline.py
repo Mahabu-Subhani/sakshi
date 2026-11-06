@@ -58,7 +58,7 @@ def _portable(text: str, out: Path) -> str:
 
 
 def _reconstruction(page_img_path: str, bbox, text: str, out: Path) -> str | None:
-    """Side-by-side 'as submitted' vs 'expected value reconstruction' (Gemini 4 Argon's labelling rule:
+    """Side-by-side 'as submitted' vs 'expected value reconstruction' (labelling rule:
     it must never look like generated evidence)."""
     from PIL import Image, ImageDraw
     try:

@@ -9,7 +9,7 @@ Per 16x16 window (stride 8) we estimate noise from the median-filter residual on
 flat pixels only (edges excluded), then flag compact rectangular regions whose
 noise is far below or above the page's own level.
 
-Guards (Gemini red team): saturated blocks are ignored (clipping hides noise),
+Guards: saturated blocks are ignored (clipping hides noise),
 long thin regions (creases, folds) are dropped, and the sensor declares itself
 not applicable on born-digital renders, which have no sensor noise at all.
 """

@@ -1,6 +1,6 @@
 """Devil's advocate: every finding must survive its benign explanations.
 
-The catalog (benign_catalog.json) was written by Gemini; each explanation is
+The catalog (benign_catalog.json) lists innocent explanations; each one is
 paired here with a deterministic test. Results:
   ruled_out    - the test shows this innocent explanation does not apply
   plausible    - the innocent explanation could be true; the finding cannot escalate

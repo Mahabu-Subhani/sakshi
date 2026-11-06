@@ -1,5 +1,4 @@
 # FILE: sakshi/forensics/compression.py
-# Written by Gemini 4 Argon (round 2 of the v1.0 design debate). Integrated and tested by Claude.
 from __future__ import annotations
 
 from typing import Iterable, Sequence
@@ -95,7 +94,7 @@ def zero_variance_patches(
 ) -> list[dict]:
     """Paper noise inside a value box vs a ring around it.
 
-    Claude's review fix: the first version measured raw std over the box *plus* its pad, so a flat
+    Review fix: the first version measured raw std over the box *plus* its pad, so a flat
     patch smaller than the pad mixed flat and noisy pixels (and a brightness step between them) into
     one std and was missed. Now the inner region is the box itself, the ring starts outside the pad,
     and noise is the robust MAD of the median-filter residual, which ignores brightness steps.

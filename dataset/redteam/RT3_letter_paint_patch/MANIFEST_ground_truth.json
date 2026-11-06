@@ -1,6 +1,5 @@
 {
   "scenario": "RT3",
-  "by": "Gemini 4 Argon",
   "manipulated": true,
   "brief": "Single scanned letter, no internal math. Pure white rectangle over 'Rs. 6,00,000/-', retyped '9,50,000' in a matching sans at matching height, whole page saved at JPEG quality 70. Amounts have no paise.",
   "region_px": [

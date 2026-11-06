@@ -17,7 +17,7 @@ class Tier(str, Enum):
 
 
 class Witness(int, Enum):
-    """Witness reliability level of a source document (design input from Gemini)."""
+    """Witness reliability level of a source document."""
     L0_CLAIM = 0          # self-declared by the applicant (application form)
     L1_WEAK = 1           # scanned, unverifiable issuer document (letter)
     L2_STANDARD = 2       # statement, payslip, identity card
