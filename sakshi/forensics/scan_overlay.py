@@ -21,6 +21,7 @@ import cv2
 import numpy as np
 import pytesseract
 
+from ..fonts import label_font
 from ..models import Document, Evidence, Finding
 
 NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
@@ -62,7 +63,7 @@ def _num(s):
 
 
 def _panel(render, base, bb, out_path):
-    from PIL import Image, ImageDraw, ImageFont
+    from PIL import Image, ImageDraw
     H, W = base.shape[:2]
     x0, y0, x1, y1 = (int(v) for v in bb)
     m = max(30, int(1.5 * (y1 - y0)))
@@ -71,10 +72,7 @@ def _panel(render, base, bb, out_path):
     b = Image.fromarray(base[cy0:cy1, cx0:cx1])
     for im in (a, b):
         ImageDraw.Draw(im).rectangle([x0 - cx0 - 3, y0 - cy0 - 3, x1 - cx0 + 3, y1 - cy0 + 3], outline=(200, 40, 40), width=3)
-    try:
-        small = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 18)
-    except Exception:
-        small = ImageFont.load_default()
+    small = label_font(18, bold=True)
     bar = 30
     canvas = Image.new("RGB", (a.width * 2 + 12, a.height + bar), (255, 255, 255))
     canvas.paste(a, (0, bar))

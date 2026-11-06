@@ -27,7 +27,24 @@ from .models import Document, Line, Page, Word
 DPI = 200
 IMAGE_EXT = {".jpg", ".jpeg", ".png", ".tif", ".tiff", ".webp", ".bmp"}
 SUPPORTED = IMAGE_EXT | {".pdf"}
-MAX_PAGES = 6
+MAX_PAGES = 6        # pixel forensics run on the first MAX_PAGES pages (cost)
+MAX_TEXT_PAGES = 40  # every page up to this is read, so arithmetic and cross-document rules see long statements
+
+
+_PASSWORDS: dict[str, str] = {}  # path -> password that opened it; process memory only, never written out
+
+
+def open_pdf(path):
+    """Open a PDF the way ingest did, including with the analyst's password."""
+    pdf = fitz.open(str(path))
+    if pdf.needs_pass:
+        pdf.authenticate(_PASSWORDS.get(str(path), ""))
+    return pdf
+
+
+def forget_passwords(paths) -> None:
+    for p in paths:
+        _PASSWORDS.pop(str(p), None)
 
 
 class UnsupportedInput(Exception):
@@ -188,7 +205,7 @@ def page_layers(pdf, pg) -> dict:
     return {"dominant": dom, "visible_words": vis, "invisible_words": invis, "overlays": overlays}
 
 
-def ingest(path: str, doc_id: str, work: Path, lang: str = "eng") -> Document:
+def ingest(path: str, doc_id: str, work: Path, lang: str = "eng", passwords=()) -> Document:
     p = Path(path)
     ext = p.suffix.lower()
     if ext not in SUPPORTED:
@@ -202,14 +219,20 @@ def ingest(path: str, doc_id: str, work: Path, lang: str = "eng") -> Document:
         except Exception as e:  # corrupt file: fail safely
             raise UnsupportedInput(f"{p.name}: could not open PDF ({e})")
         if pdf.needs_pass:
-            raise UnsupportedInput(f"{p.name}: password-protected PDF, cannot analyse without the password")
+            # bank statements are commonly password-protected; the password itself is never logged or stored
+            pw = next((pw for pw in passwords if pw and pdf.authenticate(pw)), None)
+            if pw is None:
+                raise UnsupportedInput(f"{p.name}: password-protected PDF, cannot analyse without the password"
+                                       + (" (the supplied password(s) did not open it)" if passwords else ""))
+            _PASSWORDS[str(p)] = pw
+            doc.notes.append("Opened with a password supplied by the analyst.")
         doc.pdf_meta = {k: v for k, v in (pdf.metadata or {}).items() if v}
         if getattr(pdf, "is_repaired", False):
             doc.notes.append("The PDF's internal structure is damaged (truncated or malformed) and was repaired on open; "
                              "file-structure checks may be incomplete.")
             doc.capabilities["file_integrity"] = "damaged, repaired on open"
         n_words = sum(len(pg.get_text("words")) for pg in pdf)
-        layers = [page_layers(pdf, pg) for i, pg in enumerate(pdf) if i < MAX_PAGES]
+        layers = [page_layers(pdf, pg) for i, pg in enumerate(pdf) if i < MAX_TEXT_PAGES]
         # A page that is one full-page scan with only a few VISIBLE words on top is a scan, even when it
         # carries an invisible OCR layer (CamScanner / Adobe Scan "searchable" PDFs). Invisible words do not count.
         scan_like = bool(layers) and all(L["dominant"] is not None and L["visible_words"] < 15 for L in layers)
@@ -218,10 +241,14 @@ def ingest(path: str, doc_id: str, work: Path, lang: str = "eng") -> Document:
             doc.structure["invisible_ocr_layer"] = True
             doc.notes.append("Searchable scan: the PDF carries an invisible OCR text layer from the scanner app. SAKSHI "
                              "ignores it and reads the pixels itself.")
+        if pdf.page_count > MAX_TEXT_PAGES:
+            doc.notes.append(f"Only the first {MAX_TEXT_PAGES} of {pdf.page_count} pages were read.")
         if pdf.page_count > MAX_PAGES:
-            doc.notes.append(f"Only the first {MAX_PAGES} of {pdf.page_count} pages were analysed.")
+            doc.notes.append(f"Pixel forensics ran on the first {MAX_PAGES} pages; pages {MAX_PAGES + 1}-"
+                             f"{min(pdf.page_count, MAX_TEXT_PAGES)} were read for arithmetic, cross-document "
+                             "and PDF-structure checks only.")
         for i, pg in enumerate(pdf):
-            if i >= MAX_PAGES:
+            if i >= MAX_TEXT_PAGES:
                 break
             img_path = work / f"{doc_id}_p{i}.png"
             arr = None

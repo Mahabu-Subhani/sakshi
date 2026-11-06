@@ -9,14 +9,35 @@ Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensic
 
 | Test | v0.9 | v1.0 |
 |---|---|---|
-| Regression (`tests/run_eval.py`): 14 planted manipulations, decoy, original value recovered, genuine case clean | all pass | all pass (genuine case: 0 inconsistencies, 3 explained observations) |
+| Regression (`tests/run_eval.py`): 14 planted manipulations, decoy, original value recovered, genuine case clean | all pass | all pass (genuine case: 0 inconsistencies; 1 to 3 explained observations, depending on the Tesseract build, see `docs/TECHNICAL.md` section 10) |
 | Red team (`tests/run_redteam.py`: Argon's blind briefs RT1-RT6, then later cases from both sides): manipulated cases detected | 3 of 5 (1 at potential manipulation) | **9 of 9** (6 at potential manipulation); on Argon's original five, 5 of 5 (3 at potential manipulation) |
 | Red team: genuine traps with **no** inconsistency or potential manipulation | 0 of 2 | **7 of 7** |
 | Forgery Lab (`tests/forgery_lab.py`, 2 seeds): forgeries detected | | 12 of 12 (9 at potential manipulation); the regenerated-statement recipe is a planned miss (0 of 2) |
 | Forgery Lab: genuine re-scans clean | | 2 of 2 |
 | Cross-case memory chain (`tests/run_registry_chain.py`): every case back to back, only the identity ring flagged | | all pass (20 runs, including the genuine applicant returning after the ring was remembered) |
 
+Forgery Lab figures above were measured on Linux with Liberation fonts. On Windows (v1.0.1, Arial in their place) it detects 12 of 12 forgeries (10 at potential manipulation), still misses the planned recipe (0 of 2), and keeps 1 of 2 genuine re-scans clean: on one seed, OCR did not read the "Valid till" label of the re-rendered ID card, which raises a missing-field inconsistency.
+
 The genuine traps are the hard part: a Dr/Cr statement with `05-Oct-2026` dates, two separately scanned payslips from one payroll system, a two-page statement with C/F and B/F rows, searchable scans with an e-sign stamp, WhatsApp-forwarded phone photos, a self-redacted PAN and a re-submitted case. The one recipe SAKSHI misses (a statement row changed with every balance regenerated, no pixel trace) is a deliberate miss: nothing in the documents contradicts it, so SAKSHI lists that field as blind instead of guessing.
+
+## Real-data stress test (public dataset, not made by us)
+
+Every number above comes from documents we generated. To test outside that echo chamber we ran SAKSHI, with detection code and thresholds unchanged, on [Find it again!](https://l3i-share.univ-lr.fr/2023Finditagain/index.html) (ICDAR 2023, L3i La Rochelle): real scanned receipts, some forged by people with image editors, with the forged regions annotated. Each receipt is investigated alone (`tests/run_findit.py`; the dataset is not bundled).
+
+| Split | Receipts (forged / genuine) | Forged flagged | Evidence on the forged region | Genuine falsely flagged | Genuine at potential manipulation |
+|---|---|---|---|---|---|
+| test | 218 (35 / 183) | 18 (51%) | 6 | 102 (56%) | 0 |
+| val | 193 (34 / 159) | 19 (56%) | 12 | 85 (53%) | 0 |
+
+The result is poor and we report it as such: at the INCONSISTENCY tier, SAKSHI flags forged and genuine receipts at the same rate. Receipts are single images, so the arithmetic, cross-document and PDF checks that carry our target cases cannot run; this tests the pixel sensors alone, outside the documents they were built for. Most false alarms come from the glyph, intra-number stroke and noise sensors on low-resolution thermal prints (the glyph sensor has no resolution gate yet). No genuine receipt was escalated to POTENTIAL MANIPULATION.
+
+## New in v1.0.1
+
+| Change | What it does | Where |
+|---|---|---|
+| **Long and locked statements** | Every page up to 40 is read, so arithmetic, cross-document and PDF-structure checks see a 15-40 page statement; pixel forensics stay on the first 6 pages. Locked PDFs open with a password supplied by the analyst (`--password`, or the field in the console), which is kept in memory only and never written to the dossier or audit trail. An edited amount on page 8 of a 13-page statement was missed by the old 6-page limit and is now caught (`tests/run_long_statement.py`). | `ingest.py`, `pipeline.py` |
+| **Faster copy-move** | The nine alignment shifts of each glyph pair are scored in one array pass: 3.9x faster on 44,390 real pairs, with every score identical to the previous code. | `forensics/copy_move.py` |
+| **Cross-platform fonts** | The dataset generator and the evidence labels find Liberation fonts on Linux and Arial (metric-compatible) on Windows and macOS, so `dataset/generate.py` and `tests/forgery_lab.py` run outside Linux. | `dataset/generate.py`, `fonts.py` |
 
 ## New in v1.0
 
@@ -56,7 +77,7 @@ Most systems do OCR, a few regex checks, an error-level-analysis heatmap and an 
 
 ```bash
 # system dependency: Tesseract OCR 5 (with eng; hin optional)
-sudo apt install tesseract-ocr tesseract-ocr-hin
+sudo apt install tesseract-ocr tesseract-ocr-hin   # Windows: UB Mannheim installer, add to PATH; macOS: brew install tesseract tesseract-lang
 pip install -r requirements.txt
 
 python -m sakshi demo                 # builds the demo dataset, investigates both cases, writes out/*/dossier.html
@@ -64,12 +85,14 @@ python tests/run_eval.py              # checks every planted manipulation is fou
 python -m sakshi redteam              # builds the blind red-team cases and scores SAKSHI on them
 python tests/forgery_lab.py --seeds 2 # forgery recipes on fresh genuine documents + genuine re-scans
 python tests/run_registry_chain.py    # every case back to back into one cross-case memory
+python tests/run_long_statement.py    # 13-page statement edited on page 8, and a password-locked copy
+python tests/run_findit.py --data PATH/TO/findit2   # real-data stress test (download the dataset first)
 streamlit run app.py                  # upload console with live progress and the interactive dossier
-python -m sakshi run a.pdf b.jpg --out out/mycase --case-id HL-123 [--lang eng+hin] [--memory registry.json]
+python -m sakshi run a.pdf b.jpg --out out/mycase --case-id HL-123 [--lang eng+hin] [--memory registry.json] [--password PW]
 python -m sakshi verify-audit out/mycase/audit.jsonl
 ```
 
-Typical run: about 15-20 s for a 5-document case on a laptop CPU, no GPU, no internet needed.
+Measured on a Windows 11 laptop (CPU only, no GPU, no internet, another evaluation running in parallel): the 5-document demo case takes about 31 s with the v1.0.1 copy-move speed-up, against 68-80 s before it. A profile of the earlier run put 38% of the time in the copy-move pair loop and 24% in Tesseract. The original 15-20 s figure was measured on the authors' machine and is not reproduced here.
 
 ## Pipeline
 

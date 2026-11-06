@@ -23,8 +23,9 @@ from . import __version__
 from .audit import AuditLog
 from .classify import LABELS, classify
 from .extract import extract
+from .fonts import label_font
 from .forensics import copy_move, glyphs, layout, noise, pdf_layers, raster, scan_overlay, signature
-from .ingest import UnsupportedInput, dual_read, group_lines, ingest, make_reocr
+from .ingest import MAX_PAGES, UnsupportedInput, dual_read, forget_passwords, group_lines, ingest, make_reocr
 from .models import Tier
 from .reasoning import coverage as cov
 from .reasoning import engine, fusion, narrator, selftest
@@ -59,7 +60,7 @@ def _portable(text: str, out: Path) -> str:
 def _reconstruction(page_img_path: str, bbox, text: str, out: Path) -> str | None:
     """Side-by-side 'as submitted' vs 'expected value reconstruction' (Gemini 4 Argon's labelling rule:
     it must never look like generated evidence)."""
-    from PIL import Image, ImageDraw, ImageFont
+    from PIL import Image, ImageDraw
     try:
         img = Image.open(page_img_path).convert("RGB")
         W, H = img.size
@@ -76,11 +77,7 @@ def _reconstruction(page_img_path: str, bbox, text: str, out: Path) -> str | Non
         paper = tuple(int(v) for v in np.median(ring, axis=0)) if ring.size else (245, 245, 245)
         db.rectangle([x0 - cx0 - 2, y0 - cy0 - 2, x1 - cx0 + 2, y1 - cy0 + 2], fill=paper)
         size = max(10, int((y1 - y0) * 0.95))
-        try:
-            font = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Regular.ttf", size)
-            small = ImageFont.truetype("/usr/share/fonts/truetype/liberation/LiberationSans-Bold.ttf", 18)
-        except Exception:
-            font = small = ImageFont.load_default()
+        font, small = label_font(size), label_font(18, bold=True)
         db.text((x0 - cx0, y0 - cy0 - int(size * 0.12)), text, font=font, fill=(25, 90, 170))
         db.rectangle([x0 - cx0 - 4, y0 - cy0 - 4, x0 - cx0 + font.getlength(text) + 4, y1 - cy0 + 4], outline=(25, 90, 170), width=2)
         bar = 30
@@ -99,7 +96,8 @@ def _reconstruction(page_img_path: str, bbox, text: str, out: Path) -> str | Non
 
 
 def run_case(paths: list[str], out_dir: str | Path, case_id: str | None = None, progress=None,
-             lang: str = "eng", html: bool = True, registry_path: str | Path | None = None) -> dict:
+             lang: str = "eng", html: bool = True, registry_path: str | Path | None = None,
+             passwords: list[str] | None = None) -> dict:
     import os
     registry_path = registry_path or os.environ.get("SAKSHI_REGISTRY") or None
     t0 = time.time()
@@ -126,7 +124,7 @@ def run_case(paths: list[str], out_dir: str | Path, case_id: str | None = None, 
     for i, p in enumerate(paths):
         did = f"D{i + 1}"
         try:
-            d = ingest(p, did, out / "pages", lang=lang)
+            d = ingest(p, did, out / "pages", lang=lang, passwords=passwords or ())
             docs[did] = d
             audit.log("document_ingested", doc_id=did, filename=d.filename, sha256=d.sha256, modality=d.modality,
                       pages=len(d.pages))
@@ -145,6 +143,19 @@ def run_case(paths: list[str], out_dir: str | Path, case_id: str | None = None, 
             d.capabilities[name] = f"error ({type(e).__name__}: {e})"
             audit.log("sensor_failed", doc_id=d.doc_id, sensor=name, error=traceback.format_exc(limit=3))
             return []
+
+    def first_pages(fn, *ds):
+        """Run a pixel sensor on the first MAX_PAGES pages only; later pages are read but not pixel-scanned."""
+        def run(*a):
+            full = [d.pages for d in ds]
+            for d in ds:
+                d.pages = d.pages[:MAX_PAGES]
+            try:
+                return fn(*a)
+            finally:
+                for d, pages in zip(ds, full):
+                    d.pages = pages
+        return run
 
     # file-structure archaeology runs first: occluded text must not be read as visible text
     for d in docs.values():
@@ -174,25 +185,25 @@ def run_case(paths: list[str], out_dir: str | Path, case_id: str | None = None, 
     step(4)
     sigs = []
     for d in docs.values():
-        findings += safe("noise", d, noise.analyse, d, new_id, out / "evidence")
-        findings += safe("copy_move", d, copy_move.analyse, d, new_id)
-        findings += safe("glyphs", d, glyphs.analyse, d, new_id)
+        findings += safe("noise", d, first_pages(noise.analyse, d), d, new_id, out / "evidence")
+        findings += safe("copy_move", d, first_pages(copy_move.analyse, d), d, new_id)
+        findings += safe("glyphs", d, first_pages(glyphs.analyse, d), d, new_id)
         findings += safe("layout", d, layout.analyse, d, new_id)
-        findings += safe("compression", d, raster.erasure_and_ghosts, d, new_id)
-        findings += safe("intra_token_font", d, raster.intra_token_font, d, new_id)
-        findings += safe("optics", d, raster.optics_outliers, d, new_id)
+        findings += safe("compression", d, first_pages(raster.erasure_and_ghosts, d), d, new_id)
+        findings += safe("intra_token_font", d, first_pages(raster.intra_token_font, d), d, new_id)
+        findings += safe("optics", d, first_pages(raster.optics_outliers, d), d, new_id)
         findings += safe("scan_overlay", d, scan_overlay.analyse, d, new_id, out / "evidence")
-        s = safe("signature", d, signature.detect, d, out / "evidence")
+        s = safe("signature", d, first_pages(signature.detect, d), d, out / "evidence")
         sigs += s
-        findings += safe("signature", d, signature.placement, d, s, new_id)
+        findings += safe("signature", d, first_pages(signature.placement, d), d, s, new_id)
         d.capabilities.setdefault("signature", f"ok ({len(s)} blue-ink signature(s))")
-        st = selftest.run(d)
+        st = first_pages(selftest.run, d)(d)
         d.capabilities["self_test"] = st
         audit.log("visual_forensics", doc_id=d.doc_id, capabilities=d.capabilities)
     # 6/7 contextual + cross-document
     step(5)
     try:
-        findings += raster.scan_clones(docs, new_id)
+        findings += first_pages(raster.scan_clones, *docs.values())(docs, new_id)
     except Exception as e:
         audit.log("sensor_failed", sensor="scan_clone", error=str(e))
     try:
@@ -272,6 +283,7 @@ def run_case(paths: list[str], out_dir: str | Path, case_id: str | None = None, 
     if html:
         from .dossier.render import render
         render(dossier, out / "dossier.html")
+    forget_passwords(paths)
     return dossier
 
 

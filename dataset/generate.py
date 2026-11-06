@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import random
 import shutil
 from dataclasses import dataclass
@@ -34,18 +35,22 @@ DPI = 200
 SCALE = DPI / 72.0
 PAGE_W, PAGE_H = A4
 SPECIMEN = "SYNTHETIC SPECIMEN - HACKATHON DEMO DATA - NOT A REAL DOCUMENT"
-FONT_DIR = Path("/usr/share/fonts/truetype")
+# Linux first (the dataset was generated there), then Windows and macOS. Liberation Sans is metric-compatible
+# with Arial, so Arial is the faithful stand-in; the forger font only needs to differ from the document font.
+FONT_DIRS = [Path("/usr/share/fonts/truetype"), Path(os.environ.get("WINDIR", "C:/Windows")) / "Fonts",
+             Path("/Library/Fonts"), Path("/System/Library/Fonts/Supplemental")]
+FONT_FILES = {
+    "sans": ["liberation/LiberationSans-Regular.ttf", "dejavu/DejaVuSans.ttf", "arial.ttf", "Arial.ttf"],
+    "sans_bold": ["liberation/LiberationSans-Bold.ttf", "dejavu/DejaVuSans-Bold.ttf", "arialbd.ttf", "Arial Bold.ttf"],
+    "forger": ["freefont/FreeSans.ttf", "dejavu/DejaVuSans.ttf", "segoeui.ttf", "Verdana.ttf"],
+}
 
 
 def _font(name: str, size: int) -> ImageFont.FreeTypeFont:
-    candidates = {
-        "sans": [FONT_DIR / "liberation/LiberationSans-Regular.ttf", FONT_DIR / "dejavu/DejaVuSans.ttf"],
-        "sans_bold": [FONT_DIR / "liberation/LiberationSans-Bold.ttf", FONT_DIR / "dejavu/DejaVuSans-Bold.ttf"],
-        "forger": [FONT_DIR / "freefont/FreeSans.ttf", FONT_DIR / "dejavu/DejaVuSans.ttf"],
-    }[name]
-    for c in candidates:
-        if c.exists():
-            return ImageFont.truetype(str(c), size)
+    for f in FONT_FILES[name]:
+        for d in FONT_DIRS:
+            if (d / f).exists():
+                return ImageFont.truetype(str(d / f), size)
     return ImageFont.load_default()
 
 

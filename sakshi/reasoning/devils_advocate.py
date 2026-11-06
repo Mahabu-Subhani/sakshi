@@ -15,6 +15,7 @@ from pathlib import Path
 
 import pymupdf as fitz
 
+from ..ingest import open_pdf
 from ..models import BenignTest, Finding
 from .repair import OCR_MAP, TRANSLIT, levenshtein, name_key
 
@@ -235,7 +236,7 @@ def run(f: Finding, docs: dict, ctx: dict) -> list[BenignTest]:
         T.append(_bt("font_mix", "symbol_fallback", "plausible" if re.search(r"[^\d,.\s]", tok) else "ruled_out",
                      f"token '{tok}' " + ("contains symbols" if re.search(r"[^\d,.\s]", tok) else "is digits only")))
         try:
-            pdf = fitz.open(doc.path)
+            pdf = open_pdf(doc.path)
             form = bool(pdf.is_form_pdf)
             pdf.close()
         except Exception:
@@ -268,7 +269,7 @@ def run(f: Finding, docs: dict, ctx: dict) -> list[BenignTest]:
         jb = False
         if doc.path.lower().endswith(".pdf"):
             try:
-                pdf = fitz.open(doc.path)
+                pdf = open_pdf(doc.path)
                 for xref in range(1, pdf.xref_length()):
                     if "JBIG2Decode" in (pdf.xref_object(xref) or ""):
                         jb = True
@@ -296,7 +297,7 @@ def run(f: Finding, docs: dict, ctx: dict) -> list[BenignTest]:
         T.append(_bt("missing_field", "optional", "ruled_out", "field is in the required list for this document type"))
     elif c == "incremental_update":
         try:
-            pdf = fitz.open(doc.path)
+            pdf = open_pdf(doc.path)
             sig = any(w.field_type == fitz.PDF_WIDGET_TYPE_SIGNATURE for pg in pdf for w in (pg.widgets() or []))
             form = bool(pdf.is_form_pdf)
             pdf.close()

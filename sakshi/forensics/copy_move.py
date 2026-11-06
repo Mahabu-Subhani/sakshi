@@ -51,25 +51,38 @@ def digit_glyphs(gray: np.ndarray, words) -> list[dict]:
 
 
 def _pair_score(gray, a, b, sig):
-    """Best median |diff| on paper pixels over +-1 px alignment, normalized by expected noise."""
+    """Best median |diff| on paper pixels over +-1 px alignment, normalized by expected noise.
+    The nine shifts are scored in one pass; shifts that fall off the page are skipped."""
     ax0, ay0, ax1, ay1 = a["bbox"]
     A = gray[ay0:ay1, ax0:ax1].astype(np.float32)
-    best = 9e9
+    h, w = A.shape
     bx0, by0 = b["bbox"][:2]
-    for dy in (-1, 0, 1):
-        for dx in (-1, 0, 1):
-            y, x = by0 + dy, bx0 + dx
-            B = gray[y:y + A.shape[0], x:x + A.shape[1]].astype(np.float32)
-            if B.shape != A.shape:
-                continue
-            paper = (A > 165) & (B > 165)
-            if paper.sum() < 0.3 * A.size:
-                continue
-            if A[paper].std() < 0.5 * sig or B[paper].std() < 0.5 * sig:
-                return 9e9  # noise-free paper (digital fill): the noise sensor's job, not a copy-move
-            d = np.abs(A - B)[paper]
-            best = min(best, float(np.median(d)))
-    return best / (sig * np.sqrt(2) + 1e-6)
+    H, W = gray.shape
+    shifts = [(dy, dx) for dy in (-1, 0, 1) for dx in (-1, 0, 1)
+              if 0 <= by0 + dy and by0 + dy + h <= H and 0 <= bx0 + dx and bx0 + dx + w <= W]
+    if not shifts:
+        return 9e9 / (sig * np.sqrt(2) + 1e-6)
+    B = np.stack([gray[by0 + dy:by0 + dy + h, bx0 + dx:bx0 + dx + w] for dy, dx in shifts]).astype(np.float32)
+    paper = (A > 165) & (B > 165)
+    n = paper.sum(axis=(1, 2))
+    ok = n >= 0.3 * A.size
+    if not ok.any():
+        return 9e9 / (sig * np.sqrt(2) + 1e-6)
+    B, paper, n = B[ok], paper[ok], n[ok].astype(np.float32)
+
+    def masked_std(X):
+        mean = (X * paper).sum(axis=(1, 2)) / n
+        dev = (X - mean[:, None, None]) * paper
+        return np.sqrt((dev * dev).sum(axis=(1, 2)) / n)
+
+    if (masked_std(np.broadcast_to(A, B.shape)) < 0.5 * sig).any() or (masked_std(B) < 0.5 * sig).any():
+        return 9e9  # noise-free paper (digital fill): the noise sensor's job, not a copy-move
+    d = np.where(paper, np.abs(A - B), np.inf).reshape(len(B), -1)
+    d.sort(axis=1)
+    k = n.astype(int)
+    rows = np.arange(len(B))
+    med = np.where(k % 2 == 1, d[rows, k // 2], (d[rows, np.maximum(k // 2 - 1, 0)] + d[rows, k // 2]) / np.float32(2))
+    return float(med.min()) / (sig * np.sqrt(2) + 1e-6)
 
 
 def analyse(doc: Document, new_id) -> list[Finding]:

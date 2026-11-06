@@ -22,6 +22,7 @@ from datetime import datetime
 import cv2
 import pymupdf as fitz
 
+from ..ingest import open_pdf
 from ..models import Document, Evidence, Finding
 
 VALUE_RE = re.compile(r"\d")
@@ -53,7 +54,7 @@ def analyse(doc: Document, new_id) -> list[Finding]:
     if doc.modality != "digital_pdf":
         doc.capabilities["pdf_layers"] = "n/a (not a born-digital PDF)"
         return findings
-    pdf = fitz.open(doc.path)
+    pdf = open_pdf(doc.path)
     raw = open(doc.path, "rb").read()
     for pi, page in enumerate(pdf):
         if pi >= len(doc.pages):
