@@ -98,6 +98,13 @@ def _reconstruction(page_img_path: str, bbox, text: str, out: Path) -> str | Non
 def run_case(paths: list[str], out_dir: str | Path, case_id: str | None = None, progress=None,
              lang: str = "eng", html: bool = True, registry_path: str | Path | None = None,
              passwords: list[str] | None = None) -> dict:
+    try:
+        return _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, passwords)
+    finally:
+        forget_passwords(paths)  # also when the case fails part-way
+
+
+def _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, passwords) -> dict:
     import os
     registry_path = registry_path or os.environ.get("SAKSHI_REGISTRY") or None
     t0 = time.time()
@@ -283,7 +290,6 @@ def run_case(paths: list[str], out_dir: str | Path, case_id: str | None = None, 
     if html:
         from .dossier.render import render
         render(dossier, out / "dossier.html")
-    forget_passwords(paths)
     return dossier
 
 

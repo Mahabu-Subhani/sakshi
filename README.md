@@ -35,8 +35,8 @@ The result is poor and we report it as such: at the INCONSISTENCY tier, SAKSHI f
 
 | Change | What it does | Where |
 |---|---|---|
-| **Long and locked statements** | Every page up to 40 is read, so arithmetic, cross-document and PDF-structure checks see a 15-40 page statement; pixel forensics stay on the first 6 pages. Locked PDFs open with a password supplied by the analyst (`--password`, or the field in the console), which is kept in memory only and never written to the dossier or audit trail. An edited amount on page 8 of a 13-page statement was missed by the old 6-page limit and is now caught (`tests/run_long_statement.py`). | `ingest.py`, `pipeline.py` |
-| **Faster copy-move** | The nine alignment shifts of each glyph pair are scored in one array pass: 3.9x faster on 44,390 real pairs, with every score identical to the previous code. | `forensics/copy_move.py` |
+| **Long and locked statements** | Every page up to 40 is read, so arithmetic, cross-document, PDF-structure, layout and overlay checks see a 15-40 page statement; pixel forensics stay on the first 6 pages. Locked PDFs open with a password supplied by the analyst (`--password`, or the field in the console), which is kept in memory only and never written to the dossier or audit trail. An edited amount on page 8 of a 13-page statement was missed by the old 6-page limit and is now caught (`tests/run_long_statement.py`). | `ingest.py`, `pipeline.py` |
+| **Faster copy-move** | The nine alignment shifts of each glyph pair are scored in one array pass: copy-move scoring is 3.9x faster on 44,390 real pairs, with every score identical to the previous code; the whole 5-document demo case runs about 20% faster (69 s to 55 s). | `forensics/copy_move.py` |
 | **Cross-platform fonts** | The dataset generator and the evidence labels find Liberation fonts on Linux and Arial (metric-compatible) on Windows and macOS, so `dataset/generate.py` and `tests/forgery_lab.py` run outside Linux. | `dataset/generate.py`, `fonts.py` |
 
 ## New in v1.0
@@ -92,7 +92,7 @@ python -m sakshi run a.pdf b.jpg --out out/mycase --case-id HL-123 [--lang eng+h
 python -m sakshi verify-audit out/mycase/audit.jsonl
 ```
 
-Measured on a Windows 11 laptop (CPU only, no GPU, no internet, another evaluation running in parallel): the 5-document demo case takes about 31 s with the v1.0.1 copy-move speed-up, against 68-80 s before it. A profile of the earlier run put 38% of the time in the copy-move pair loop and 24% in Tesseract. The original 15-20 s figure was measured on the authors' machine and is not reproduced here.
+Measured on a Windows 11 laptop (CPU only, no GPU, no internet): the 5-document demo case takes about 55 s with v1.0.1, against about 69 s with the previous copy-move code, run back to back under the same load (two runs each: 54.7 / 54.4 s vs 72.1 / 65.2 s). Times vary with machine load; one lightly loaded run took 31 s. A profile put 38% of the time in the old copy-move pair loop and 24% in Tesseract. The original 15-20 s figure was measured on the authors' machine and is not reproduced here.
 
 ## Pipeline
 

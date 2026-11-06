@@ -31,20 +31,24 @@ MAX_PAGES = 6        # pixel forensics run on the first MAX_PAGES pages (cost)
 MAX_TEXT_PAGES = 40  # every page up to this is read, so arithmetic and cross-document rules see long statements
 
 
-_PASSWORDS: dict[str, str] = {}  # path -> password that opened it; process memory only, never written out
+_PASSWORDS: dict[str, str] = {}  # resolved path -> password that opened it; process memory only, never written out
+
+
+def _key(path) -> str:
+    return str(Path(path).resolve())  # one spelling per file, whatever separators or relative form the caller used
 
 
 def open_pdf(path):
     """Open a PDF the way ingest did, including with the analyst's password."""
     pdf = fitz.open(str(path))
     if pdf.needs_pass:
-        pdf.authenticate(_PASSWORDS.get(str(path), ""))
+        pdf.authenticate(_PASSWORDS.get(_key(path), ""))
     return pdf
 
 
 def forget_passwords(paths) -> None:
     for p in paths:
-        _PASSWORDS.pop(str(p), None)
+        _PASSWORDS.pop(_key(p), None)
 
 
 class UnsupportedInput(Exception):
@@ -224,7 +228,7 @@ def ingest(path: str, doc_id: str, work: Path, lang: str = "eng", passwords=()) 
             if pw is None:
                 raise UnsupportedInput(f"{p.name}: password-protected PDF, cannot analyse without the password"
                                        + (" (the supplied password(s) did not open it)" if passwords else ""))
-            _PASSWORDS[str(p)] = pw
+            _PASSWORDS[_key(p)] = pw
             doc.notes.append("Opened with a password supplied by the analyst.")
         doc.pdf_meta = {k: v for k, v in (pdf.metadata or {}).items() if v}
         if getattr(pdf, "is_repaired", False):
@@ -245,8 +249,8 @@ def ingest(path: str, doc_id: str, work: Path, lang: str = "eng", passwords=()) 
             doc.notes.append(f"Only the first {MAX_TEXT_PAGES} of {pdf.page_count} pages were read.")
         if pdf.page_count > MAX_PAGES:
             doc.notes.append(f"Pixel forensics ran on the first {MAX_PAGES} pages; pages {MAX_PAGES + 1}-"
-                             f"{min(pdf.page_count, MAX_TEXT_PAGES)} were read for arithmetic, cross-document "
-                             "and PDF-structure checks only.")
+                             f"{min(pdf.page_count, MAX_TEXT_PAGES)} were read for arithmetic, cross-document, "
+                             "PDF-structure, layout and overlay checks, but not pixel-scanned.")
         for i, pg in enumerate(pdf):
             if i >= MAX_TEXT_PAGES:
                 break
