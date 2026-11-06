@@ -15,7 +15,8 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
-from sakshi.pipeline import STAGES, run_case
+from sakshi.console_worker import CaseFailed, CaseTimeout, ConsoleBusy, run_isolated
+from sakshi.pipeline import STAGES
 
 ROOT = Path(__file__).resolve().parent
 st.set_page_config(page_title="SAKSHI", page_icon=None, layout="wide")
@@ -84,8 +85,19 @@ if go:
         bar.progress((i + 1) / n, text=f"{stage}{(' · ' + note) if note else ''}")
         log.markdown(" → ".join(f"**{s}**" if s == stage else s for s in done))
 
-    d = run_case(files, work / "out", case_id=cid, progress=progress, lang=lang, registry_path=REG if memory else None,
-                 passwords=[pw for pw in pdf_passwords if pw] or None)
+    # Each case runs in its own worker process with a hard timeout, so a stalled case can never freeze the console.
+    try:
+        d = run_isolated(files, work / "out", case_id=cid, progress=progress, lang=lang,
+                         registry_path=REG if memory else None, passwords=[pw for pw in pdf_passwords if pw] or None)
+    except ConsoleBusy:
+        st.warning("Another case is still running in this console. Try again when it finishes.")
+        st.stop()
+    except CaseTimeout as e:
+        st.error(f"Stopped: {e}. Nothing was reported for this case; the console is ready for the next one.")
+        st.stop()
+    except CaseFailed as e:
+        st.error(f"The case could not be completed: {e}")
+        st.stop()
     st.session_state["last"] = (str(work / "out"), d)
 
 if "last" in st.session_state:
