@@ -1,0 +1,28 @@
+{
+  "scenario": "RT1",
+  "manipulated": true,
+  "brief": "Basic +20,000 with gross, net and words updated so the payslip math holds; salary credit +20,000 and every later balance and total regenerated; declared income updated; clean born-digital PDFs (no layers, no incremental update).",
+  "targets": [
+    {
+      "doc": "01_",
+      "fields": [
+        "net_pay",
+        "basic_salary",
+        "provident_fund",
+        "gross"
+      ]
+    },
+    {
+      "doc": "02_",
+      "fields": [
+        "credit"
+      ]
+    },
+    {
+      "doc": "03_",
+      "fields": [
+        "declared_income"
+      ]
+    }
+  ]
+}

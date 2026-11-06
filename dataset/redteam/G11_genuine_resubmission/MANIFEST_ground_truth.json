@@ -1,0 +1,6 @@
+{
+  "scenario": "G11",
+  "manipulated": false,
+  "needs_registry": true,
+  "brief": "Genuine. The exact files of case_genuine, run again under a new case ID with cross-case memory on (a rehearsal re-run). Must not look like an identity ring."
+}

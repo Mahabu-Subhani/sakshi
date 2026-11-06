@@ -1,0 +1,19 @@
+{
+  "case": "case_genuine",
+  "tampered": false,
+  "documents": {
+    "01_payslip_oct2026.pdf": "salary_slip / born-digital PDF",
+    "02_bank_statement_sep_oct2026.pdf": "bank_statement / scanned image-only PDF",
+    "03_loan_application_form.jpg": "application_form / scanned JPG",
+    "04_identity_card.jpg": "identity_card / scanned JPG",
+    "05_employment_letter.jpg": "employment_letter / scanned JPG"
+  },
+  "planted": [],
+  "benign_decoys": [
+    {
+      "doc": "02_bank_statement_sep_oct2026.pdf",
+      "what": "account holder written 'MOHD ARIF KHAN'",
+      "expected": "name variant explained as transliteration, not escalated"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+# Python 3.10+; also needs the Tesseract OCR binary (apt install tesseract-ocr tesseract-ocr-hin)
+pymupdf>=1.24
+opencv-python-headless>=4.9
+numpy>=1.26
+pillow>=10.0
+pytesseract>=0.3.10
+scikit-image>=0.22
+reportlab>=4.0
+streamlit>=1.40
+psutil>=5.9
