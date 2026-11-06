@@ -1,0 +1,21 @@
+SAKSHI demo v2 · voice-over script, timed to the video (read at an easy pace; each line fits its window)
+
+[0:00.2 - 0:13.8]  A loan file rarely fakes a whole document. It changes one number. Here the payslip says 86,500, but its own arithmetic and its own words say 68,500.
+[0:13.8 - 0:38.3]  SAKSHI runs the ten stages from the brief. Each finding is weighed by how reliable its witness is, must survive its innocent explanations, and lands on one of three rungs. It never says fraud.
+[0:38.3 - 0:45.2]  A tampered loan application: five documents, fourteen planted edits. Memory is cleared first, so nothing is remembered from earlier runs.
+[0:45.2 - 0:51.4]  Ten stages run on this laptop: documents are read one by one, then judged together.
+[0:51.4 - 0:56.5]  Potential manipulation, inconsistencies, observations. The processing time is the real, unedited run time.
+[1:01.4 - 1:09.5]  As submitted: 86,500. The smallest change that makes every rule hold: 68,500, the real salary, recovered.
+[1:09.5 - 1:16.3]  Nine pixel sensors plus the PDF’s own structure. A pasted or whited-out region shows up in the noise map.
+[1:16.3 - 1:22.1]  Each field is marked strong, weak or blind, so the analyst knows what still needs a human check.
+[1:22.1 - 1:26.3]  Every step is logged with the hash of the step before it, so a later edit to the record is detectable.
+[1:30.9 - 1:36.0]  The same applicant’s genuine documents. A useful forensic tool stays quiet on honest paperwork.
+[1:36.0 - 1:43.4]  Ten stages run on this laptop: documents are read one by one, then judged together.
+[1:43.4 - 1:48.4]  No potential manipulation and no inconsistency. One observation, explained.
+[1:49.2 - 2:03.0]  Case three is a blind red-team attack: a scanned payslip edited in a PDF editor. The scan is untouched; a box hides the real figure and new text sits on top.
+[2:03.0 - 2:09.0]  Red-team case RT8, loaded from the console’s demo list.
+[2:09.0 - 2:14.4]  Ten stages run on this laptop: documents are read one by one, then judged together.
+[2:14.4 - 2:17.9]  Five potential-manipulation findings on the payslip.
+[2:22.2 - 2:27.8]  What a reader sees: 88,500. The scan inside the same file, underneath: 68,500.
+[2:27.8 - 2:42.9]  Every number comes from a test anyone can rerun, including where SAKSHI fails: on real receipts the middle tier cannot separate forged from genuine.
+[2:42.9 - 2:50.1]  SAKSHI. Evidence, not verdicts.

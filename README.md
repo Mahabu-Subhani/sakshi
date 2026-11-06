@@ -5,6 +5,8 @@
 
 Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensics and Contextual Intelligence System*. v0.9 was designed in a four-round debate between Claude (Anthropic) and Gemini 2.5 Pro; **v1.0** was built with **Gemini 4 Argon** in four more rounds: Argon designed a blind red team, wrote two modules, and reviewed everything Claude wrote. See [`docs/COLLABORATION_LOG.md`](docs/COLLABORATION_LOG.md).
 
+**Demo video (2:50):** [`docs/demo/SAKSHI_demo.mp4`](docs/demo/SAKSHI_demo.mp4), recorded by driving the real console on a laptop: uploads, three cases, the dossier. Waits are sped up 10x and labelled; explanatory animations are labelled as such. Subtitles: [`SAKSHI_demo.srt`](docs/demo/SAKSHI_demo.srt); timed narration: [`voiceover_script.txt`](docs/demo/voiceover_script.txt).
+
 ## Scoreboard (v1.0, all on synthetic data, reproducible with the commands below)
 
 | Test | v0.9 | v1.0 |
@@ -30,6 +32,13 @@ Every number above comes from documents we generated. To test outside that echo 
 | val | 193 (34 / 159) | 19 (56%) | 12 | 85 (53%) | 0 |
 
 The result is poor and we report it as such: at the INCONSISTENCY tier, SAKSHI flags forged and genuine receipts at the same rate. Receipts are single images, so the arithmetic, cross-document and PDF checks that carry our target cases cannot run; this tests the pixel sensors alone, outside the documents they were built for. Most false alarms come from the glyph, intra-number stroke and noise sensors on low-resolution thermal prints (the glyph sensor has no resolution gate yet). No genuine receipt was escalated to POTENTIAL MANIPULATION.
+
+## New in v1.0.2
+
+| Change | What it does | Where |
+|---|---|---|
+| **Isolated console runs** | The review console runs each case in its own worker process with a hard timeout (`SAKSHI_CASE_TIMEOUT`, default 600 s). A stalled case is stopped with a clear message instead of freezing the console, nothing is left running, and a second click during a run is refused. This follows one console freeze seen during a long recording session on 2026-11-06 (stuck after Document submission on the 7th run; the CLI ran the same case fine); its cause was not found in about 25 replays with a stack-dump watchdog, so this is containment, not a root-cause fix. Detection code and thresholds are unchanged. | `sakshi/console_worker.py`, `app.py`, `tests/run_console_worker.py` |
+| **Demo video** | A 2:50 walkthrough recorded by driving the real console (uploads, three cases, dossier tour); waits are sped up 10x and labelled, explanatory animations are labelled as such. Subtitles and a timed voice-over script are included. | `docs/demo/` |
 
 ## New in v1.0.1
 
@@ -92,7 +101,7 @@ python -m sakshi run a.pdf b.jpg --out out/mycase --case-id HL-123 [--lang eng+h
 python -m sakshi verify-audit out/mycase/audit.jsonl
 ```
 
-Measured on a Windows 11 laptop (CPU only, no GPU, no internet): the 5-document demo case takes about 55 s with v1.0.1, against about 69 s with the previous copy-move code, run back to back under the same load (two runs each: 54.7 / 54.4 s vs 72.1 / 65.2 s). Times vary with machine load; one lightly loaded run took 31 s. A profile put 38% of the time in the old copy-move pair loop and 24% in Tesseract. The original 15-20 s figure was measured on the authors' machine and is not reproduced here.
+Measured on a Windows 11 laptop (CPU only, no GPU, no internet): the 5-document demo case takes about 55 s with v1.0.1, against about 69 s with the previous copy-move code, run back to back under the same load (two runs each: 54.7 / 54.4 s vs 72.1 / 65.2 s). Times vary a lot with machine load: across runs on 6-7 Nov 2026 a five-document case took 25-80 s (console when idle 25-28 s; clean CLI medians 41 s tampered and 35 s genuine; up to 76 s under load), so the deck and video say 25-80 s. A profile put 38% of the time in the old copy-move pair loop and 24% in Tesseract. The original 15-20 s figure was measured on the authors' machine and is not reproduced here.
 
 ## Pipeline
 

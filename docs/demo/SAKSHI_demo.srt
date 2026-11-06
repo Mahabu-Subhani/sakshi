@@ -1,0 +1,75 @@
+1
+00:00:00,160 --> 00:00:13,780
+A loan file rarely fakes a whole document. It changes one number. Here the payslip says 86,500, but its own arithmetic and its own words say 68,500.
+
+2
+00:00:13,780 --> 00:00:38,330
+SAKSHI runs the ten stages from the brief. Each finding is weighed by how reliable its witness is, must survive its innocent explanations, and lands on one of three rungs. It never says fraud.
+
+3
+00:00:38,330 --> 00:00:45,240
+A tampered loan application: five documents, fourteen planted edits. Memory is cleared first, so nothing is remembered from earlier runs.
+
+4
+00:00:45,240 --> 00:00:51,403
+Ten stages run on this laptop: documents are read one by one, then judged together.
+
+5
+00:00:51,403 --> 00:00:56,453
+Potential manipulation, inconsistencies, observations. The processing time is the real, unedited run time.
+
+6
+00:01:01,403 --> 00:01:09,473
+As submitted: 86,500. The smallest change that makes every rule hold: 68,500, the real salary, recovered.
+
+7
+00:01:09,473 --> 00:01:16,273
+Nine pixel sensors plus the PDF’s own structure. A pasted or whited-out region shows up in the noise map.
+
+8
+00:01:16,273 --> 00:01:22,143
+Each field is marked strong, weak or blind, so the analyst knows what still needs a human check.
+
+9
+00:01:22,143 --> 00:01:26,313
+Every step is logged with the hash of the step before it, so a later edit to the record is detectable.
+
+10
+00:01:30,883 --> 00:01:35,953
+The same applicant’s genuine documents. A useful forensic tool stays quiet on honest paperwork.
+
+11
+00:01:35,953 --> 00:01:43,408
+Ten stages run on this laptop: documents are read one by one, then judged together.
+
+12
+00:01:43,408 --> 00:01:48,428
+No potential manipulation and no inconsistency. One observation, explained.
+
+13
+00:01:49,178 --> 00:02:03,048
+Case three is a blind red-team attack: a scanned payslip edited in a PDF editor. The scan is untouched; a box hides the real figure and new text sits on top.
+
+14
+00:02:03,048 --> 00:02:08,978
+Red-team case RT8, loaded from the console’s demo list.
+
+15
+00:02:08,978 --> 00:02:14,436
+Ten stages run on this laptop: documents are read one by one, then judged together.
+
+16
+00:02:14,436 --> 00:02:17,946
+Five potential-manipulation findings on the payslip.
+
+17
+00:02:22,236 --> 00:02:27,756
+What a reader sees: 88,500. The scan inside the same file, underneath: 68,500.
+
+18
+00:02:27,806 --> 00:02:42,906
+Every number comes from a test anyone can rerun, including where SAKSHI fails: on real receipts the middle tier cannot separate forged from genuine.
+
+19
+00:02:42,906 --> 00:02:50,126
+SAKSHI. Evidence, not verdicts.
