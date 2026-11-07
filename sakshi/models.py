@@ -140,7 +140,16 @@ class Finding:
     smoking_gun: bool = False
     verify_next: str = ""
 
+    def strength(self) -> str:
+        """Verbal strength of evidence for manipulation, the way forensic reports state it (not a fraud percentage)."""
+        if self.tier == Tier.POTENTIAL_MANIPULATION:
+            return "strong support"
+        if self.tier == Tier.INCONSISTENCY:
+            return "moderate support" if self.confidence >= 0.75 else "weak support"
+        return "explained, no support"
+
     def to_dict(self) -> dict:
         d = asdict(self)
         d["tier"] = self.tier.value
+        d["strength"] = self.strength()
         return d

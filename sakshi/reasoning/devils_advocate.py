@@ -305,6 +305,12 @@ def run(f: Finding, docs: dict, ctx: dict) -> list[BenignTest]:
             sig = form = False
         T.append(_bt("incremental_update", "esign", "plausible" if (sig or form) else "ruled_out",
                      "signature/form fields present" if (sig or form) else "no signature or form fields in the file"))
+    elif c == "hidden_instruction":
+        T.append(BenignTest("OCR text layer of a scanned PDF", "an OCR layer repeats the visible words; it does not "
+                            "address instructions to software", "ruled_out", doc.modality))
+    elif c == "revision_diff":
+        T.append(BenignTest("Issuer corrected and re-issued the document", "a corrected document is issued as a new file, "
+                            "not appended to the old one; cannot be checked from the file alone", "not_testable", ""))
     elif c == "metadata_dates":
         T.append(_bt("metadata_dates", "reexport", "not_testable", ""))
     elif c == "hidden_text":

@@ -6,12 +6,26 @@ All numbers were measured on a Windows 11 laptop on 6-7 November 2026. Detection
 
 | Suite | Command | Data | Result |
 |---|---|---|---|
-| Regression | `python tests/run_eval.py` | demo case: 9 planted manipulations + 1 benign decoy; genuine control | all 9 found, through 14 of 14 expected detections; original net pay 68,500.00 recovered; the MOHD/Mohammed decoy stays an observation; genuine control: 0 potential manipulation, 0 inconsistencies, 1 explained observation |
+| Regression | `python tests/run_eval.py` | demo case: 9 planted manipulations + 1 benign decoy (v1.0.3 result 7 potential manipulation, 11 inconsistencies, 3 observations); genuine control | all 9 found, through 14 of 14 expected detections; original net pay 68,500.00 recovered; the MOHD/Mohammed decoy stays an observation; genuine control: 0 potential manipulation, 0 inconsistencies, 1 explained observation |
 | Red team | `python tests/run_redteam.py` | 16 cases: 9 attacks, 7 genuine look-alikes | 9 of 9 attacks detected (6 at POTENTIAL MANIPULATION); 7 of 7 genuine cases clean |
 | Forgery Lab | `python tests/forgery_lab.py --seeds 2` | 6 forgery recipes x 2 seeds on fresh documents, a planned miss, 2 genuine re-scans | 12 of 12 detected (10 at POTENTIAL MANIPULATION); planned miss 0 of 2; genuine re-scans clean 1 of 2 |
 | Long and locked statements | `python tests/run_long_statement.py` | 13-page statement edited on page 8; password-locked copy | all pass: the page-8 edit is caught; passwords are never written to the dossier or audit trail and are forgotten even after a crash |
 | Cross-case memory | `python tests/run_registry_chain.py` | every case back to back into one memory | all pass (20 runs): only the identity ring is flagged |
 | Console isolation | `python tests/run_console_worker.py` | demo case through the console's worker process | all pass: same counts as the pipeline, a stalled case is stopped with nothing left running, a second run during a run is refused |
+
+| Black-ink signatures | `python tests/run_signatures.py` | scanned letter and payslip signed in black ink | all pass: reproduced signature flagged as identical, different signatures not, no signature invented from printed text |
+| Prompt injection | `python tests/run_prompt_injection.py` | genuine payslip with hidden white text telling reviewers to ignore anomalies | all pass: reported as a finding above the observation rung; the narrator's output check rejects uncited, unknown, incomplete or "fraud" narratives |
+
+## Extraction accuracy
+
+`python tests/run_extraction_accuracy.py` compares every extracted field with the generator's ground truth (exact match: amounts to the paisa, dates as ISO dates, names and identifiers ignoring spacing and punctuation).
+
+| Condition | Documents | Fields exact | Statement rows exact |
+|---|---|---|---|
+| Clean | born-digital payslip; scanned statement, application form, ID card, employment letter | 48 / 48 | 13 / 13 (date, amount and running balance) |
+| Phone photos | payslip and employment letter photographed and forwarded on WhatsApp | 18 / 19 (the PAN on the payslip was not read) | n/a |
+
+No extracted field was wrong; mean OCR confidence of the correct fields is 0.90. This is one synthetic applicant on layouts the extractor knows, so it shows the extraction works, not that it generalises to every issuer's layout.
 
 How to read these:
 

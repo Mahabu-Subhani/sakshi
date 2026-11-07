@@ -15,6 +15,7 @@ from pathlib import Path
 import streamlit as st
 import streamlit.components.v1 as components
 
+from sakshi.capabilities import CAPABILITIES
 from sakshi.console_worker import CaseFailed, CaseTimeout, ConsoleBusy, run_isolated
 from sakshi.pipeline import STAGES
 
@@ -24,6 +25,9 @@ st.set_page_config(page_title="SAKSHI", page_icon=None, layout="wide")
 st.markdown("### SAKSHI · document forensics and contextual intelligence")
 st.caption("Upload every document of one application together. Findings are leads for an analyst, never a fraud verdict. "
            "Use authorised or synthetic documents only.")
+with st.expander("What SAKSHI can and cannot do (capability matrix)"):
+    st.markdown("| Status | Area | Scope |\n|---|---|---|\n" +
+                "\n".join(f"| {s} | {a} | {d} |" for s, a, d in CAPABILITIES))
 
 left, right = st.columns([3, 2])
 with left:

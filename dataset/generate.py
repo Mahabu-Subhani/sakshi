@@ -195,9 +195,12 @@ def _smooth(pts, k=8):
     return out
 
 
+SIGNATURE_INK = (0.08, 0.16, 0.62)  # blue ballpoint; tests switch this to black
+
+
 def draw_signature_rl(c: canvas.Canvas, strokes, x: float, y: float, width: float):
     c.saveState()
-    c.setStrokeColorRGB(0.08, 0.16, 0.62)
+    c.setStrokeColorRGB(*SIGNATURE_INK)
     c.setLineWidth(1.4)
     c.setLineCap(1)
     c.setLineJoin(1)

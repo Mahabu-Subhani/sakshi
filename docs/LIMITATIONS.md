@@ -20,7 +20,9 @@
 | Cross-case memory (photo pHash, identifiers, file hashes, signature grids) | Implemented (v1.0), local JSON on one machine |
 | Noise consistency, copy-move on digits, digit typography, layout rhythm | Implemented for scans; declared not applicable on born-digital renders |
 | Copy-move of large regions (logos, stamps, whole rows) | Planned |
-| Signature detection and identity | Implemented for blue ink only; black ink **unsupported** |
+| Signature detection and identity | Implemented for blue ink anywhere on the page; black ink **partial**: found only just above a readable signature caption (a signature drawn over its own caption is not found) |
+| Earlier saved versions of an edited PDF (incremental saves) recovered and compared | Implemented (v1.0.3) |
+| Hidden text addressed to automated reviewers (prompt injection); narrator output must cite real findings | Implemented (v1.0.3) |
 | Signature verification against a reference specimen | **Unsupported** |
 | Intra- and cross-document rules, counterfactual repair, odd-one-out | Implemented |
 | Coverage map, coordinated attacks, forgery canaries | Implemented |
