@@ -2,6 +2,7 @@
 
 ## 1.0.4
 * Docker image: `docker build -t sakshi .` then `docker run -p 8501:8501 sakshi`. Python 3.12, Tesseract 5.5 with English and Hindi, Liberation fonts, non-root user, health check. Verified: `tests/run_eval.py` ALL PASS inside the container, the console answers and completes an uploaded case, and the command line runs on mounted files.
+* Demo video re-recorded on 1.0.4 (`docs/demo/SAKSHI_demo.mp4`, 3:58): under-the-hood walkthrough, capability matrix, the full brief checklist including earlier-version recovery and strength of evidence, a genuine case with a damaged file, a red-team overlay peel, a hidden-instruction case, and the current test results.
 
 ## 1.0.3
 * Earlier saved versions of an edited PDF are recovered by cutting the file at each earlier end-of-file marker; a value that reads differently at the same place is reported with the earlier value (`revision_diff`). On the demo payslip: "an earlier saved version of this file shows 68,500.00 where 86,500.00 is now".
