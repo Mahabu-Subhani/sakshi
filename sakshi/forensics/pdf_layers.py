@@ -49,6 +49,54 @@ def _pdf_date(s: str):
         return None
 
 
+INSTRUCTION = re.compile(r"\b(ignore|disregard|override|verified authentic|genuine document|approve|no (issues|anomal\w*)"
+                         r"|instruction|system prompt|assistant|you are|do not (flag|report))\b", re.I)
+NUMERIC = re.compile(r"^[₹Rs.\s]*\d[\d,]*(\.\d+)?/?-?$")
+
+
+def _revision_diff(doc: Document, pdf, raw: bytes, new_id) -> list[Finding]:
+    """Recover the file as it was before each incremental save and diff the visible words.
+
+    An incremental save appends the changes after the original %%EOF, so cutting the file there gives back the
+    earlier version. A value that sits at the same place on the page but reads differently in the earlier version
+    was changed after the document was first written."""
+    out = []
+    ends = [m.end() for m in re.finditer(rb"%%EOF", raw)][:-1]
+    for k, end in enumerate(ends):
+        try:
+            old = fitz.open(stream=raw[:end], filetype="pdf")
+        except Exception:
+            continue
+        for pi in range(min(len(old), len(pdf), len(doc.pages))):
+            scale = doc.pages[pi].width / pdf[pi].rect.width
+            now_w = [w for w in pdf[pi].get_text("words") if w[4].strip()]
+            was_w = [w for w in old[pi].get_text("words") if w[4].strip()]
+            was_set = {(w[4], round(w[0]), round(w[1])) for w in was_w}
+            for w in now_w:
+                if (w[4], round(w[0]), round(w[1])) in was_set:
+                    continue
+                bb = fitz.Rect(w[:4])
+                prev = [v for v in was_w if fitz.Rect(v[:4]).intersects(bb) and v[4] != w[4]]
+                if not prev or not NUMERIC.match(w[4]):
+                    continue
+                before = max(prev, key=lambda v: (fitz.Rect(v[:4]) & bb).get_area())[4]
+                out.append(Finding(
+                    id=new_id(), check="revision_diff", family="file_structure", sensor="pdf_layers",
+                    title=f"An earlier saved version of this file shows '{before}' where '{w[4]}' is now",
+                    detail=(f"The PDF was saved {len(ends)} time{'s' if len(ends) > 1 else ''} after it was first written. "
+                            f"Cutting the file at the end of revision {k + 1} recovers the document as it was then: at this "
+                            f"place on page {pi + 1} it read '{before}'. The later save changed it to '{w[4]}'."),
+                    confidence=0.95, localized=True, smoking_gun=True,
+                    evidence=[Evidence(doc.doc_id, pi, tuple(v * scale for v in w[:4]),
+                                       f"revision {k + 1} read '{before}'; the current file reads '{w[4]}'",
+                                       kind="region", value=w[4])],
+                    docs=[doc.doc_id],
+                    repair={"recovered_value": before, "displayed_value": w[4]},
+                    verify_next="Ask the issuer for the file as originally issued; compare it with the recovered revision."))
+        old.close()
+    return out
+
+
 def analyse(doc: Document, new_id) -> list[Finding]:
     findings: list[Finding] = []
     if doc.modality != "digital_pdf":
@@ -127,7 +175,19 @@ def analyse(doc: Document, new_id) -> list[Finding]:
                 x0, y0, x1, y1 = (int(v * scale) for v in s["bbox"])
                 patch = page_img[max(0, y0):y1, max(0, x0):x1]
                 white = patch.size > 0 and float(patch.mean()) > 235
-            if s["type"] == 3 or s["opacity"] == 0 or white:
+            if (s["type"] == 3 or s["opacity"] == 0 or white) and INSTRUCTION.search(s["text"]):
+                findings.append(Finding(
+                    id=new_id(), check="hidden_instruction", family="file_structure", sensor="pdf_layers",
+                    title="Hidden text addressed to an automated reviewer",
+                    detail=("Invisible text in the file reads like an instruction to software that reviews it: "
+                            f"\"{s['text'].strip()[:120]}\". A genuine issuer has no reason to hide such text. SAKSHI treats "
+                            "document text as data only, so it changes nothing in this investigation."),
+                    confidence=0.85, localized=True,
+                    evidence=[Evidence(doc.doc_id, pi, tuple(v * scale for v in s["bbox"]), "hidden instruction-like text",
+                                       value=s["text"].strip()[:120])],
+                    docs=[doc.doc_id],
+                    verify_next="Treat the whole file as untrusted; request the document again from the issuer."))
+            elif s["type"] == 3 or s["opacity"] == 0 or white:
                 findings.append(Finding(
                     id=new_id(), check="hidden_text", family="file_structure", sensor="pdf_layers",
                     title=f"Invisible text in the file: '{s['text'].strip()[:40]}'",
@@ -168,6 +228,8 @@ def analyse(doc: Document, new_id) -> list[Finding]:
                     "Editors append changes this way. Some e-sign tools do too, so this alone proves nothing."),
             confidence=0.7, evidence=[Evidence(doc.doc_id, 0, (0, 0, doc.pages[0].width, 40), "file trailer", kind="file")],
             docs=[doc.doc_id]))
+    if n_eof > 1:
+        findings += _revision_diff(doc, pdf, raw, new_id)
     if cd and md and abs((md - cd).total_seconds()) > 60:
         findings.append(Finding(
             id=new_id(), check="metadata_dates", family="file_structure", sensor="pdf_layers",

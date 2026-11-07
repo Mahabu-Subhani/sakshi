@@ -9,7 +9,7 @@ Offline · CPU only · deterministic · every finding traced to the exact spot o
 
 <img src="docs/assets/hero.gif" width="800" alt="SAKSHI console: the payslip says 86,500, and SAKSHI finds 68,500 still in the file under a filled shape">
 
-<sub>Real console footage. The payslip says 86,500; SAKSHI finds 68,500 still inside the file, and recovers it.</sub>
+<sub>Real console footage (recorded with v1.0.2). The payslip says 86,500; SAKSHI finds 68,500 still inside the file, and recovers it.</sub>
 
 **[Watch the 3-minute demo](docs/demo/SAKSHI_demo.mp4)** · **[Sample dossier](samples/DEMO-TAMPERED_dossier.html)** · **[Quick start](#quick-start)** · **[Results](#results)**
 
@@ -24,7 +24,7 @@ Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensic
 
 | The brief asks for | Where SAKSHI does it |
 |---|---|
-| Upload and process multiple documents of one application | console uploader and `python -m sakshi run`; each case in its own worker process |
+| Upload and process multiple documents of one application | console uploader and `python -m sakshi run`; each case in its own worker process; a capability matrix in the console states what is implemented, partial, planned and unsupported |
 | Classification and OCR | dossier 7.1: type, confidence, cues, modality, witness level, SHA-256 |
 | Structured representation of the content | dossier 7.2: every field with raw and normalised value, confidence, method and location |
 | Visual forensics with suspicious regions highlighted | nine pixel sensors, PDF layer archaeology and overlay peel; every hit boxed on its page (7.4) |
@@ -43,13 +43,13 @@ Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensic
 | ![As submitted 86,500; expected value reconstruction 68,500](docs/assets/counterfactual.jpg) | ![What a reader sees 88,500; the scan inside the same file 68,500](docs/assets/overlay-peel.jpg) |
 | The payslip's own arithmetic and the amount in words only add up if net pay were **68,500**. SAKSHI finds the smallest set of field changes that makes every rule hold, and PDF layer archaeology independently finds 68,500 painted over in the file. | A scanned payslip edited in a PDF editor: a box hides the real figure and new text is typed on top. The scan itself is untouched, so pixel forensics alone see nothing. SAKSHI peels the layers apart. |
 
-It also catches a digit copied from elsewhere on a scanned statement, a white-out and retype on an application form, an EMI row deleted from a statement, an October payslip made from September's scan, a spliced ID photo, and the same ID photo or salary account reused by a "different" applicant across cases.
+It also recovers the earlier saved version of an edited PDF and shows what changed (on the demo payslip: 68,500.00 before the later save, 86,500.00 after), flags hidden text that tells automated reviewers to ignore anomalies, and catches a digit copied from elsewhere on a scanned statement, a white-out and retype on an application form, an EMI row deleted from a statement, an October payslip made from September's scan, a spliced ID photo, and the same ID photo or salary account reused by a "different" applicant across cases.
 
 ## See it
 
 | The review console | The investigation dossier |
 |---|---|
-| ![Console with the demo case: REFER, 6 potential manipulation, 11 inconsistencies, 3 observations](docs/assets/console.png) | ![Dossier: value 68,500 hidden under a filled shape, recovered from the file, with the devil's advocate table](docs/assets/dossier-investigation.png) |
+| ![Console with the demo case: REFER, 7 potential manipulation, 11 inconsistencies, 3 observations](docs/assets/console.png) | ![Dossier: value 68,500 hidden under a filled shape, recovered from the file, with the devil's advocate table](docs/assets/dossier-investigation.png) |
 | **Cross-document claim graph** | **Coverage map** |
 | ![Claim graph: documents linked to the facts they state, conflicts in red](docs/assets/claim-graph.png) | ![Coverage map: every field marked blind, weak or strong](docs/assets/coverage-map.png) |
 
@@ -63,9 +63,9 @@ Each case produces a self-contained `dossier.html` (every finding clickable to i
 | **INCONSISTENCY** | A rule is broken, but an innocent reason is still possible (a date of birth one digit apart). |
 | **POTENTIAL MANIPULATION** | Two independent evidence families agree, or there is a smoking gun, and no innocent explanation survives. |
 
-Every finding first faces a **devil's advocate**: a catalogue of innocent explanations (rounding, OCR misread, transliteration, JBIG2 compression, salary revision, timing), each with a deterministic test. Evidence is weighed by **witness level**: an applicant's own form (L0) counts less than a scanned letter (L1), which counts less than a payslip, statement or ID (L2). A **coverage map** marks every field strong, weak or blind, so silence is never reported as "clean".
+Every finding states its **strength of evidence** in words (strong, moderate or weak support; or explained), the way forensic reports do, next to its confidence. Every finding first faces a **devil's advocate**: a catalogue of innocent explanations (rounding, OCR misread, transliteration, JBIG2 compression, salary revision, timing), each with a deterministic test. Evidence is weighed by **witness level**: an applicant's own form (L0) counts less than a scanned letter (L1), which counts less than a payslip, statement or ID (L2). A **coverage map** marks every field strong, weak or blind, so silence is never reported as "clean".
 
-<img src="docs/assets/devils-advocate.png" width="620" alt="A date-of-birth conflict stays an INCONSISTENCY: day-month swap is ruled out, a one-character typing error is plausible">
+<img src="docs/assets/devils-advocate.png" width="620" alt="A name written as MOHD ARIF KHAN and Mohammed Arif Khan stays an OBSERVATION: transliteration explains it, so the strength is explained, no support">
 
 ## How it works
 
@@ -86,6 +86,8 @@ Every number SAKSHI reports comes from deterministic code: rules, solvers and im
 | Income triangulation | Weighs every independent witness to monthly income; a self-contradicting document is impeached, but the part that exposes the contradiction keeps its weight. Without a clear majority, nobody is blamed. | `reasoning/engine.py` |
 | Payroll physics, deleted rows | Employee PF must be at least 12% of the basic printed; a balance break whose gap equals a missing recurring EMI, with no printed line between the rows, is a removed row. | `reasoning/invariants.py`, `reasoning/engine.py` |
 | Forgery canaries | Before trusting a sensor's silence, SAKSHI forges each upload in memory from its own pixels; a sensor that misses its own canary reports "blind on this document". | `reasoning/selftest.py` |
+| Earlier-version recovery | An incremental save appends changes after the original end-of-file marker; cutting the file there recovers the document as it was, and values that changed at the same place are reported with their earlier reading. | `forensics/pdf_layers.py` |
+| Hidden instructions, grounded narrator | Invisible text addressed to automated reviewers is a finding. The optional LLM narrator gets document text only as quoted data; its output is discarded unless every sentence cites a real finding id and every potential-manipulation finding is covered. | `forensics/pdf_layers.py`, `reasoning/narrator.py` |
 | Cross-case memory | Fingerprints of earlier cases (photo hash, PAN, account numbers, file hashes, signature grids) expose identity rings. | `registry.py` |
 | Hash-chained audit | Every stage and finding is logged with the hash of the previous entry; `verify-audit` detects any later edit. | `audit.py` |
 
@@ -97,7 +99,7 @@ The ten stages follow the brief: document submission, classification, OCR and ex
 
 <img src="docs/assets/results.png" width="760" alt="Red team: 9 of 9 attacks caught, 6 at the top rung. Forgery Lab: 12 of 12, 10 at the top rung; planned miss: 0 of 2 detected. Genuine: demo control clean, 7 of 7 look-alikes clean, 1 of 2 re-scans clean">
 
-On the demo application, all **9 planted manipulations** are found (14 of 14 expected detections) and the original net pay of **68,500** is recovered; the same applicant's genuine documents come back with **0 potential manipulation and 0 inconsistencies**. The synthetic suites were built for this project, and the red team is a regression suite for known attacks, not a blind test. So SAKSHI was also run, unchanged, on public data it was never tuned for:
+Extraction is measured against the generator's ground truth: **48 of 48 fields** and **13 of 13 statement rows** exact on the clean demo documents, **18 of 19 fields** on WhatsApp-forwarded phone photos (one PAN not read), with no wrong value extracted. On the demo application, all **9 planted manipulations** are found (14 of 14 expected detections) and the original net pay of **68,500** is recovered; the same applicant's genuine documents come back with **0 potential manipulation and 0 inconsistencies**. The synthetic suites were built for this project, and the red team is a regression suite for known attacks, not a blind test. So SAKSHI was also run, unchanged, on public data it was never tuned for:
 
 <img src="docs/assets/receipts.png" width="760" alt="Public receipts: the middle rung flags forged and genuine receipts at about the same rate; 0 of 342 genuine receipts reach the top rung">
 
@@ -128,6 +130,9 @@ python tests/forgery_lab.py --seeds 2     # forgery recipes on fresh documents +
 python tests/run_long_statement.py        # 13-page statement edited on page 8, and a locked copy
 python tests/run_registry_chain.py        # every case back to back into one cross-case memory
 python tests/run_console_worker.py        # the console's isolated worker
+python tests/run_extraction_accuracy.py   # field-level extraction accuracy against ground truth
+python tests/run_signatures.py            # black-ink signatures: detection, identity, no false signatures
+python tests/run_prompt_injection.py      # hidden instructions caught; the narrator cannot be steered
 python tests/run_findit.py --data PATH/TO/findit2   # public receipts (download the dataset first)
 ```
 
@@ -138,7 +143,7 @@ python tests/run_findit.py --data PATH/TO/findit2   # public receipts (download 
 * Thresholds were calibrated on synthetic data; SAKSHI has not been tested on real Indian payslips or statements.
 * On low-resolution images such as thermal receipts, the middle rung does not separate forged from genuine.
 * A statement row changed with every later balance regenerated leaves no trace; that field is reported blind.
-* Pixel forensics run on the first 6 pages (up to 40 are read); no handwriting analysis; signature checks work on blue ink only.
+* Pixel forensics run on the first 6 pages (up to 40 are read); no handwriting analysis; black-ink signatures are found only just above a readable signature caption.
 * Issuer verification (bank, UIDAI) is modelled as witness levels L3-L4, not connected; cross-case memory has no per-applicant erasure yet.
 
 More in [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md). Next: a resolution gate for the pixel sensors judged once on the 577 unread receipts, calibration on consented real documents, and Account Aggregator and UIDAI as witnesses that outrank any upload.

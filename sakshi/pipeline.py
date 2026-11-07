@@ -373,7 +373,7 @@ def build_dossier(case_id, docs, findings, threads, ctx, coverage, rejected, sum
 
 LIMITATIONS = [
     "Handwritten text is not recognised (Tesseract printed-text model). Handwritten fields are reported as missing, not verified.",
-    "Signature detection looks for blue ink only; black-ink signatures are not detected or compared.",
+    "Signatures: blue ink is found anywhere on a page; black ink only just above a readable signature caption.",
     "Pixel forensics (noise, copy-move, typography) need a real scan with measurable sensor noise; they declare themselves blind on clean digital exports and screenshots.",
     "Copy-move detection compares digit glyphs only; larger copied regions (logos, stamps) are not searched.",
     "Extraction relies on common Indian labels (Net Pay, Gross Earnings, Statement of Account, ...). Unseen layouts fall back to generic label:value harvesting with fewer cross-checks.",

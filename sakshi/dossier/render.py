@@ -295,7 +295,7 @@ function selectFinding(id, quiet){
       f.repair && f.repair.recovered_value ? `<div class="callout"><b>Recovered from the file:</b> <span class="mono">${esc(f.repair.recovered_value)}</span> was the value before <span class="mono">${esc(f.repair.displayed_value || f.repair.seen || "a new value")}</span> was drawn over it.</div>` : "";
   const cor = (f.corroborated_by||[]).length ? `<p><span class="eyebrow">Corroborated by</span><br>${f.corroborated_by.map(c=>byId[c]?`<button class="linkbtn" data-goto="${c}">${c}</button> <span class="muted">${esc(byId[c].title.slice(0,80))}</span>`:"").join("<br>")}</p>` : "";
   $("#detail").innerHTML = `<div class="stack">
-    <div class="m" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${tierTag(f.tier)}<span class="sev">${f.id} · ${esc(f.check.replace(/_/g," "))} · ${esc(f.family.replace("_"," "))} · confidence ${Math.round(f.confidence*100)}% · severity ${f.severity}</span></div>
+    <div class="m" style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${tierTag(f.tier)}<span class="sev">${f.id} · ${esc(f.check.replace(/_/g," "))} · ${esc(f.family.replace("_"," "))} · <b>${esc(f.strength||"")}</b> · confidence ${Math.round(f.confidence*100)}% · severity ${f.severity}</span></div>
     <h3>${esc(f.title)}</h3><p>${esc(f.detail)}</p>${rep}
     <div><div class="eyebrow" style="margin-bottom:6px">Evidence (numbered boxes on the page)</div><div class="evlist">${f.evidence.map((e,i)=>`
       <div class="ev${e.kind==="peel"||e.kind==="reconstruction"?" wide":""}">${e.img?`<img src="${e.img}" alt="evidence crop ${i+1}">`:`<span class="muted mono">${e.kind==="file"?"file-level evidence":"—"}</span>`}
@@ -400,7 +400,7 @@ function evidence(){
   <div class="tbl"><table><thead><tr><th>Finding</th><th>Status</th><th>Evidence</th><th>Document</th><th>Page · bbox (px)</th><th>Linked fields</th><th>Confidence</th></tr></thead><tbody>${rows.map(({f,e,i})=>`<tr>
     <td class="mono">${f.id}.${i+1}</td><td>${tierTag(f.tier)}</td><td>${esc(e.note)}${e.value?` <span class="mono">"${esc(e.value)}"</span>`:""}</td><td>${esc(docs[e.doc_id]?.filename)}</td>
     <td>${e.kind==="file"?`<span class="muted">file-level</span>`:`<button class="linkbtn" data-loc="${e.doc_id}|${e.page}|${e.bbox.join(",")}">p${e.page+1} [${e.bbox.map(v=>Math.round(v)).join(",")}]</button>`}</td>
-    <td class="mono">${f.fields.slice(0,3).map(esc).join("<br>")}</td><td class="num">${Math.round(f.confidence*100)}%</td></tr>`).join("")}</tbody></table></div>`;
+    <td class="mono">${f.fields.slice(0,3).map(esc).join("<br>")}</td><td class="num">${Math.round(f.confidence*100)}% · ${esc(f.strength||"")}</td></tr>`).join("")}</tbody></table></div>`;
   bindLoc();
 }
 

@@ -48,9 +48,74 @@ def detect(doc: Document, ev_dir) -> list[dict]:
             crop_path = ev_dir / f"{doc.doc_id}_p{P.index}_sig{len(sigs)}.png"
             cv2.imwrite(str(crop_path), bgr[bb[1] - 6:bb[3] + 6, bb[0] - 6:bb[2] + 6])
             sigs.append({"doc": doc.doc_id, "page": P.index, "bbox": tuple(float(v) for v in bb), "mask": mask,
-                         "crop": str(crop_path), "modality": doc.modality})
+                         "crop": str(crop_path), "modality": doc.modality, "ink": "blue"})
+        sigs += _black_near_captions(doc, P, bgr, [s for s in sigs if s["page"] == P.index], ev_dir, len(sigs))
     doc.structure["signatures"] = [{"page": s["page"], "bbox": s["bbox"], "crop": s["crop"]} for s in sigs]
     return sigs
+
+
+def _black_near_captions(doc: Document, P, bgr, blue_here: list[dict], ev_dir, start: int) -> list[dict]:
+    """Black or dark ink is everywhere on a page (printed text, rules, logos), so it is only searched for in the
+    place a signature belongs: just above a signature caption that has no blue signature. Every OCR word box is
+    erased first, long straight rules are removed, and only thin, curving pen strokes are kept."""
+    labels = [l for l in P.lines if LABEL_RE.search(l.text.strip()) and len(l.text) < 45]
+    out = []
+    if not labels:
+        return out
+    H, W = bgr.shape[:2]
+    gray = cv2.cvtColor(bgr, cv2.COLOR_BGR2GRAY)
+    sat = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)[:, :, 1]
+    dark = ((gray < 120) & (sat < 90)).astype(np.uint8)
+    for w in P.words:  # printed text is not a signature; OCR junk read off pen strokes is not printed text
+        t = (w.text or "").strip()
+        if (w.conf or 0) < 0.6 or len(t) < 2 or sum(ch.isalnum() for ch in t) < 0.6 * len(t):
+            continue
+        x0, y0, x1, y1 = [int(round(v)) for v in w.bbox]
+        dark[max(0, y0 - 3):y1 + 3, max(0, x0 - 3):x1 + 3] = 0
+    rules = cv2.morphologyEx(dark, cv2.MORPH_OPEN, np.ones((1, 45), np.uint8)) |         cv2.morphologyEx(dark, cv2.MORPH_OPEN, np.ones((45, 1), np.uint8))
+    dark = dark & (1 - rules)
+    dark = cv2.morphologyEx(dark, cv2.MORPH_OPEN, np.ones((2, 2), np.uint8))
+    hs = sorted(w.bbox[3] - w.bbox[1] for w in P.words if (w.conf or 0) >= 0.6)
+    th = hs[len(hs) // 2] if hs else 24.0  # typical printed text height on this page
+    n0, lab0, st0, _ = cv2.connectedComponentsWithStats(dark, connectivity=8)
+    keep = np.zeros(n0, np.uint8)
+    for i in range(1, n0):  # printed glyphs are about one text line tall; pen strokes are taller or much longer
+        keep[i] = st0[i][3] >= 1.4 * th or st0[i][2] >= 3.0 * th
+    dark = keep[lab0].astype(np.uint8)
+    for l in labels:
+        if any(-40 < l.bbox[1] - s["bbox"][3] < 260 and s["bbox"][0] < l.bbox[2] + 250 and s["bbox"][2] > l.bbox[0] - 250
+               for s in blue_here + out):
+            continue
+        zx0, zx1 = max(0, int(l.bbox[0] - 250)), min(W, int(l.bbox[2] + 250))
+        zy0, zy1 = max(0, int(l.bbox[1] - 380)), min(H, int(l.bbox[1] + 30))
+        zone = dark[zy0:zy1, zx0:zx1]
+        if zone.sum() < 150:
+            continue
+        grown = cv2.dilate(zone, np.ones((25, 25), np.uint8))
+        n, lab, st, _ = cv2.connectedComponentsWithStats(grown, connectivity=8)
+        best = None
+        for i in range(1, n):
+            x, y, w, h, _a = st[i]
+            ink = zone[y:y + h, x:x + w] & (lab[y:y + h, x:x + w] == i)
+            s_ink = int(ink.sum())
+            if s_ink < 150 or w < 60 or h < 20 or s_ink > 0.35 * w * h:
+                continue
+            sk = int(skeletonize(ink > 0).sum())
+            if sk == 0 or s_ink / sk > 7.0 or sk < 1.2 * (w + h):
+                continue  # thick blobs, or short straight marks rather than pen strokes
+            if best is None or s_ink > best[0]:
+                best = (s_ink, x, y, w, h, ink)
+        if best is None:
+            continue
+        _, x, y, w, h, ink = best
+        ys, xs = np.nonzero(ink)
+        bb = (zx0 + x + xs.min(), zy0 + y + ys.min(), zx0 + x + xs.max() + 1, zy0 + y + ys.max() + 1)
+        mask = ink[ys.min():ys.max() + 1, xs.min():xs.max() + 1].astype(np.uint8)
+        crop_path = ev_dir / f"{doc.doc_id}_p{P.index}_sig{start + len(out)}.png"
+        cv2.imwrite(str(crop_path), bgr[max(0, bb[1] - 6):bb[3] + 6, max(0, bb[0] - 6):bb[2] + 6])
+        out.append({"doc": doc.doc_id, "page": P.index, "bbox": tuple(float(v) for v in bb), "mask": mask,
+                    "crop": str(crop_path), "modality": doc.modality, "ink": "black"})
+    return out
 
 
 def placement(doc: Document, sigs: list[dict], new_id) -> list[Finding]:
@@ -65,8 +130,8 @@ def placement(doc: Document, sigs: list[dict], new_id) -> list[Finding]:
                 out.append(Finding(
                     id=new_id(), check="signature_missing", family="visual", sensor="signature",
                     title=f"No signature found near '{l.text.strip()}'",
-                    detail="The document has a signature caption but no ink strokes in the expected place. "
-                           "Black-ink signatures are not detected by this prototype (blue-ink detector).",
+                    detail="The document has a signature caption but no pen strokes (blue or black ink) in the "
+                           "expected place above it.",
                     confidence=0.45, localized=True,
                     evidence=[Evidence(doc.doc_id, P.index, l.bbox, "signature caption without signature")],
                     docs=[doc.doc_id]))
