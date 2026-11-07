@@ -1,8 +1,8 @@
 {
  "case_id": "DEMO-TAMPERED",
- "generated_at": "2026-11-07 12:30:12 +0530",
- "sakshi_version": "1.0.3",
- "processing_seconds": 24.1,
+ "generated_at": "2026-11-07 18:51:14 +0530",
+ "sakshi_version": "1.0.5",
+ "processing_seconds": 54.3,
  "status": "REFER: corroborated anomalies need human review",
  "counts": {
   "potential_manipulation": 7,
@@ -43,7 +43,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\tampered\\pages\\D1_p0.png",
+     "image": "pages\\D1_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": 0.1,
@@ -551,7 +551,7 @@
        1491.0,
        1385.0
       ],
-      "crop": "out\\readme\\tampered\\evidence\\D1_p0_sig0.png"
+      "crop": "evidence\\D1_p0_sig0.png"
      }
     ]
    },
@@ -598,7 +598,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\tampered\\pages\\D2_p0.png",
+     "image": "pages\\D2_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": 0.3,
@@ -1439,7 +1439,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\tampered\\evidence\\D2_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D2_p0_noise.jpg"
     },
     "signatures": [],
     "recurring": {
@@ -1492,7 +1492,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\tampered\\pages\\D3_p0.png",
+     "image": "pages\\D3_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": -0.3,
@@ -1898,7 +1898,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\tampered\\evidence\\D3_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D3_p0_noise.jpg"
     },
     "signatures": [
      {
@@ -1909,7 +1909,7 @@
        401.0,
        1794.0
       ],
-      "crop": "out\\readme\\tampered\\evidence\\D3_p0_sig0.png"
+      "crop": "evidence\\D3_p0_sig0.png"
      }
     ]
    },
@@ -1952,7 +1952,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\tampered\\pages\\D4_p0.png",
+     "image": "pages\\D4_p0.png",
      "width": 1300,
      "height": 820,
      "skew_deg": 0.1,
@@ -2121,7 +2121,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\tampered\\evidence\\D4_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D4_p0_noise.jpg"
     },
     "signatures": []
    },
@@ -2165,7 +2165,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\tampered\\pages\\D5_p0.png",
+     "image": "pages\\D5_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": 0.3,
@@ -2324,7 +2324,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\tampered\\evidence\\D5_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D5_p0_noise.jpg"
     },
     "signatures": [
      {
@@ -2335,7 +2335,7 @@
        545.0,
        1119.0
       ],
-      "crop": "out\\readme\\tampered\\evidence\\D5_p0_sig0.png"
+      "crop": "evidence\\D5_p0_sig0.png"
      }
     ]
    },
@@ -2382,7 +2382,7 @@
      ],
      "note": "occluding rectangle; hidden text '68,500.00'",
      "kind": "region",
-     "crop": "out\\readme\\tampered\\evidence\\F001_0.jpg",
+     "crop": "evidence\\F001_0.jpg",
      "value": "68,500.00"
     },
     {
@@ -2396,7 +2396,7 @@
      ],
      "note": "expected value reconstruction: 68,500.00 (not evidence; for comparison only)",
      "kind": "reconstruction",
-     "crop": "out\\readme\\tampered\\evidence\\F001_recon.jpg",
+     "crop": "evidence\\F001_recon.jpg",
      "value": "68,500.00"
     }
    ],
@@ -2463,7 +2463,7 @@
      ],
      "note": "revision 1 read '68,500.00'; the current file reads '86,500.00'",
      "kind": "region",
-     "crop": "out\\readme\\tampered\\evidence\\F004_0.jpg",
+     "crop": "evidence\\F004_0.jpg",
      "value": "86,500.00"
     }
    ],
@@ -2518,7 +2518,7 @@
      ],
      "note": "font Times-Roman vs majority Helvetica",
      "kind": "region",
-     "crop": "out\\readme\\tampered\\evidence\\F002_0.jpg",
+     "crop": "evidence\\F002_0.jpg",
      "value": "86,500.00"
     }
    ],
@@ -2576,7 +2576,7 @@
      ],
      "note": "value-box noise 0.0 vs 4.7",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F007_0.jpg",
+     "crop": "evidence\\F007_0.jpg",
      "value": "14,500.00"
     }
    ],
@@ -2640,7 +2640,7 @@
      ],
      "note": "reads 86,500.00; consistent value 68,500.00",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F013_0.jpg",
+     "crop": "evidence\\F013_0.jpg",
      "value": "86,500.00"
     },
     {
@@ -2654,7 +2654,7 @@
      ],
      "note": "Gross Earnings [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F013_1.jpg",
+     "crop": "evidence\\F013_1.jpg",
      "value": "76,650.00"
     },
     {
@@ -2668,7 +2668,7 @@
      ],
      "note": "Total Deductions [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F013_2.jpg",
+     "crop": "evidence\\F013_2.jpg",
      "value": "8,150.00"
     },
     {
@@ -2682,7 +2682,7 @@
      ],
      "note": "Credit on 31-10-2026 (SALARY NIMBUS ANALYTICS OCT ) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F013_3.jpg",
+     "crop": "evidence\\F013_3.jpg",
      "value": "68,500.00"
     },
     {
@@ -2696,7 +2696,7 @@
      ],
      "note": "Net Pay in words [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F013_4.jpg",
+     "crop": "evidence\\F013_4.jpg",
      "value": "Rupees Sixty Eight Thousand Five Hundred Only"
     },
     {
@@ -2710,7 +2710,7 @@
      ],
      "note": "expected value reconstruction: 68,500.00 (not evidence; for comparison only)",
      "kind": "reconstruction",
-     "crop": "out\\readme\\tampered\\evidence\\F013_recon.jpg",
+     "crop": "evidence\\F013_recon.jpg",
      "value": "68,500.00"
     }
    ],
@@ -2730,7 +2730,7 @@
     },
     {
      "explanation": "OCR misread a digit",
-     "test": "a blamed field has OCR confidence below 0.60, or the repaired value differs from the read value by one character",
+     "test": "a blamed field has OCR confidence below 0.60 and the repaired value differs from the read value by one character",
      "result": "ruled_out",
      "detail": "OCR confidence 0.99; read '86,500.00' vs consistent 68,500.00"
     },
@@ -2805,7 +2805,7 @@
      ],
      "note": "glyph A (suspected paste)",
      "kind": "region",
-     "crop": "out\\readme\\tampered\\evidence\\F006_0.jpg",
+     "crop": "evidence\\F006_0.jpg",
      "value": "14,500.00"
     },
     {
@@ -2819,7 +2819,7 @@
      ],
      "note": "glyph B (identical grain)",
      "kind": "region",
-     "crop": "out\\readme\\tampered\\evidence\\F006_1.jpg",
+     "crop": "evidence\\F006_1.jpg",
      "value": "1,180.00"
     }
    ],
@@ -2877,7 +2877,7 @@
      ],
      "note": "reads 14,500.00; consistent value 24,500.00",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F016_0.jpg",
+     "crop": "evidence\\F016_0.jpg",
      "value": "14,500.00"
     },
     {
@@ -2891,7 +2891,7 @@
      ],
      "note": "Balance on 03-10-2026 (UPI/BIGBASKET/772910) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F016_1.jpg",
+     "crop": "evidence\\F016_1.jpg",
      "value": "98,965.50"
     },
     {
@@ -2905,7 +2905,7 @@
      ],
      "note": "Balance on 05-10-2026 (EMI DEMO HOME FIN LN88213) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F016_2.jpg",
+     "crop": "evidence\\F016_2.jpg",
      "value": "74,465.50"
     },
     {
@@ -2919,7 +2919,7 @@
      ],
      "note": "Debit on 05-09-2026 (EMI DEMO HOME FIN LN88213) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F016_3.jpg",
+     "crop": "evidence\\F016_3.jpg",
      "value": "24,500.00"
     },
     {
@@ -2933,7 +2933,7 @@
      ],
      "note": "Declared monthly EMIs [03_loan_application_form.jpg]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F016_4.jpg",
+     "crop": "evidence\\F016_4.jpg",
      "value": "14,500.00"
     },
     {
@@ -2947,7 +2947,7 @@
      ],
      "note": "Debit on 05-09-2026 (EMI DEMO HOME FIN LN88213) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F016_5.jpg",
+     "crop": "evidence\\F016_5.jpg",
      "value": "24,500.00"
     },
     {
@@ -2961,7 +2961,7 @@
      ],
      "note": "Debit on 02-09-2026 (UPI/SWIGGY/BLR/882131) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F016_6.jpg",
+     "crop": "evidence\\F016_6.jpg",
      "value": "640.00"
     },
     {
@@ -2975,7 +2975,7 @@
      ],
      "note": "expected value reconstruction: 24,500.00 (not evidence; for comparison only)",
      "kind": "reconstruction",
-     "crop": "out\\readme\\tampered\\evidence\\F016_recon.jpg",
+     "crop": "evidence\\F016_recon.jpg",
      "value": "24,500.00"
     }
    ],
@@ -2995,7 +2995,7 @@
     },
     {
      "explanation": "OCR misread a digit",
-     "test": "a blamed field has OCR confidence below 0.60, or the repaired value differs from the read value by one character",
+     "test": "a blamed field has OCR confidence below 0.60 and the repaired value differs from the read value by one character",
      "result": "ruled_out",
      "detail": "OCR confidence 0.96; read '14,500.00' vs consistent 24,500.00 (one character apart)"
     },
@@ -3065,7 +3065,7 @@
      ],
      "note": "reads 14,500.00; consistent value 24,500.00",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F017_0.jpg",
+     "crop": "evidence\\F017_0.jpg",
      "value": "14,500.00"
     },
     {
@@ -3079,7 +3079,7 @@
      ],
      "note": "Balance on 03-10-2026 (UPI/BIGBASKET/772910) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F017_1.jpg",
+     "crop": "evidence\\F017_1.jpg",
      "value": "98,965.50"
     },
     {
@@ -3093,7 +3093,7 @@
      ],
      "note": "Balance on 05-10-2026 (EMI DEMO HOME FIN LN88213) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F017_2.jpg",
+     "crop": "evidence\\F017_2.jpg",
      "value": "74,465.50"
     },
     {
@@ -3107,7 +3107,7 @@
      ],
      "note": "Debit on 05-10-2026 (EMI DEMO HOME FIN LN88213) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F017_3.jpg",
+     "crop": "evidence\\F017_3.jpg",
      "value": "14,500.00"
     },
     {
@@ -3121,7 +3121,7 @@
      ],
      "note": "Debit on 05-09-2026 (EMI DEMO HOME FIN LN88213) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F017_4.jpg",
+     "crop": "evidence\\F017_4.jpg",
      "value": "24,500.00"
     },
     {
@@ -3135,7 +3135,7 @@
      ],
      "note": "Debit on 05-10-2026 (EMI DEMO HOME FIN LN88213) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F017_5.jpg",
+     "crop": "evidence\\F017_5.jpg",
      "value": "14,500.00"
     },
     {
@@ -3149,7 +3149,7 @@
      ],
      "note": "Debit on 05-09-2026 (EMI DEMO HOME FIN LN88213) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F017_6.jpg",
+     "crop": "evidence\\F017_6.jpg",
      "value": "24,500.00"
     },
     {
@@ -3163,7 +3163,7 @@
      ],
      "note": "expected value reconstruction: 24,500.00 (not evidence; for comparison only)",
      "kind": "reconstruction",
-     "crop": "out\\readme\\tampered\\evidence\\F017_recon.jpg",
+     "crop": "evidence\\F017_recon.jpg",
      "value": "24,500.00"
     }
    ],
@@ -3183,7 +3183,7 @@
     },
     {
      "explanation": "OCR misread a digit",
-     "test": "a blamed field has OCR confidence below 0.60, or the repaired value differs from the read value by one character",
+     "test": "a blamed field has OCR confidence below 0.60 and the repaired value differs from the read value by one character",
      "result": "plausible",
      "detail": "OCR confidence 0.51; read '14,500.00' vs consistent 24,500.00 (one character apart)"
     },
@@ -3249,7 +3249,7 @@
      ],
      "note": "typography outlier (ink darkness -4.5 sd, digit height +3.8 sd)",
      "kind": "region",
-     "crop": "out\\readme\\tampered\\evidence\\F008_0.jpg",
+     "crop": "evidence\\F008_0.jpg",
      "value": "14,500.00"
     }
    ],
@@ -3309,7 +3309,7 @@
      ],
      "note": "left edge off by +7px",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F009_0.jpg",
+     "crop": "evidence\\F009_0.jpg",
      "value": "14,500.00"
     }
    ],
@@ -3369,7 +3369,7 @@
      ],
      "note": "edge sharpness 4.19 vs 3.71",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F010_0.jpg",
+     "crop": "evidence\\F010_0.jpg",
      "value": "14,500.00"
     }
    ],
@@ -3416,7 +3416,7 @@
      ],
      "note": "Net Pay on 01_payslip_oct2026.pdf [impeached: this document contradicts itself]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F021_0.jpg",
+     "crop": "evidence\\F021_0.jpg",
      "value": "86,500.00"
     },
     {
@@ -3430,7 +3430,7 @@
      ],
      "note": "Declared income on 03_loan_application_form.jpg (claim)",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F021_1.jpg",
+     "crop": "evidence\\F021_1.jpg",
      "value": "86,500.00"
     },
     {
@@ -3444,7 +3444,7 @@
      ],
      "note": "Salary stated in 05_employment_letter.jpg",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F021_2.jpg",
+     "crop": "evidence\\F021_2.jpg",
      "value": "86,500.00"
     },
     {
@@ -3458,7 +3458,7 @@
      ],
      "note": "Salary credit for the pay month in 02_bank_statement_sep_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F021_3.jpg",
+     "crop": "evidence\\F021_3.jpg",
      "value": "68,500.00"
     },
     {
@@ -3472,7 +3472,7 @@
      ],
      "note": "Salary credit of 30-09-2026 (another month) in 02_bank_statement_sep_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F021_4.jpg",
+     "crop": "evidence\\F021_4.jpg",
      "value": "68,500.00"
     }
    ],
@@ -3542,7 +3542,7 @@
      ],
      "note": "noise 0.0 vs 7.9",
      "kind": "region",
-     "crop": "out\\readme\\tampered\\evidence\\F011_0.jpg",
+     "crop": "evidence\\F011_0.jpg",
      "value": ""
     }
    ],
@@ -3599,7 +3599,7 @@
      ],
      "note": "reads 86,500.00; consistent value 68,500.00",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F014_0.jpg",
+     "crop": "evidence\\F014_0.jpg",
      "value": "86,500.00"
     },
     {
@@ -3613,7 +3613,7 @@
      ],
      "note": "Gross Earnings [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F014_1.jpg",
+     "crop": "evidence\\F014_1.jpg",
      "value": "76,650.00"
     },
     {
@@ -3627,7 +3627,7 @@
      ],
      "note": "Total Deductions [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F014_2.jpg",
+     "crop": "evidence\\F014_2.jpg",
      "value": "8,150.00"
     },
     {
@@ -3641,7 +3641,7 @@
      ],
      "note": "Net Pay [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F014_3.jpg",
+     "crop": "evidence\\F014_3.jpg",
      "value": "86,500.00"
     },
     {
@@ -3655,7 +3655,7 @@
      ],
      "note": "Net Pay [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F014_4.jpg",
+     "crop": "evidence\\F014_4.jpg",
      "value": "86,500.00"
     },
     {
@@ -3669,7 +3669,7 @@
      ],
      "note": "Credit on 31-10-2026 (SALARY NIMBUS ANALYTICS OCT ) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F014_5.jpg",
+     "crop": "evidence\\F014_5.jpg",
      "value": "68,500.00"
     },
     {
@@ -3683,7 +3683,7 @@
      ],
      "note": "Net Pay [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F014_6.jpg",
+     "crop": "evidence\\F014_6.jpg",
      "value": "86,500.00"
     }
    ],
@@ -3704,7 +3704,7 @@
     },
     {
      "explanation": "OCR misread a digit",
-     "test": "a blamed field has OCR confidence below 0.60, or the repaired value differs from the read value by one character",
+     "test": "a blamed field has OCR confidence below 0.60 and the repaired value differs from the read value by one character",
      "result": "ruled_out",
      "detail": "OCR confidence 0.95; read '86,500.00' vs consistent 68,500.00"
     },
@@ -3776,7 +3776,7 @@
      ],
      "note": "reads 86,500.00; consistent value 68,500.00",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F015_0.jpg",
+     "crop": "evidence\\F015_0.jpg",
      "value": "86,500.00"
     },
     {
@@ -3790,7 +3790,7 @@
      ],
      "note": "Gross Earnings [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F015_1.jpg",
+     "crop": "evidence\\F015_1.jpg",
      "value": "76,650.00"
     },
     {
@@ -3804,7 +3804,7 @@
      ],
      "note": "Total Deductions [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F015_2.jpg",
+     "crop": "evidence\\F015_2.jpg",
      "value": "8,150.00"
     },
     {
@@ -3818,7 +3818,7 @@
      ],
      "note": "Net Pay [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F015_3.jpg",
+     "crop": "evidence\\F015_3.jpg",
      "value": "86,500.00"
     },
     {
@@ -3832,7 +3832,7 @@
      ],
      "note": "Net Pay [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F015_4.jpg",
+     "crop": "evidence\\F015_4.jpg",
      "value": "86,500.00"
     },
     {
@@ -3846,7 +3846,7 @@
      ],
      "note": "Credit on 31-10-2026 (SALARY NIMBUS ANALYTICS OCT ) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F015_5.jpg",
+     "crop": "evidence\\F015_5.jpg",
      "value": "68,500.00"
     },
     {
@@ -3860,7 +3860,7 @@
      ],
      "note": "Net Pay [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F015_6.jpg",
+     "crop": "evidence\\F015_6.jpg",
      "value": "86,500.00"
     }
    ],
@@ -3881,7 +3881,7 @@
     },
     {
      "explanation": "OCR misread a digit",
-     "test": "a blamed field has OCR confidence below 0.60, or the repaired value differs from the read value by one character",
+     "test": "a blamed field has OCR confidence below 0.60 and the repaired value differs from the read value by one character",
      "result": "ruled_out",
      "detail": "OCR confidence 0.96; read '86,500.00' vs consistent 68,500.00"
     },
@@ -3953,7 +3953,7 @@
      ],
      "note": "signature A",
      "kind": "region",
-     "crop": "out\\readme\\tampered\\evidence\\F012_0.jpg",
+     "crop": "evidence\\F012_0.jpg",
      "value": ""
     },
     {
@@ -3967,7 +3967,7 @@
      ],
      "note": "signature B",
      "kind": "region",
-     "crop": "out\\readme\\tampered\\evidence\\F012_1.jpg",
+     "crop": "evidence\\F012_1.jpg",
      "value": ""
     }
    ],
@@ -4026,7 +4026,7 @@
      ],
      "note": "suspect: 03_loan_application_form.jpg",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F019_0.jpg",
+     "crop": "evidence\\F019_0.jpg",
      "value": "14-08-1996"
     },
     {
@@ -4040,7 +4040,7 @@
      ],
      "note": "04_identity_card.jpg",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F019_1.jpg",
+     "crop": "evidence\\F019_1.jpg",
      "value": "14-03-1996"
     }
    ],
@@ -4104,7 +4104,7 @@
      ],
      "note": "03_loan_application_form.jpg",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F020_0.jpg",
+     "crop": "evidence\\F020_0.jpg",
      "value": "01-07-2021"
     },
     {
@@ -4118,7 +4118,7 @@
      ],
      "note": "01_payslip_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F020_1.jpg",
+     "crop": "evidence\\F020_1.jpg",
      "value": "01-07-2021"
     },
     {
@@ -4132,7 +4132,7 @@
      ],
      "note": "suspect: 05_employment_letter.jpg",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F020_2.jpg",
+     "crop": "evidence\\F020_2.jpg",
      "value": "01-07-2019"
     }
    ],
@@ -4288,7 +4288,7 @@
      ],
      "note": "03_loan_application_form.jpg",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F018_0.jpg",
+     "crop": "evidence\\F018_0.jpg",
      "value": "Mohammed Arif Khan"
     },
     {
@@ -4302,7 +4302,7 @@
      ],
      "note": "01_payslip_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F018_1.jpg",
+     "crop": "evidence\\F018_1.jpg",
      "value": "Mohammed Arif Khan"
     },
     {
@@ -4316,7 +4316,7 @@
      ],
      "note": "05_employment_letter.jpg",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F018_2.jpg",
+     "crop": "evidence\\F018_2.jpg",
      "value": "Mohammed Arif Khan"
     },
     {
@@ -4330,7 +4330,7 @@
      ],
      "note": "04_identity_card.jpg",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F018_3.jpg",
+     "crop": "evidence\\F018_3.jpg",
      "value": "MOHAMMED ARIF KHAN"
     },
     {
@@ -4344,7 +4344,7 @@
      ],
      "note": "02_bank_statement_sep_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\tampered\\evidence\\F018_4.jpg",
+     "crop": "evidence\\F018_4.jpg",
      "value": "MOHD ARIF KHAN"
     }
    ],
@@ -6444,7 +6444,7 @@
   "message": "audit chain intact",
   "records": [
    {
-    "ts": "2026-11-07T12:29:48+0530",
+    "ts": "2026-11-07T18:50:20+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
@@ -6452,10 +6452,10 @@
      "note": "5 file(s)"
     },
     "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-    "hash": "135d726fc1e22f727fa5cd86e3ee80b26fca0171941e7395777003b4512b9563"
+    "hash": "86b32d83fe1bbd0ed4b2d7258b5f0598c7afb0325953b7bc0861bcb773c2140b"
    },
    {
-    "ts": "2026-11-07T12:29:48+0530",
+    "ts": "2026-11-07T18:50:20+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "case_opened",
     "payload": {
@@ -6466,13 +6466,13 @@
       "04_identity_card.jpg",
       "05_employment_letter.jpg"
      ],
-     "sakshi_version": "1.0.3"
+     "sakshi_version": "1.0.5"
     },
-    "prev_hash": "135d726fc1e22f727fa5cd86e3ee80b26fca0171941e7395777003b4512b9563",
-    "hash": "51b63704620a74fa7939ed477003925ff81ff808c6f1476948029dd231237f24"
+    "prev_hash": "86b32d83fe1bbd0ed4b2d7258b5f0598c7afb0325953b7bc0861bcb773c2140b",
+    "hash": "ac126064fb613cc159f06284759b7a09fab66e9b0ce179f496179b952cc2fe30"
    },
    {
-    "ts": "2026-11-07T12:29:48+0530",
+    "ts": "2026-11-07T18:50:20+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_ingested",
     "payload": {
@@ -6482,11 +6482,11 @@
      "modality": "digital_pdf",
      "pages": 1
     },
-    "prev_hash": "51b63704620a74fa7939ed477003925ff81ff808c6f1476948029dd231237f24",
-    "hash": "1d285af595fe93759a4e39e36283da3cb3f667dd5b583a09536cf12bdbb09ed6"
+    "prev_hash": "ac126064fb613cc159f06284759b7a09fab66e9b0ce179f496179b952cc2fe30",
+    "hash": "651f63499295aa5efa3a45fb66655f66d55940f259d3fe9f3d491093bbc80a0a"
    },
    {
-    "ts": "2026-11-07T12:29:51+0530",
+    "ts": "2026-11-07T18:50:27+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_ingested",
     "payload": {
@@ -6496,11 +6496,11 @@
      "modality": "scanned_pdf",
      "pages": 1
     },
-    "prev_hash": "1d285af595fe93759a4e39e36283da3cb3f667dd5b583a09536cf12bdbb09ed6",
-    "hash": "a5fbacd2f8e5903c1d3ce1374347e76302aa9a3ff4ba623096cf90ba9b7f5b4f"
+    "prev_hash": "651f63499295aa5efa3a45fb66655f66d55940f259d3fe9f3d491093bbc80a0a",
+    "hash": "5924db2659f5b0556faf747f614156c81e5b7703cdf9fa3b92ff1ff276ceff7e"
    },
    {
-    "ts": "2026-11-07T12:29:53+0530",
+    "ts": "2026-11-07T18:50:32+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_ingested",
     "payload": {
@@ -6510,11 +6510,11 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "a5fbacd2f8e5903c1d3ce1374347e76302aa9a3ff4ba623096cf90ba9b7f5b4f",
-    "hash": "3511a6e9c7a9455a77d4db71ddbcc61f65e38e8f02b7bc3f014af7f01471afa4"
+    "prev_hash": "5924db2659f5b0556faf747f614156c81e5b7703cdf9fa3b92ff1ff276ceff7e",
+    "hash": "179a38e29151198c42b3b9cd57eb7a393d110de02d35f456971aee94d7a87c92"
    },
    {
-    "ts": "2026-11-07T12:29:54+0530",
+    "ts": "2026-11-07T18:50:34+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_ingested",
     "payload": {
@@ -6524,11 +6524,11 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "3511a6e9c7a9455a77d4db71ddbcc61f65e38e8f02b7bc3f014af7f01471afa4",
-    "hash": "eb7ae5ca1de4c923a7d604adc2c2b8362a09a54b4140496828fab5a18c54fec3"
+    "prev_hash": "179a38e29151198c42b3b9cd57eb7a393d110de02d35f456971aee94d7a87c92",
+    "hash": "140e8fbfc1c231f94671ce62c2ebd0e18f5fdbff6d38b835c7176ee51e4ef7b8"
    },
    {
-    "ts": "2026-11-07T12:29:56+0530",
+    "ts": "2026-11-07T18:50:38+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_ingested",
     "payload": {
@@ -6538,22 +6538,22 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "eb7ae5ca1de4c923a7d604adc2c2b8362a09a54b4140496828fab5a18c54fec3",
-    "hash": "7dbafe0b1270d1c93c56ace88ed8027f16fc58f05d758a8a9dd881593a601cc6"
+    "prev_hash": "140e8fbfc1c231f94671ce62c2ebd0e18f5fdbff6d38b835c7176ee51e4ef7b8",
+    "hash": "ea5a530550ec77167dc925865be0679463cc86c2072902588efd0eccf87b1786"
    },
    {
-    "ts": "2026-11-07T12:29:56+0530",
+    "ts": "2026-11-07T18:50:38+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
      "stage": "Document classification",
      "note": ""
     },
-    "prev_hash": "7dbafe0b1270d1c93c56ace88ed8027f16fc58f05d758a8a9dd881593a601cc6",
-    "hash": "544c79a866099b2a73529e6ab1b04f4b35614216a220932fb3b99f54f4a907d5"
+    "prev_hash": "ea5a530550ec77167dc925865be0679463cc86c2072902588efd0eccf87b1786",
+    "hash": "79b79d194c45fb0e645deddad9bd0d7d0196317e7336fd23a326032e6d7b87a5"
    },
    {
-    "ts": "2026-11-07T12:29:56+0530",
+    "ts": "2026-11-07T18:50:38+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_classified",
     "payload": {
@@ -6571,11 +6571,11 @@
      ],
      "witness_level": 2
     },
-    "prev_hash": "544c79a866099b2a73529e6ab1b04f4b35614216a220932fb3b99f54f4a907d5",
-    "hash": "189fab5b756ab591390b8335ce49425a5354dd05e4ac103ab2fcba79c328d9a8"
+    "prev_hash": "79b79d194c45fb0e645deddad9bd0d7d0196317e7336fd23a326032e6d7b87a5",
+    "hash": "011c27d9800255281363eb8b42331b1605b21857137ed0babe72b6c6cf6d23fe"
    },
    {
-    "ts": "2026-11-07T12:29:56+0530",
+    "ts": "2026-11-07T18:50:38+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_classified",
     "payload": {
@@ -6593,11 +6593,11 @@
      ],
      "witness_level": 2
     },
-    "prev_hash": "189fab5b756ab591390b8335ce49425a5354dd05e4ac103ab2fcba79c328d9a8",
-    "hash": "c5645ead4eba6e8e5af62834272f47f7e25e0d524a601cbef0e87c86f0dd9896"
+    "prev_hash": "011c27d9800255281363eb8b42331b1605b21857137ed0babe72b6c6cf6d23fe",
+    "hash": "8672a9f233be9d6064da016b994ef35232f2d664c067f0128a2a3bd49705c89f"
    },
    {
-    "ts": "2026-11-07T12:29:56+0530",
+    "ts": "2026-11-07T18:50:38+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_classified",
     "payload": {
@@ -6613,11 +6613,11 @@
      ],
      "witness_level": 0
     },
-    "prev_hash": "c5645ead4eba6e8e5af62834272f47f7e25e0d524a601cbef0e87c86f0dd9896",
-    "hash": "0cddae4ec0184b402ed088ddbbef5d115ca6d2abd94886733d6f377cb70d8b5f"
+    "prev_hash": "8672a9f233be9d6064da016b994ef35232f2d664c067f0128a2a3bd49705c89f",
+    "hash": "0d89a9ea2f99e2eaba97fe255ba76e024d7c704f10edcd4085f1720b90099ae5"
    },
    {
-    "ts": "2026-11-07T12:29:56+0530",
+    "ts": "2026-11-07T18:50:38+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_classified",
     "payload": {
@@ -6633,11 +6633,11 @@
      ],
      "witness_level": 2
     },
-    "prev_hash": "0cddae4ec0184b402ed088ddbbef5d115ca6d2abd94886733d6f377cb70d8b5f",
-    "hash": "6a637413739d2a6cf76a095b3ee66b8d56b49ab018a9fb28017cc048ce2f213e"
+    "prev_hash": "0d89a9ea2f99e2eaba97fe255ba76e024d7c704f10edcd4085f1720b90099ae5",
+    "hash": "47e4a84541d41410cd125fe5b9b76555d2da3290cb7f8c59b2288efe868b10eb"
    },
    {
-    "ts": "2026-11-07T12:29:56+0530",
+    "ts": "2026-11-07T18:50:38+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "document_classified",
     "payload": {
@@ -6654,22 +6654,22 @@
      ],
      "witness_level": 1
     },
-    "prev_hash": "6a637413739d2a6cf76a095b3ee66b8d56b49ab018a9fb28017cc048ce2f213e",
-    "hash": "0a3b8ec692882d4fb81f7d41ebfcacef513adf6de532733c28998dc8408fcef4"
+    "prev_hash": "47e4a84541d41410cd125fe5b9b76555d2da3290cb7f8c59b2288efe868b10eb",
+    "hash": "083ad0f4e335eb62fbeba21238e8de380685c62be9aef30aea8e3d32338dfc89"
    },
    {
-    "ts": "2026-11-07T12:29:56+0530",
+    "ts": "2026-11-07T18:50:38+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
      "stage": "OCR & information extraction",
      "note": ""
     },
-    "prev_hash": "0a3b8ec692882d4fb81f7d41ebfcacef513adf6de532733c28998dc8408fcef4",
-    "hash": "7197519144d82e967b8d588129e90f48231acdfdf8f7ab9ec77dae74af9d6761"
+    "prev_hash": "083ad0f4e335eb62fbeba21238e8de380685c62be9aef30aea8e3d32338dfc89",
+    "hash": "5be0998db8d0c0d9c6aa8706ee09c4cf200b50ff1de79c971d69868377519e57"
    },
    {
-    "ts": "2026-11-07T12:29:57+0530",
+    "ts": "2026-11-07T18:50:41+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "fields_extracted",
     "payload": {
@@ -6678,11 +6678,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "7197519144d82e967b8d588129e90f48231acdfdf8f7ab9ec77dae74af9d6761",
-    "hash": "e4ee785993f81f08cf8056e019e054ecad498aa02b04f1768f4110d57644a136"
+    "prev_hash": "5be0998db8d0c0d9c6aa8706ee09c4cf200b50ff1de79c971d69868377519e57",
+    "hash": "1c6d7c7fe359d3d3b0f298f0d5b1aacba2f124c57d282bb2fff793f05e49681c"
    },
    {
-    "ts": "2026-11-07T12:29:58+0530",
+    "ts": "2026-11-07T18:50:42+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "fields_extracted",
     "payload": {
@@ -6691,11 +6691,11 @@
      "n_rows": 14,
      "missing": []
     },
-    "prev_hash": "e4ee785993f81f08cf8056e019e054ecad498aa02b04f1768f4110d57644a136",
-    "hash": "5821a8fc49fe036edec94f1ba4aaa8f5fb6cee3ce7395d45ecb99a1d5f2a5605"
+    "prev_hash": "1c6d7c7fe359d3d3b0f298f0d5b1aacba2f124c57d282bb2fff793f05e49681c",
+    "hash": "b047a0c966faf6d26870770c81dd133b78763d2f1394d0f792a69033c8a888fa"
    },
    {
-    "ts": "2026-11-07T12:29:58+0530",
+    "ts": "2026-11-07T18:50:42+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "fields_extracted",
     "payload": {
@@ -6704,11 +6704,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "5821a8fc49fe036edec94f1ba4aaa8f5fb6cee3ce7395d45ecb99a1d5f2a5605",
-    "hash": "074a1b808a16f48e347c122becb20d330217c9ce43ecf556254496675d409fe4"
+    "prev_hash": "b047a0c966faf6d26870770c81dd133b78763d2f1394d0f792a69033c8a888fa",
+    "hash": "bac386bcb87cd942de21b4a576d33cd0a570b7ff44a9dbbad1edd481d08ff103"
    },
    {
-    "ts": "2026-11-07T12:29:58+0530",
+    "ts": "2026-11-07T18:50:42+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "fields_extracted",
     "payload": {
@@ -6717,11 +6717,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "074a1b808a16f48e347c122becb20d330217c9ce43ecf556254496675d409fe4",
-    "hash": "4595513de6e23bce6cef77434120bacb0bf3ea96e5a99e76a15848d9c2da7f9b"
+    "prev_hash": "bac386bcb87cd942de21b4a576d33cd0a570b7ff44a9dbbad1edd481d08ff103",
+    "hash": "ba161c328fc89aade2294d0cc6d627788d112fc7beaaf13f0eefe267a1a6ff44"
    },
    {
-    "ts": "2026-11-07T12:29:58+0530",
+    "ts": "2026-11-07T18:50:42+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "fields_extracted",
     "payload": {
@@ -6730,33 +6730,33 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "4595513de6e23bce6cef77434120bacb0bf3ea96e5a99e76a15848d9c2da7f9b",
-    "hash": "0c1996cc82c059a0075e255791925d79ee9aa823c61b9a1e877e05e9b6a8066a"
+    "prev_hash": "ba161c328fc89aade2294d0cc6d627788d112fc7beaaf13f0eefe267a1a6ff44",
+    "hash": "90ea13889054094daf58e294bd140aa8588ac8f30446cdcad5208bc0ccfd9830"
    },
    {
-    "ts": "2026-11-07T12:29:58+0530",
+    "ts": "2026-11-07T18:50:42+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
      "stage": "Structural understanding",
      "note": ""
     },
-    "prev_hash": "0c1996cc82c059a0075e255791925d79ee9aa823c61b9a1e877e05e9b6a8066a",
-    "hash": "15c79948435194305ea8086e81eaa9eae5a6de4b5f22288962c6e02a75c4cfcc"
+    "prev_hash": "90ea13889054094daf58e294bd140aa8588ac8f30446cdcad5208bc0ccfd9830",
+    "hash": "679fc1c006761f2575127eb9879100efb59c181b912e8db75a4e1437344cf9e0"
    },
    {
-    "ts": "2026-11-07T12:29:58+0530",
+    "ts": "2026-11-07T18:50:42+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
      "stage": "Visual forensic analysis",
      "note": ""
     },
-    "prev_hash": "15c79948435194305ea8086e81eaa9eae5a6de4b5f22288962c6e02a75c4cfcc",
-    "hash": "6b4b003ae39269fbcb879225a7035d11dc876ca5f8922c02e5e751e6db7a5eb4"
+    "prev_hash": "679fc1c006761f2575127eb9879100efb59c181b912e8db75a4e1437344cf9e0",
+    "hash": "51d3a1e00ba1c573585353bc2fc5c1fb8ac91d845605c741714c9ea156ff4fe7"
    },
    {
-    "ts": "2026-11-07T12:29:58+0530",
+    "ts": "2026-11-07T18:50:42+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "visual_forensics",
     "payload": {
@@ -6776,11 +6776,11 @@
       }
      }
     },
-    "prev_hash": "6b4b003ae39269fbcb879225a7035d11dc876ca5f8922c02e5e751e6db7a5eb4",
-    "hash": "2c48322723d510d9a0f3a4b76d8ddd901f59f8d9a2a3a25cda063ae465b13274"
+    "prev_hash": "51d3a1e00ba1c573585353bc2fc5c1fb8ac91d845605c741714c9ea156ff4fe7",
+    "hash": "d5e538c41a68870006a5ced239509c099635c66853cb53ec31d7205dfe8a031b"
    },
    {
-    "ts": "2026-11-07T12:30:01+0530",
+    "ts": "2026-11-07T18:50:51+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "visual_forensics",
     "payload": {
@@ -6802,11 +6802,11 @@
       }
      }
     },
-    "prev_hash": "2c48322723d510d9a0f3a4b76d8ddd901f59f8d9a2a3a25cda063ae465b13274",
-    "hash": "b8b7822465e10a1a62a815da4d5eadf563edead62df668881c8650d1332d2b7f"
+    "prev_hash": "d5e538c41a68870006a5ced239509c099635c66853cb53ec31d7205dfe8a031b",
+    "hash": "160ca8d2d6221dff0d35e6dfc240668eda4a7c1b04dcde0f786109cc306cf309"
    },
    {
-    "ts": "2026-11-07T12:30:03+0530",
+    "ts": "2026-11-07T18:50:55+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "visual_forensics",
     "payload": {
@@ -6828,11 +6828,11 @@
       }
      }
     },
-    "prev_hash": "b8b7822465e10a1a62a815da4d5eadf563edead62df668881c8650d1332d2b7f",
-    "hash": "e710974ad0478035b4fd8a3cb7c08012a4a56be56853a089741b5f200409653e"
+    "prev_hash": "160ca8d2d6221dff0d35e6dfc240668eda4a7c1b04dcde0f786109cc306cf309",
+    "hash": "4ad29de9ac35241e5587844810fd6c9b589fc1506253a275ddb513e608bdf1e7"
    },
    {
-    "ts": "2026-11-07T12:30:04+0530",
+    "ts": "2026-11-07T18:50:57+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "visual_forensics",
     "payload": {
@@ -6854,11 +6854,11 @@
       }
      }
     },
-    "prev_hash": "e710974ad0478035b4fd8a3cb7c08012a4a56be56853a089741b5f200409653e",
-    "hash": "d56b2a3c549b315952844ac396541fbe9391f1f44178d1212a596c43631878cc"
+    "prev_hash": "4ad29de9ac35241e5587844810fd6c9b589fc1506253a275ddb513e608bdf1e7",
+    "hash": "cff045bdc5744e29e81db32d823170904e16b37ae4632e99e2e4c2442336fed8"
    },
    {
-    "ts": "2026-11-07T12:30:05+0530",
+    "ts": "2026-11-07T18:51:00+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "visual_forensics",
     "payload": {
@@ -6880,55 +6880,55 @@
       }
      }
     },
-    "prev_hash": "d56b2a3c549b315952844ac396541fbe9391f1f44178d1212a596c43631878cc",
-    "hash": "3afa26cc147e7189f0293e6c87be387ed0a6e92ead838032a08f4d2f44e68e06"
+    "prev_hash": "cff045bdc5744e29e81db32d823170904e16b37ae4632e99e2e4c2442336fed8",
+    "hash": "bfb89a9233ca64b2a3c68b5ba5eaceaa49c077c6d8a6c7dd6ec1c58fc799760c"
    },
    {
-    "ts": "2026-11-07T12:30:05+0530",
+    "ts": "2026-11-07T18:51:00+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
      "stage": "Contextual verification",
      "note": ""
     },
-    "prev_hash": "3afa26cc147e7189f0293e6c87be387ed0a6e92ead838032a08f4d2f44e68e06",
-    "hash": "6eb8353f5f17fe0c2fcb9003babd96a9b1b774bef3691d2bfa52046576a227a4"
+    "prev_hash": "bfb89a9233ca64b2a3c68b5ba5eaceaa49c077c6d8a6c7dd6ec1c58fc799760c",
+    "hash": "94b04e84f30fc1345796f19155f703fa561800663a1afc5c407fc4779881c816"
    },
    {
-    "ts": "2026-11-07T12:30:07+0530",
+    "ts": "2026-11-07T18:51:04+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
      "stage": "Cross-document correlation",
      "note": ""
     },
-    "prev_hash": "6eb8353f5f17fe0c2fcb9003babd96a9b1b774bef3691d2bfa52046576a227a4",
-    "hash": "6fa5d2e25edd87c32d781e55d90b95ef09830de7752e49f5b99184014582542e"
+    "prev_hash": "94b04e84f30fc1345796f19155f703fa561800663a1afc5c407fc4779881c816",
+    "hash": "6412a57ef8f662252f03ce74e3b42626b51c4c044448cb95b49a4af7a5df188f"
    },
    {
-    "ts": "2026-11-07T12:30:07+0530",
+    "ts": "2026-11-07T18:51:04+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
      "stage": "Anomaly investigation",
      "note": ""
     },
-    "prev_hash": "6fa5d2e25edd87c32d781e55d90b95ef09830de7752e49f5b99184014582542e",
-    "hash": "4e53257dbcfc04c5f8d82030e927cd018845ddbe4a488467c0e8f80124e7f9cb"
+    "prev_hash": "6412a57ef8f662252f03ce74e3b42626b51c4c044448cb95b49a4af7a5df188f",
+    "hash": "7c73a40bbece83fabc48bb0bbc769afb791afaf929b5c0187422194bbc785292"
    },
    {
-    "ts": "2026-11-07T12:30:07+0530",
+    "ts": "2026-11-07T18:51:04+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
      "stage": "Evidence generation",
      "note": ""
     },
-    "prev_hash": "4e53257dbcfc04c5f8d82030e927cd018845ddbe4a488467c0e8f80124e7f9cb",
-    "hash": "cf4230e17cd835ec6f0a9f375709e72b822920e0a3453cb028cd083abd294003"
+    "prev_hash": "7c73a40bbece83fabc48bb0bbc769afb791afaf929b5c0187422194bbc785292",
+    "hash": "ccd82a811de67d8a31a4b1d8d3a05b94922226373ad03befe27e27ade79d13f5"
    },
    {
-    "ts": "2026-11-07T12:30:07+0530",
+    "ts": "2026-11-07T18:51:04+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -6962,11 +6962,11 @@
       ]
      ]
     },
-    "prev_hash": "cf4230e17cd835ec6f0a9f375709e72b822920e0a3453cb028cd083abd294003",
-    "hash": "aa9a55f2f1743153443af9ca85b0d38ada43d97ebae3e3e022f16fcbc33f1535"
+    "prev_hash": "ccd82a811de67d8a31a4b1d8d3a05b94922226373ad03befe27e27ade79d13f5",
+    "hash": "8e4e19c5f4938760f5bb761bdeb1ec5bb891ef519aae639188b22b4c955813d7"
    },
    {
-    "ts": "2026-11-07T12:30:07+0530",
+    "ts": "2026-11-07T18:51:04+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -6990,11 +6990,11 @@
       ]
      ]
     },
-    "prev_hash": "aa9a55f2f1743153443af9ca85b0d38ada43d97ebae3e3e022f16fcbc33f1535",
-    "hash": "903e8e232be09cf6ba0c145c73a093474a575a20d106a25b8bd5e7a9ba342024"
+    "prev_hash": "8e4e19c5f4938760f5bb761bdeb1ec5bb891ef519aae639188b22b4c955813d7",
+    "hash": "47fda7ef0a667a5f2613c47f4fc3b32c5f4cd0187e19c34fd5b834ad828d9833"
    },
    {
-    "ts": "2026-11-07T12:30:07+0530",
+    "ts": "2026-11-07T18:51:04+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7018,11 +7018,11 @@
       ]
      ]
     },
-    "prev_hash": "903e8e232be09cf6ba0c145c73a093474a575a20d106a25b8bd5e7a9ba342024",
-    "hash": "1ba7b8a2d60957f20f31618656bed048aadbe671942ec70a704ead2ee276e573"
+    "prev_hash": "47fda7ef0a667a5f2613c47f4fc3b32c5f4cd0187e19c34fd5b834ad828d9833",
+    "hash": "21a9f1ce0b5f2126d7aeaa186918c32815819e2031b300e59689f80ed797fc5d"
    },
    {
-    "ts": "2026-11-07T12:30:08+0530",
+    "ts": "2026-11-07T18:51:05+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7046,11 +7046,11 @@
       ]
      ]
     },
-    "prev_hash": "1ba7b8a2d60957f20f31618656bed048aadbe671942ec70a704ead2ee276e573",
-    "hash": "8f6a3a91d3b2f49099cf0916371f553c601a81d0cfcda0e0b5d0f7d265b78855"
+    "prev_hash": "21a9f1ce0b5f2126d7aeaa186918c32815819e2031b300e59689f80ed797fc5d",
+    "hash": "5782d888a32aa05b8d40ec201c0a18b4918f83cc674f0565c02b9224d0c51f45"
    },
    {
-    "ts": "2026-11-07T12:30:08+0530",
+    "ts": "2026-11-07T18:51:05+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7124,11 +7124,11 @@
       ]
      ]
     },
-    "prev_hash": "8f6a3a91d3b2f49099cf0916371f553c601a81d0cfcda0e0b5d0f7d265b78855",
-    "hash": "3d39e5d1572ca4cf4ee0f208aba96ae79c5f8d80dca2149866510e188dbddb18"
+    "prev_hash": "5782d888a32aa05b8d40ec201c0a18b4918f83cc674f0565c02b9224d0c51f45",
+    "hash": "30afb573b6fab7af0599871df25b4a696abc26808c193c432f5493e03bf05fcd"
    },
    {
-    "ts": "2026-11-07T12:30:08+0530",
+    "ts": "2026-11-07T18:51:06+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7163,11 +7163,11 @@
       ]
      ]
     },
-    "prev_hash": "3d39e5d1572ca4cf4ee0f208aba96ae79c5f8d80dca2149866510e188dbddb18",
-    "hash": "0bd5414dafe529ceb7475a7bd98bad157978b15af502a83982b34642ddfc929d"
+    "prev_hash": "30afb573b6fab7af0599871df25b4a696abc26808c193c432f5493e03bf05fcd",
+    "hash": "6e3cb9e1381ed2970bda68597949d7dc5e885ffa477fcbcffb77e9aa4451b200"
    },
    {
-    "ts": "2026-11-07T12:30:09+0530",
+    "ts": "2026-11-07T18:51:07+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7261,11 +7261,11 @@
       ]
      ]
     },
-    "prev_hash": "0bd5414dafe529ceb7475a7bd98bad157978b15af502a83982b34642ddfc929d",
-    "hash": "87ef57e0bc40de871df0b7700eea6812200b17041be114f433a011212a315904"
+    "prev_hash": "6e3cb9e1381ed2970bda68597949d7dc5e885ffa477fcbcffb77e9aa4451b200",
+    "hash": "bd15c22452c8b8ff7cac12857e25f1e88fc6b500153e43f2e22822a6a82f6943"
    },
    {
-    "ts": "2026-11-07T12:30:09+0530",
+    "ts": "2026-11-07T18:51:09+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7359,11 +7359,11 @@
       ]
      ]
     },
-    "prev_hash": "87ef57e0bc40de871df0b7700eea6812200b17041be114f433a011212a315904",
-    "hash": "57d13f5319f8e3b3488ca2a6aea63d7bbb3d23d710d01079150030e8c1c545c0"
+    "prev_hash": "bd15c22452c8b8ff7cac12857e25f1e88fc6b500153e43f2e22822a6a82f6943",
+    "hash": "cbd005fc5d557b20667345b094d3028c06afea94e96765b8682e57f667d87ae4"
    },
    {
-    "ts": "2026-11-07T12:30:10+0530",
+    "ts": "2026-11-07T18:51:09+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7387,11 +7387,11 @@
       ]
      ]
     },
-    "prev_hash": "57d13f5319f8e3b3488ca2a6aea63d7bbb3d23d710d01079150030e8c1c545c0",
-    "hash": "be7cc1650c695ccb35131e049300a57e7b1b6dad6f0da5623bb59914f6398198"
+    "prev_hash": "cbd005fc5d557b20667345b094d3028c06afea94e96765b8682e57f667d87ae4",
+    "hash": "67aa65e8c870f4624deb924c94e1975b1e20831d974ddb15c3d9ee87f40e4a1b"
    },
    {
-    "ts": "2026-11-07T12:30:10+0530",
+    "ts": "2026-11-07T18:51:09+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7415,11 +7415,11 @@
       ]
      ]
     },
-    "prev_hash": "be7cc1650c695ccb35131e049300a57e7b1b6dad6f0da5623bb59914f6398198",
-    "hash": "53a989c7db66f2d73be978bec38c17dc79879be200caf7036615f97875bd1c95"
+    "prev_hash": "67aa65e8c870f4624deb924c94e1975b1e20831d974ddb15c3d9ee87f40e4a1b",
+    "hash": "90f11dc332aa6983f689be136024a718fe1cb56e7e119a6609db317e505cad12"
    },
    {
-    "ts": "2026-11-07T12:30:10+0530",
+    "ts": "2026-11-07T18:51:10+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7443,11 +7443,11 @@
       ]
      ]
     },
-    "prev_hash": "53a989c7db66f2d73be978bec38c17dc79879be200caf7036615f97875bd1c95",
-    "hash": "b6a8dd592916355c11a72a57d6c7f5a36a4ac9f231b9abb04b84685df4c1a28a"
+    "prev_hash": "90f11dc332aa6983f689be136024a718fe1cb56e7e119a6609db317e505cad12",
+    "hash": "79af4600ddb3c20b0f9f7cf450a2403fad283e57d4cca7a1eb4ba6e360254c6b"
    },
    {
-    "ts": "2026-11-07T12:30:10+0530",
+    "ts": "2026-11-07T18:51:10+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7515,11 +7515,11 @@
       ]
      ]
     },
-    "prev_hash": "b6a8dd592916355c11a72a57d6c7f5a36a4ac9f231b9abb04b84685df4c1a28a",
-    "hash": "c73617ee6924d586433f2dbfb2ead4f18f0c60c203e0da3fb00641bcc23d45e6"
+    "prev_hash": "79af4600ddb3c20b0f9f7cf450a2403fad283e57d4cca7a1eb4ba6e360254c6b",
+    "hash": "61a3b1611b307d56b10fef12c3e0a38674a7243044c4e362601fcf9e9683e830"
    },
    {
-    "ts": "2026-11-07T12:30:10+0530",
+    "ts": "2026-11-07T18:51:11+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7541,11 +7541,11 @@
       ]
      ]
     },
-    "prev_hash": "c73617ee6924d586433f2dbfb2ead4f18f0c60c203e0da3fb00641bcc23d45e6",
-    "hash": "7403e24e7f097f812ae9ae49f039a4e757999d831e5b3bdb31dac22515a79538"
+    "prev_hash": "61a3b1611b307d56b10fef12c3e0a38674a7243044c4e362601fcf9e9683e830",
+    "hash": "8ef2c3227b7eb72d86eb060a7429cf9bbc57dccb8b3961801d0414722b30278c"
    },
    {
-    "ts": "2026-11-07T12:30:10+0530",
+    "ts": "2026-11-07T18:51:11+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7629,11 +7629,11 @@
       ]
      ]
     },
-    "prev_hash": "7403e24e7f097f812ae9ae49f039a4e757999d831e5b3bdb31dac22515a79538",
-    "hash": "888d0656f8911e0ea538e467386bb1581568a62d1788554e60c6e3204506b9e4"
+    "prev_hash": "8ef2c3227b7eb72d86eb060a7429cf9bbc57dccb8b3961801d0414722b30278c",
+    "hash": "c2ea6f0ee4b722848569ad57bfac7d43f9833083b49c62e21f53d87420887f13"
    },
    {
-    "ts": "2026-11-07T12:30:11+0530",
+    "ts": "2026-11-07T18:51:12+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7717,11 +7717,11 @@
       ]
      ]
     },
-    "prev_hash": "888d0656f8911e0ea538e467386bb1581568a62d1788554e60c6e3204506b9e4",
-    "hash": "bca3adf8e6683764e64f5d88c69de6a3d781088ce9e485d95c5dbc26c67f87ea"
+    "prev_hash": "c2ea6f0ee4b722848569ad57bfac7d43f9833083b49c62e21f53d87420887f13",
+    "hash": "46c94d71fe9df21646230ebcb61a1338b0907870195592aeada6b90034ce9773"
    },
    {
-    "ts": "2026-11-07T12:30:11+0530",
+    "ts": "2026-11-07T18:51:12+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7753,11 +7753,11 @@
       ]
      ]
     },
-    "prev_hash": "bca3adf8e6683764e64f5d88c69de6a3d781088ce9e485d95c5dbc26c67f87ea",
-    "hash": "dadbd90ccf389d409f4019859526d17e23b388cc3078034c6baae0d207c452d5"
+    "prev_hash": "46c94d71fe9df21646230ebcb61a1338b0907870195592aeada6b90034ce9773",
+    "hash": "2548b415aca397ca7739c102d600f8331e0eb2748f2966419b846566113115be"
    },
    {
-    "ts": "2026-11-07T12:30:11+0530",
+    "ts": "2026-11-07T18:51:12+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7791,11 +7791,11 @@
       ]
      ]
     },
-    "prev_hash": "dadbd90ccf389d409f4019859526d17e23b388cc3078034c6baae0d207c452d5",
-    "hash": "2be1c94bfe3fd60a2c3fbc960671705c2dee84e2345079ad03ad717ca7143832"
+    "prev_hash": "2548b415aca397ca7739c102d600f8331e0eb2748f2966419b846566113115be",
+    "hash": "e54160a696c4353925c97d86117cf6ad76e0a1c17959b2f843da471e1954e549"
    },
    {
-    "ts": "2026-11-07T12:30:11+0530",
+    "ts": "2026-11-07T18:51:13+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7839,11 +7839,11 @@
       ]
      ]
     },
-    "prev_hash": "2be1c94bfe3fd60a2c3fbc960671705c2dee84e2345079ad03ad717ca7143832",
-    "hash": "f13b8879f898ebe2242531942ac47b1617f996365f270add7e7287fccdc6650b"
+    "prev_hash": "e54160a696c4353925c97d86117cf6ad76e0a1c17959b2f843da471e1954e549",
+    "hash": "47d3aa51e70da1c8c1dc27caf537f2640f01d89af74839a3062bde26bbea0462"
    },
    {
-    "ts": "2026-11-07T12:30:11+0530",
+    "ts": "2026-11-07T18:51:13+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7865,11 +7865,11 @@
       ]
      ]
     },
-    "prev_hash": "f13b8879f898ebe2242531942ac47b1617f996365f270add7e7287fccdc6650b",
-    "hash": "869e4980305f719fd4ec62d6fe5756d580d98e72ce67eeb7c9b07c43b0720c2d"
+    "prev_hash": "47d3aa51e70da1c8c1dc27caf537f2640f01d89af74839a3062bde26bbea0462",
+    "hash": "06c55968a921592a7ab5ec222ce48790bb9c3999a3f61ec9516fad870bf0314e"
    },
    {
-    "ts": "2026-11-07T12:30:11+0530",
+    "ts": "2026-11-07T18:51:13+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7891,11 +7891,11 @@
       ]
      ]
     },
-    "prev_hash": "869e4980305f719fd4ec62d6fe5756d580d98e72ce67eeb7c9b07c43b0720c2d",
-    "hash": "d9ccf446ef444881d08143b81f0f9caeec3997c250a40f40895267928f06a666"
+    "prev_hash": "06c55968a921592a7ab5ec222ce48790bb9c3999a3f61ec9516fad870bf0314e",
+    "hash": "8ea7071c4475768484a6481d190997b8bf4c5e8d17ec582e6c95a91d38865b2d"
    },
    {
-    "ts": "2026-11-07T12:30:12+0530",
+    "ts": "2026-11-07T18:51:14+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7963,11 +7963,11 @@
       ]
      ]
     },
-    "prev_hash": "d9ccf446ef444881d08143b81f0f9caeec3997c250a40f40895267928f06a666",
-    "hash": "308f6eef1fc88da1ce2b5c1aa066ceb8a859fa2cfde92a395c94a131f67ee96d"
+    "prev_hash": "8ea7071c4475768484a6481d190997b8bf4c5e8d17ec582e6c95a91d38865b2d",
+    "hash": "06c9d9d20a740ecee4b56ddc00ce1797077db3da348ad67155e0d8082596bce2"
    },
    {
-    "ts": "2026-11-07T12:30:12+0530",
+    "ts": "2026-11-07T18:51:14+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -7989,11 +7989,11 @@
       ]
      ]
     },
-    "prev_hash": "308f6eef1fc88da1ce2b5c1aa066ceb8a859fa2cfde92a395c94a131f67ee96d",
-    "hash": "1fc4c7b6cd7acd4fd81cd3779370973a52400a17f0fb902a76eba19f32fe0b2f"
+    "prev_hash": "06c9d9d20a740ecee4b56ddc00ce1797077db3da348ad67155e0d8082596bce2",
+    "hash": "2f6b1bc24923f10d449f5a486401aa30274ab5cdff6418943fffee13b9a8dedc"
    },
    {
-    "ts": "2026-11-07T12:30:12+0530",
+    "ts": "2026-11-07T18:51:14+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -8015,11 +8015,11 @@
       ]
      ]
     },
-    "prev_hash": "1fc4c7b6cd7acd4fd81cd3779370973a52400a17f0fb902a76eba19f32fe0b2f",
-    "hash": "6d9303a0724c60e3ece8c5af103dad5d91380724c9aaac3a1dc769c7ed5a590c"
+    "prev_hash": "2f6b1bc24923f10d449f5a486401aa30274ab5cdff6418943fffee13b9a8dedc",
+    "hash": "9773d9e2b9aa8c4318c6a2d5bfeee361c3faaae1d6d25d405fdd353349605cf1"
    },
    {
-    "ts": "2026-11-07T12:30:12+0530",
+    "ts": "2026-11-07T18:51:14+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -8041,11 +8041,11 @@
       ]
      ]
     },
-    "prev_hash": "6d9303a0724c60e3ece8c5af103dad5d91380724c9aaac3a1dc769c7ed5a590c",
-    "hash": "2a0091bd92ecc9e84c1a518d7b107c87f56b85b46ea280a79717b686fbf8bab6"
+    "prev_hash": "9773d9e2b9aa8c4318c6a2d5bfeee361c3faaae1d6d25d405fdd353349605cf1",
+    "hash": "34efff8c049d2d05b44ee76b0217ef3fcd424130a367ed7626874584d471397c"
    },
    {
-    "ts": "2026-11-07T12:30:12+0530",
+    "ts": "2026-11-07T18:51:14+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "finding_recorded",
     "payload": {
@@ -8067,30 +8067,30 @@
       ]
      ]
     },
-    "prev_hash": "2a0091bd92ecc9e84c1a518d7b107c87f56b85b46ea280a79717b686fbf8bab6",
-    "hash": "0da1469205c27ba2555c11b4a6df477ca24d4035502d4f3fed0fd446657f46e9"
+    "prev_hash": "34efff8c049d2d05b44ee76b0217ef3fcd424130a367ed7626874584d471397c",
+    "hash": "24a376699cb18506c4fc1fd6c1ea13a5c23c241f320ca9ac4033cd0664f48a39"
    },
    {
-    "ts": "2026-11-07T12:30:12+0530",
+    "ts": "2026-11-07T18:51:14+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "stage",
     "payload": {
      "stage": "Investigation dossier",
      "note": ""
     },
-    "prev_hash": "0da1469205c27ba2555c11b4a6df477ca24d4035502d4f3fed0fd446657f46e9",
-    "hash": "fce8ccd5556c6ec9af7de17fa6e4ccb2773428648ddf3864dab7904c317262ea"
+    "prev_hash": "24a376699cb18506c4fc1fd6c1ea13a5c23c241f320ca9ac4033cd0664f48a39",
+    "hash": "06788f48d21e6026f7661b8794f63decfc4b8b6007eaded78870cb48bd7af152"
    },
    {
-    "ts": "2026-11-07T12:30:12+0530",
+    "ts": "2026-11-07T18:51:14+0530",
     "case_id": "DEMO-TAMPERED",
     "event": "dossier_generated",
     "payload": {
      "n_findings": 21,
-     "seconds": 24.1
+     "seconds": 54.3
     },
-    "prev_hash": "fce8ccd5556c6ec9af7de17fa6e4ccb2773428648ddf3864dab7904c317262ea",
-    "hash": "5b58cd15a4e052f9571dabc49f80fa8fd4fb554e1a58d577e0badc829f4bf5b5"
+    "prev_hash": "06788f48d21e6026f7661b8794f63decfc4b8b6007eaded78870cb48bd7af152",
+    "hash": "3eb44f819fe8e7dd79279e351c2bb00bfcd8c1a7a76347bca07686e7ecc0dbe7"
    }
   ]
  },

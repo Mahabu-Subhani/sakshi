@@ -17,7 +17,7 @@
 | Scan-clone detection between documents (paper-grain correlation after alignment) | Implemented (v1.0) |
 | Statutory payroll rules (employee PF, Karnataka professional tax) | Implemented (v1.0); other states' PT not encoded |
 | Income triangulation with witness impeachment | Implemented (v1.0) |
-| Cross-case memory (photo pHash, identifiers, file hashes, signature grids) | Implemented (v1.0), local JSON on one machine |
+| Cross-case memory (photo pHash, identifiers, file hashes, signature grids) | Implemented (v1.0), local JSON on one machine; safe with several writers on that machine (v1.0.5), not shared between machines |
 | Noise consistency, copy-move on digits, digit typography, layout rhythm | Implemented for scans; declared not applicable on born-digital renders |
 | Copy-move of large regions (logos, stamps, whole rows) | Planned |
 | Signature detection and identity | Implemented for blue ink anywhere on the page; black ink **partial**: found only just above a readable signature caption (a signature drawn over its own caption is not found) |

@@ -52,7 +52,8 @@ def _crop(page_img_path: str, bbox, out: Path, color=(40, 40, 230)):
 
 def _portable(text: str, out: Path) -> str:
     """dossier.json stores paths relative to the case folder, so a shared dossier leaks no local paths."""
-    for pre in {str(out.resolve()) + "/", str(out) + "/"}:
+    # both separators: on Windows the case folder is written with backslashes, and those paths leaked before
+    for pre in {base + sep for base in (str(out.resolve()), str(out)) for sep in ("/", "\\")}:
         text = text.replace(json.dumps(pre)[1:-1], "")
     return text
 
@@ -279,8 +280,11 @@ def _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, pass
     dossier["document_assessments"] = [f.to_dict() for f in assessments]
     dossier["cross_case"] = {"enabled": bool(reg), "prior_cases": len(reg.data["cases"]) if reg else 0}
     if reg and fp:
-        reg.register(fp)
-        audit.log("case_registered", registry=str(registry_path))
+        try:
+            reg.register(fp)
+            audit.log("case_registered", registry=str(registry_path))
+        except Exception as e:  # the investigation stands; only remembering it for later cases failed
+            audit.log("case_not_registered", registry=str(registry_path), error=str(e))
     (out / "dossier.json").write_text(_portable(json.dumps(dossier, indent=1, default=str), out))
     audit.log("dossier_generated", n_findings=len(findings), seconds=round(time.time() - t0, 1))
     dossier["audit"]["records"] = audit.records()

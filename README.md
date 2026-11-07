@@ -139,6 +139,7 @@ python tests/run_redteam.py               # red-team cases and genuine look-alik
 python tests/forgery_lab.py --seeds 2     # forgery recipes on fresh documents + genuine re-scans
 python tests/run_long_statement.py        # 13-page statement edited on page 8, and a locked copy
 python tests/run_registry_chain.py        # every case back to back into one cross-case memory
+python tests/run_registry_lock.py         # eight cases written to the memory at the same moment
 python tests/run_console_worker.py        # the console's isolated worker
 python tests/run_extraction_accuracy.py   # field-level extraction accuracy against ground truth
 python tests/run_signatures.py            # black-ink signatures: detection, identity, no false signatures
