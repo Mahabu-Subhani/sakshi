@@ -1,6 +1,10 @@
 # Changelog
 
 ## 1.0.5
+* Project page (GitHub Pages, `index.html`): the demo video plays in the browser and the sample dossiers open as web pages; GitHub itself only offers the video as a download and shows the dossiers as source. The README links point there.
+* `python -m sakshi demo` and `python -m sakshi redteam` investigate the published documents as they are. They used to rebuild them first with the local machine's fonts, which overwrote tracked files and could change the counts (on one clean machine the genuine control became "REVIEW: 2 inconsistencies"). `--regenerate` rebuilds them on purpose.
+* The README states the Docker results: Tesseract 5.5 reads one IFSC character differently, which adds two explained observations.
+* `LICENSE` is the plain MIT text again, so GitHub recognises it; the note on PyMuPDF's AGPL licence stays in the README.
 * Cross-case memory is safe with several writers: a case is registered under a lock file, against a fresh read of the memory, and written atomically. Before, two cases saved at the same moment could overwrite each other (4 of 8 concurrent cases were lost in the new test), and an unreadable memory file was replaced by an empty one; it is now left untouched and the case notes that it was not remembered. New test: `run_registry_lock.py`.
 * The optional narrator sends the Gemini key in the `x-goog-api-key` header instead of the URL, so it cannot appear in proxy or error logs.
 * The innocent-explanation catalogue now describes the OCR-misread test the way the code applies it: low OCR confidence **and** a one-character difference. Detection is unchanged.

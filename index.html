@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAKSHI · evidence-first document forensics</title>
+<meta name="description" content="SAKSHI reads every document in a loan application, cross-examines them against each other and shows the exact evidence. Demo video, sample investigation dossiers and source code.">
+<style>
+  :root {
+    --navy: #051C2C; --ink: #F2F5F8; --muted: #8FA3B5; --accent: #00A9F4;
+    --page: #F7F9FB; --text: #051C2C; --text-muted: #5C6B7A; --link: #2251FF; --line: #D5DEE8; --card: #FFFFFF;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --page: #0B2233; --text: #F2F5F8; --text-muted: #9FB2C3; --link: #4FC3FF; --line: #24435A; --card: #10293C; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--page); color: var(--text);
+         font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
+  a { color: var(--link); }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+  header { background: var(--navy); color: var(--ink); padding: 56px 0 48px; }
+  .bar { width: 72px; height: 5px; background: var(--accent); margin-bottom: 24px; }
+  h1 { font: 600 64px/1 Georgia, "Times New Roman", serif; margin: 0 0 12px; letter-spacing: -1px; }
+  .tag { font-family: ui-monospace, Consolas, monospace; color: var(--muted); margin: 0 0 20px; }
+  .lede { font: italic 24px/1.35 Georgia, serif; color: #DCE6F0; max-width: 760px; margin: 0 0 28px; }
+  .links { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn { display: inline-block; padding: 10px 18px; border: 2px solid var(--accent); color: var(--ink);
+         text-decoration: none; font-weight: 600; border-radius: 4px; }
+  .btn.primary { background: var(--accent); color: var(--navy); }
+  section { padding: 44px 0 8px; }
+  h2 { font: 600 32px/1.15 Georgia, serif; margin: 0 0 8px; }
+  .sub { color: var(--text-muted); margin: 0 0 20px; max-width: 760px; }
+  video { width: 100%; border-radius: 6px; background: #000; display: block; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 19px; }
+  .card p { margin: 0 0 12px; color: var(--text-muted); font-size: 15px; }
+  .counts { font-family: ui-monospace, Consolas, monospace; font-size: 14px; color: var(--text); margin-bottom: 12px; }
+  pre { background: var(--navy); color: var(--ink); padding: 16px 18px; border-radius: 6px; overflow-x: auto;
+        font: 14px/1.6 ui-monospace, Consolas, monospace; }
+  footer { padding: 36px 0 48px; color: var(--text-muted); font-size: 14px; }
+  @media (max-width: 600px) { h1 { font-size: 46px; } .lede { font-size: 20px; } }
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="bar"></div>
+    <h1>SAKSHI</h1>
+    <p class="tag">साक्षी · Hindi for <i>witness</i> · offline · CPU only · MIT licence</p>
+    <p class="lede">It doesn’t ask whether a document looks fake. It asks what the documents would have to say for every rule to hold, and shows the evidence. It never says “fraud”: a human decides.</p>
+    <div class="links">
+      <a class="btn primary" href="#demo">Watch the demo</a>
+      <a class="btn" href="#samples">Open a sample dossier</a>
+      <a class="btn" href="https://github.com/Mahabu-Subhani/sakshi">Source code on GitHub</a>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section id="demo">
+    <h2>Demo video · 3:58</h2>
+    <p class="sub">Recorded on SAKSHI 1.0.4, captioned, no voice-over. The full brief checklist on a tampered loan file, then a genuine case with a deliberately damaged file, an identity ring caught across cases, an overlay peel and a hidden instruction.</p>
+    <video controls preload="metadata" poster="docs/assets/console.png">
+      <source src="docs/demo/SAKSHI_demo.mp4" type="video/mp4">
+      Your browser cannot play this video. <a href="docs/demo/SAKSHI_demo.mp4">Download it (25 MB)</a>.
+    </video>
+  </section>
+
+  <section id="samples">
+    <h2>Sample investigation dossiers</h2>
+    <p class="sub">Real SAKSHI output on synthetic, clearly labelled specimens. Each dossier is one self-contained page: click a finding to see its box on the original document.</p>
+    <div class="cards">
+      <div class="card">
+        <h3>Tampered application</h3>
+        <p>Net pay 68,500 shown as 86,500, an EMI hidden on the statement, a white-out on the form.</p>
+        <div class="counts">7 potential manipulation · 11 inconsistencies · 3 observations</div>
+        <a href="samples/DEMO-TAMPERED_dossier.html">Open the dossier</a>
+      </div>
+      <div class="card">
+        <h3>Genuine control</h3>
+        <p>The same applicant’s honest documents: nothing breaks a rule, and SAKSHI says so without calling it proof.</p>
+        <div class="counts">0 potential manipulation · 0 inconsistencies · 1 observation</div>
+        <a href="samples/DEMO-GENUINE_dossier.html">Open the dossier</a>
+      </div>
+      <div class="card">
+        <h3>Red team RT8 · PDF editor</h3>
+        <p>A scanned payslip edited in a PDF editor: the reader sees 88,500, the scan underneath says 68,500.</p>
+        <div class="counts">5 potential manipulation · 1 inconsistency · 1 observation</div>
+        <a href="samples/RT8-SCANNED-PDF-EDITOR_dossier.html">Open the dossier</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="run">
+    <h2>Run it yourself</h2>
+    <p class="sub">With Docker, nothing else to install. The review console opens at <code>http://localhost:8501</code>; pick a demo case and press Investigate.</p>
+<pre>git clone https://github.com/Mahabu-Subhani/sakshi.git
+cd sakshi
+docker build -t sakshi .
+docker run --rm -p 8501:8501 sakshi</pre>
+    <p class="sub">Without Docker, see the <a href="https://github.com/Mahabu-Subhani/sakshi#quick-start">quick start</a>. Results, limitations and the technical design are in the <a href="https://github.com/Mahabu-Subhani/sakshi#results">README</a> and <a href="https://github.com/Mahabu-Subhani/sakshi/tree/main/docs">docs</a>.</p>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">SAKSHI · built for the DataOps Innovation Hackathon problem <i>AI-Powered Document Forensics and Contextual Intelligence System</i> · MIT licence</div>
+</footer>
+</body>
+</html>

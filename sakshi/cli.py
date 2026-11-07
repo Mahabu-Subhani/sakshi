@@ -1,8 +1,8 @@
 """Command line interface.
 
-  python -m sakshi demo                         generate the demo dataset and investigate both cases
+  python -m sakshi demo [--regenerate]          investigate both demo cases (the documents in dataset/cases)
   python -m sakshi run FILE [FILE ...] --out DIR [--case-id ID] [--lang eng+hin] [--memory registry.json] [--password PW ...]
-  python -m sakshi redteam                      build the red-team cases and score SAKSHI on them
+  python -m sakshi redteam [--regenerate]       score SAKSHI on the red-team cases (the documents in dataset/redteam)
   python -m sakshi verify-audit DIR/audit.jsonl
 """
 from __future__ import annotations
@@ -28,6 +28,10 @@ def _report(d):
         print(f"  - [{t['tier']}] {t['title'][:150]}")
 
 
+def _has_docs(case_dir: Path) -> bool:
+    return case_dir.is_dir() and any(case_dir.glob("0*"))
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="sakshi", description="SAKSHI document forensics")
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -39,8 +43,13 @@ def main(argv=None):
     r.add_argument("--memory", help="cross-case memory file (remembers fingerprints of earlier cases)")
     r.add_argument("--password", action="append", default=[],
                    help="password for a locked PDF (repeat for several); tried on every locked PDF, never stored")
-    sub.add_parser("redteam", help="build the red-team cases and score SAKSHI on them")
-    sub.add_parser("demo", help="generate the demo dataset and investigate both cases")
+    regen = ("--regenerate", {"action": "store_true",
+                              "help": "rebuild the documents with this machine's fonts and libraries first "
+                                      "(results can then differ slightly from the published ones)"})
+    rt = sub.add_parser("redteam", help="score SAKSHI on the red-team cases")
+    rt.add_argument(regen[0], **regen[1])
+    dm = sub.add_parser("demo", help="investigate both demo cases")
+    dm.add_argument(regen[0], **regen[1])
     v = sub.add_parser("verify-audit", help="verify a hash-chained audit log")
     v.add_argument("path")
     a = ap.parse_args(argv)
@@ -52,7 +61,11 @@ def main(argv=None):
         _report(d)
         print(f"\nDossier: {Path(a.out) / 'dossier.html'}")
     elif a.cmd == "demo":
-        subprocess.run([sys.executable, str(ROOT / "dataset" / "generate.py")], check=True)
+        # the published documents are used as they are, so everyone investigates the same files; rebuilding them
+        # draws them with this machine's fonts, which can change OCR and therefore the counts
+        cases = ROOT / "dataset" / "cases"
+        if a.regenerate or not all(_has_docs(cases / c) for c in ("case_tampered", "case_genuine")):
+            subprocess.run([sys.executable, str(ROOT / "dataset" / "generate.py")], check=True)
         for case, cid in (("case_tampered", "DEMO-TAMPERED"), ("case_genuine", "DEMO-GENUINE")):
             files = sorted(str(p) for p in (ROOT / "dataset" / "cases" / case).glob("0*"))
             print(f"\n== {cid}")
@@ -60,9 +73,11 @@ def main(argv=None):
             _report(d)
             print(f"  Dossier: {ROOT / 'out' / case / 'dossier.html'}")
     elif a.cmd == "redteam":
-        if not (ROOT / "dataset" / "cases" / "case_genuine").exists():
+        if a.regenerate or not _has_docs(ROOT / "dataset" / "cases" / "case_genuine"):
             subprocess.run([sys.executable, str(ROOT / "dataset" / "generate.py")], check=True)
-        subprocess.run([sys.executable, str(ROOT / "dataset" / "redteam.py")], check=True)
+        rdir = ROOT / "dataset" / "redteam"
+        if a.regenerate or not any(_has_docs(d) for d in rdir.glob("*") if d.is_dir() and not d.name.startswith("_")):
+            subprocess.run([sys.executable, str(ROOT / "dataset" / "redteam.py")], check=True)
         subprocess.run([sys.executable, str(ROOT / "tests" / "run_redteam.py")], check=True)
     elif a.cmd == "verify-audit":
         from .audit import AuditLog
