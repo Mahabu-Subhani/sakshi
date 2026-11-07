@@ -7,6 +7,7 @@ pipeline run stage by stage, then review findings in the interactive dossier.
 """
 from __future__ import annotations
 
+import re
 import shutil
 import tempfile
 import time
@@ -115,7 +116,9 @@ if "last" in st.session_state:
     m4.metric("Processing time", f"{d['processing_seconds']} s")
     if d["rejected"]:
         for r in d["rejected"]:
-            st.error(r['reason'] if r['reason'].startswith(r['file']) else f"{r['file']}: {r['reason']}")
+            reason = r["reason"].removeprefix(f"{r['file']}: ")
+            reason = re.sub(r"\s*\([A-Za-z]+Error\)$", "", reason)  # the exception class is kept in the audit trail
+            st.warning(f"**Skipped {r['file']}**: {reason}. The other documents were analysed as normal.", icon="⚠️")
     with st.expander("What each sensor could and could not check on these documents"):
         for doc in d["documents"]:
             st.write(f"**{doc['filename']}** ({doc['type_label']}, {doc['modality'].replace('_', ' ')})")
