@@ -12,6 +12,7 @@ perceptual hash of each ID-card photo, and a coarse stroke-density grid of each 
 from __future__ import annotations
 
 import json
+import os
 import time
 from pathlib import Path
 
@@ -250,10 +251,58 @@ class Registry:
     def register(self, fp: dict):
         # a re-run keeps the case's original position: registration order is "who held it first"
         rec = {k: v for k, v in fp.items() if k != "refs"}
-        ids = [c["case_id"] for c in self.data["cases"]]
-        if fp["case_id"] in ids:
-            self.data["cases"][ids.index(fp["case_id"])] = rec
-        else:
-            self.data["cases"].append(rec)
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(json.dumps(self.data, indent=1, default=str))
+        with _FileLock(self.path.with_name(self.path.name + ".lock")):
+            # re-read under the lock: another process (console worker, command line) may have registered a case
+            # since this one was loaded, and its entry must not be overwritten
+            if self.path.exists():
+                try:
+                    self.data = json.loads(self.path.read_text())
+                except Exception:
+                    raise RuntimeError(f"cross-case memory {self.path} is unreadable; it was left untouched") from None
+            ids = [c["case_id"] for c in self.data["cases"]]
+            if fp["case_id"] in ids:
+                self.data["cases"][ids.index(fp["case_id"])] = rec
+            else:
+                self.data["cases"].append(rec)
+            tmp = self.path.with_name(self.path.name + f".{os.getpid()}.tmp")
+            tmp.write_text(json.dumps(self.data, indent=1, default=str))
+            for attempt in range(20):  # atomic swap: a reader never sees a half-written file
+                try:
+                    os.replace(tmp, self.path)
+                    break
+                except PermissionError:  # Windows: a reader has the file open for a moment
+                    if attempt == 19:
+                        tmp.unlink(missing_ok=True)
+                        raise
+                    time.sleep(0.05)
+
+
+class _FileLock:
+    """Cross-process lock using an exclusively created lock file (no extra dependency). A lock older than
+    `stale` seconds is treated as left behind by a crashed process and removed."""
+
+    def __init__(self, path: Path, timeout: float = 30.0, stale: float = 120.0):
+        self.path, self.timeout, self.stale = path, timeout, stale
+
+    def __enter__(self):
+        deadline = time.monotonic() + self.timeout
+        while True:
+            try:
+                fd = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+                os.write(fd, str(os.getpid()).encode())
+                os.close(fd)
+                return self
+            except FileExistsError:
+                try:
+                    if time.time() - self.path.stat().st_mtime > self.stale:
+                        self.path.unlink(missing_ok=True)
+                        continue
+                except FileNotFoundError:
+                    continue
+                if time.monotonic() > deadline:
+                    raise TimeoutError(f"cross-case memory is locked by another process ({self.path})")
+                time.sleep(0.05)
+
+    def __exit__(self, *exc):
+        self.path.unlink(missing_ok=True)

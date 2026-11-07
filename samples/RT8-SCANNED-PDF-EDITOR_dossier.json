@@ -1,8 +1,8 @@
 {
  "case_id": "RT8-SCANNED-PDF-EDITOR",
- "generated_at": "2026-11-07 12:31:06 +0530",
- "sakshi_version": "1.0.3",
- "processing_seconds": 21.4,
+ "generated_at": "2026-11-07 18:52:57 +0530",
+ "sakshi_version": "1.0.5",
+ "processing_seconds": 43.9,
  "status": "REFER: corroborated anomalies need human review",
  "counts": {
   "potential_manipulation": 5,
@@ -37,7 +37,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\rt8\\pages\\D1_p0.png",
+     "image": "pages\\D1_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": 0.3,
@@ -513,7 +513,7 @@
     "scan_overlays": [
      {
       "page": 0,
-      "base_image": "out\\readme\\rt8\\pages\\D1_p0_scan_underneath.png",
+      "base_image": "pages\\D1_p0_scan_underneath.png",
       "objects": [
        {
         "kind": "text",
@@ -563,7 +563,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\rt8\\evidence\\D1_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D1_p0_noise.jpg"
     },
     "overlay_regions": [
      {
@@ -595,7 +595,7 @@
        1491.0,
        1383.0
       ],
-      "crop": "out\\readme\\rt8\\evidence\\D1_p0_sig0.png"
+      "crop": "evidence\\D1_p0_sig0.png"
      }
     ]
    },
@@ -645,7 +645,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\rt8\\pages\\D2_p0.png",
+     "image": "pages\\D2_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": 0.2,
@@ -1486,7 +1486,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\rt8\\evidence\\D2_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D2_p0_noise.jpg"
     },
     "signatures": [
      {
@@ -1497,7 +1497,7 @@
        840.0,
        171.0
       ],
-      "crop": "out\\readme\\rt8\\evidence\\D2_p0_sig0.png"
+      "crop": "evidence\\D2_p0_sig0.png"
      }
     ],
     "recurring": {
@@ -1554,7 +1554,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\rt8\\pages\\D3_p0.png",
+     "image": "pages\\D3_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": 0.3,
@@ -1960,7 +1960,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\rt8\\evidence\\D3_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D3_p0_noise.jpg"
     },
     "signatures": [
      {
@@ -1971,7 +1971,7 @@
        406.0,
        1799.0
       ],
-      "crop": "out\\readme\\rt8\\evidence\\D3_p0_sig0.png"
+      "crop": "evidence\\D3_p0_sig0.png"
      }
     ]
    },
@@ -2018,7 +2018,7 @@
      ],
      "note": "drawn over the scan: '88,500.00'",
      "kind": "peel",
-     "crop": "out\\readme\\rt8\\evidence\\D1_p0_peel_1.jpg",
+     "crop": "evidence\\D1_p0_peel_1.jpg",
      "value": "88,500.00"
     },
     {
@@ -2032,7 +2032,7 @@
      ],
      "note": "region as submitted",
      "kind": "region",
-     "crop": "out\\readme\\rt8\\evidence\\F003_1.jpg",
+     "crop": "evidence\\F003_1.jpg",
      "value": "88,500.00"
     }
    ],
@@ -2095,7 +2095,7 @@
      ],
      "note": "noise 0.8 vs 6.3",
      "kind": "region",
-     "crop": "out\\readme\\rt8\\evidence\\F001_0.jpg",
+     "crop": "evidence\\F001_0.jpg",
      "value": ""
     }
    ],
@@ -2159,7 +2159,7 @@
      ],
      "note": "value-box noise 0.0 vs 4.7",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F002_0.jpg",
+     "crop": "evidence\\F002_0.jpg",
      "value": "88,500.00"
     }
    ],
@@ -2223,7 +2223,7 @@
      ],
      "note": "reads 88,500.00; consistent value 68,500.00",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F004_0.jpg",
+     "crop": "evidence\\F004_0.jpg",
      "value": "88,500.00"
     },
     {
@@ -2237,7 +2237,7 @@
      ],
      "note": "Gross Earnings [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F004_1.jpg",
+     "crop": "evidence\\F004_1.jpg",
      "value": "76,650.00"
     },
     {
@@ -2251,7 +2251,7 @@
      ],
      "note": "Total Deductions [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F004_2.jpg",
+     "crop": "evidence\\F004_2.jpg",
      "value": "8,150.00"
     },
     {
@@ -2265,7 +2265,7 @@
      ],
      "note": "Credit on 31-10-2026 (SALARY NIMBUS ANALYTICS OCT) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F004_3.jpg",
+     "crop": "evidence\\F004_3.jpg",
      "value": "68,500.00"
     },
     {
@@ -2279,7 +2279,7 @@
      ],
      "note": "Net Pay in words [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F004_4.jpg",
+     "crop": "evidence\\F004_4.jpg",
      "value": "Rupees Sixty Eight Thousand Five Hundred Only"
     },
     {
@@ -2293,7 +2293,7 @@
      ],
      "note": "expected value reconstruction: 68,500.00 (not evidence; for comparison only)",
      "kind": "reconstruction",
-     "crop": "out\\readme\\rt8\\evidence\\F004_recon.jpg",
+     "crop": "evidence\\F004_recon.jpg",
      "value": "68,500.00"
     }
    ],
@@ -2313,7 +2313,7 @@
     },
     {
      "explanation": "OCR misread a digit",
-     "test": "a blamed field has OCR confidence below 0.60, or the repaired value differs from the read value by one character",
+     "test": "a blamed field has OCR confidence below 0.60 and the repaired value differs from the read value by one character",
      "result": "ruled_out",
      "detail": "OCR confidence 0.96; read '88,500.00' vs consistent 68,500.00 (one character apart)"
     },
@@ -2386,7 +2386,7 @@
      ],
      "note": "Salary credit for the pay month in 02_bank_statement_sep_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F007_0.jpg",
+     "crop": "evidence\\F007_0.jpg",
      "value": "68,500.00"
     },
     {
@@ -2400,7 +2400,7 @@
      ],
      "note": "Salary credit of 30-09-2026 (another month) in 02_bank_statement_sep_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F007_1.jpg",
+     "crop": "evidence\\F007_1.jpg",
      "value": "68,500.00"
     },
     {
@@ -2414,7 +2414,7 @@
      ],
      "note": "Value printed on the scanned paper underneath the PDF overlay in 01_payslip_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F007_2.jpg",
+     "crop": "evidence\\F007_2.jpg",
      "value": "68,500.00"
     },
     {
@@ -2428,7 +2428,7 @@
      ],
      "note": "Net Pay on 01_payslip_oct2026.pdf [impeached: this document contradicts itself]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F007_3.jpg",
+     "crop": "evidence\\F007_3.jpg",
      "value": "88,500.00"
     },
     {
@@ -2442,7 +2442,7 @@
      ],
      "note": "Declared income on 03_loan_application_form.jpg (claim)",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F007_4.jpg",
+     "crop": "evidence\\F007_4.jpg",
      "value": "88,500.00"
     }
    ],
@@ -2506,7 +2506,7 @@
      ],
      "note": "reads 88,500.00; consistent value 68,500.00",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F005_0.jpg",
+     "crop": "evidence\\F005_0.jpg",
      "value": "88,500.00"
     },
     {
@@ -2520,7 +2520,7 @@
      ],
      "note": "Gross Earnings [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F005_1.jpg",
+     "crop": "evidence\\F005_1.jpg",
      "value": "76,650.00"
     },
     {
@@ -2534,7 +2534,7 @@
      ],
      "note": "Total Deductions [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F005_2.jpg",
+     "crop": "evidence\\F005_2.jpg",
      "value": "8,150.00"
     },
     {
@@ -2548,7 +2548,7 @@
      ],
      "note": "Net Pay [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F005_3.jpg",
+     "crop": "evidence\\F005_3.jpg",
      "value": "88,500.00"
     },
     {
@@ -2562,7 +2562,7 @@
      ],
      "note": "Net Pay [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F005_4.jpg",
+     "crop": "evidence\\F005_4.jpg",
      "value": "88,500.00"
     },
     {
@@ -2576,7 +2576,7 @@
      ],
      "note": "Credit on 31-10-2026 (SALARY NIMBUS ANALYTICS OCT) [02_bank_statement_sep_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F005_5.jpg",
+     "crop": "evidence\\F005_5.jpg",
      "value": "68,500.00"
     },
     {
@@ -2590,7 +2590,7 @@
      ],
      "note": "Net Pay [01_payslip_oct2026.pdf]",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F005_6.jpg",
+     "crop": "evidence\\F005_6.jpg",
      "value": "88,500.00"
     },
     {
@@ -2604,7 +2604,7 @@
      ],
      "note": "expected value reconstruction: 68,500.00 (not evidence; for comparison only)",
      "kind": "reconstruction",
-     "crop": "out\\readme\\rt8\\evidence\\F005_recon.jpg",
+     "crop": "evidence\\F005_recon.jpg",
      "value": "68,500.00"
     }
    ],
@@ -2625,7 +2625,7 @@
     },
     {
      "explanation": "OCR misread a digit",
-     "test": "a blamed field has OCR confidence below 0.60, or the repaired value differs from the read value by one character",
+     "test": "a blamed field has OCR confidence below 0.60 and the repaired value differs from the read value by one character",
      "result": "ruled_out",
      "detail": "OCR confidence 0.96; read '88,500.00' vs consistent 68,500.00 (one character apart)"
     },
@@ -2692,7 +2692,7 @@
      ],
      "note": "03_loan_application_form.jpg",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F006_0.jpg",
+     "crop": "evidence\\F006_0.jpg",
      "value": "Mohammed Arif Khan"
     },
     {
@@ -2706,7 +2706,7 @@
      ],
      "note": "01_payslip_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F006_1.jpg",
+     "crop": "evidence\\F006_1.jpg",
      "value": "Mohammed Arif Khan"
     },
     {
@@ -2720,7 +2720,7 @@
      ],
      "note": "02_bank_statement_sep_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\rt8\\evidence\\F006_2.jpg",
+     "crop": "evidence\\F006_2.jpg",
      "value": "MOHD ARIF KHAN"
     }
    ],
@@ -4350,7 +4350,7 @@
   "message": "audit chain intact",
   "records": [
    {
-    "ts": "2026-11-07T12:30:44+0530",
+    "ts": "2026-11-07T18:52:13+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
@@ -4358,10 +4358,10 @@
      "note": "3 file(s)"
     },
     "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-    "hash": "5b43bd4c4456853ecb9df079be1b8417b866a238cc460290ca9dd655ee3b6d35"
+    "hash": "71274e026bad2beba72e397cca330cd6fedd7f4682c7a4121076ca7692690f55"
    },
    {
-    "ts": "2026-11-07T12:30:44+0530",
+    "ts": "2026-11-07T18:52:13+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "case_opened",
     "payload": {
@@ -4370,13 +4370,13 @@
       "02_bank_statement_sep_oct2026.pdf",
       "03_loan_application_form.jpg"
      ],
-     "sakshi_version": "1.0.3"
+     "sakshi_version": "1.0.5"
     },
-    "prev_hash": "5b43bd4c4456853ecb9df079be1b8417b866a238cc460290ca9dd655ee3b6d35",
-    "hash": "380d2152baf8a8fca1a184112a5bfc5d7b2ba43d2799363954d8f31f68ade413"
+    "prev_hash": "71274e026bad2beba72e397cca330cd6fedd7f4682c7a4121076ca7692690f55",
+    "hash": "9507908944e43f0cfea5982f8854467003d0d2b668adf21d57aed4d692780047"
    },
    {
-    "ts": "2026-11-07T12:30:47+0530",
+    "ts": "2026-11-07T18:52:19+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "document_ingested",
     "payload": {
@@ -4386,11 +4386,11 @@
      "modality": "scanned_pdf",
      "pages": 1
     },
-    "prev_hash": "380d2152baf8a8fca1a184112a5bfc5d7b2ba43d2799363954d8f31f68ade413",
-    "hash": "bd9704ed0f00560976ac6def2a4df155b993e831a4c236fcf9c1604339d3d7e9"
+    "prev_hash": "9507908944e43f0cfea5982f8854467003d0d2b668adf21d57aed4d692780047",
+    "hash": "7bbe54c05872695b28e6341e92477dc4b79735a4a234ef36814ffe0c01af8636"
    },
    {
-    "ts": "2026-11-07T12:30:50+0530",
+    "ts": "2026-11-07T18:52:26+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "document_ingested",
     "payload": {
@@ -4400,11 +4400,11 @@
      "modality": "scanned_pdf",
      "pages": 1
     },
-    "prev_hash": "bd9704ed0f00560976ac6def2a4df155b993e831a4c236fcf9c1604339d3d7e9",
-    "hash": "05626ddfbfae6ad1a888535d418bcdb767cbc31fe2aa7f95e8874a686a018c32"
+    "prev_hash": "7bbe54c05872695b28e6341e92477dc4b79735a4a234ef36814ffe0c01af8636",
+    "hash": "50135335ce4f8c2d65c4af89a0cadcb52f1cc866ce22fff664f70fa669c746e7"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "document_ingested",
     "payload": {
@@ -4414,22 +4414,22 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "05626ddfbfae6ad1a888535d418bcdb767cbc31fe2aa7f95e8874a686a018c32",
-    "hash": "57a81aeb297b1e3a7ce200c2ce08f27a3ac77e48d21f7b00ed5debf91092a5a9"
+    "prev_hash": "50135335ce4f8c2d65c4af89a0cadcb52f1cc866ce22fff664f70fa669c746e7",
+    "hash": "8c0d0b5d751606d3b16cf5810c657e35049ea907dbf58ff740d4ad61df302ef4"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
      "stage": "Document classification",
      "note": ""
     },
-    "prev_hash": "57a81aeb297b1e3a7ce200c2ce08f27a3ac77e48d21f7b00ed5debf91092a5a9",
-    "hash": "6773ab5436595bba2ba915e680188064e144387740e5b995ebc5a88efdf420d4"
+    "prev_hash": "8c0d0b5d751606d3b16cf5810c657e35049ea907dbf58ff740d4ad61df302ef4",
+    "hash": "c50af1cefb87231b5ac4364d7c7bd8e970175c0a51ca0403f5b4937cda3cc2dd"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "document_classified",
     "payload": {
@@ -4447,11 +4447,11 @@
      ],
      "witness_level": 2
     },
-    "prev_hash": "6773ab5436595bba2ba915e680188064e144387740e5b995ebc5a88efdf420d4",
-    "hash": "6cab06f258a7b65238701da1da53db1cd4510a023c2198e44090266940dedc16"
+    "prev_hash": "c50af1cefb87231b5ac4364d7c7bd8e970175c0a51ca0403f5b4937cda3cc2dd",
+    "hash": "968b39c09a71f0d56d25090c424c74a6299612dd5bbb7d544d274e8dcbca7e31"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "document_classified",
     "payload": {
@@ -4471,11 +4471,11 @@
      ],
      "witness_level": 2
     },
-    "prev_hash": "6cab06f258a7b65238701da1da53db1cd4510a023c2198e44090266940dedc16",
-    "hash": "0dc77dee28d5e4c4da7b3b2e0cbda6afaca4adecb99cd46fe6735292264f7c28"
+    "prev_hash": "968b39c09a71f0d56d25090c424c74a6299612dd5bbb7d544d274e8dcbca7e31",
+    "hash": "4b0b2e6cbecd72ad406dcee5f9073e29d0e68a7750127a8e0c962f6251ff9035"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "document_classified",
     "payload": {
@@ -4491,22 +4491,22 @@
      ],
      "witness_level": 0
     },
-    "prev_hash": "0dc77dee28d5e4c4da7b3b2e0cbda6afaca4adecb99cd46fe6735292264f7c28",
-    "hash": "f70efb4e2ad66ec5eef1f49595cb392c4eb1e546175ecd38787b0a1c655dc07e"
+    "prev_hash": "4b0b2e6cbecd72ad406dcee5f9073e29d0e68a7750127a8e0c962f6251ff9035",
+    "hash": "995ef3420491995080d8bb5c43e023562c301edce3de572b8fe8866fd6474a00"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
      "stage": "OCR & information extraction",
      "note": ""
     },
-    "prev_hash": "f70efb4e2ad66ec5eef1f49595cb392c4eb1e546175ecd38787b0a1c655dc07e",
-    "hash": "363a8e60e91b2175a0bfc0cbc9626127f9010f77f8a56d0947d0f36086ba2d19"
+    "prev_hash": "995ef3420491995080d8bb5c43e023562c301edce3de572b8fe8866fd6474a00",
+    "hash": "d7d5539ee2a59f1b09007ac42acecb436a1cef590c7dd85154ef5521f339845e"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "fields_extracted",
     "payload": {
@@ -4515,11 +4515,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "363a8e60e91b2175a0bfc0cbc9626127f9010f77f8a56d0947d0f36086ba2d19",
-    "hash": "db064571188ee81bd178b8443820322d4b42b1d20e5ac0a6281533972dfb3945"
+    "prev_hash": "d7d5539ee2a59f1b09007ac42acecb436a1cef590c7dd85154ef5521f339845e",
+    "hash": "828d731e740f47fbe17f489f2f766f584fcabae110c271fed8afd71b09f8fa7c"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "fields_extracted",
     "payload": {
@@ -4528,11 +4528,11 @@
      "n_rows": 14,
      "missing": []
     },
-    "prev_hash": "db064571188ee81bd178b8443820322d4b42b1d20e5ac0a6281533972dfb3945",
-    "hash": "0eb8769c8306792a05ce12d62d49f448c43ee51d44454333c6e85f8e9e25afd8"
+    "prev_hash": "828d731e740f47fbe17f489f2f766f584fcabae110c271fed8afd71b09f8fa7c",
+    "hash": "ea541bfce4470244ca23c3fe70cdd0012859bdc20ab51dd431455a318690334e"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "fields_extracted",
     "payload": {
@@ -4541,33 +4541,33 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "0eb8769c8306792a05ce12d62d49f448c43ee51d44454333c6e85f8e9e25afd8",
-    "hash": "4a2cffbab9b14344d86b23f1a89b6f391fc8c457062897d7dcdf1dc7a2e3ffe4"
+    "prev_hash": "ea541bfce4470244ca23c3fe70cdd0012859bdc20ab51dd431455a318690334e",
+    "hash": "9fb9ca893f8474ad46b57853892cf6c756a29df4e6d4f2a66056ec271bcc967f"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
      "stage": "Structural understanding",
      "note": ""
     },
-    "prev_hash": "4a2cffbab9b14344d86b23f1a89b6f391fc8c457062897d7dcdf1dc7a2e3ffe4",
-    "hash": "74d6f743ed0c7bd37ebebd2100b65e4d5aefbf3096963f5b247993124867e1fb"
+    "prev_hash": "9fb9ca893f8474ad46b57853892cf6c756a29df4e6d4f2a66056ec271bcc967f",
+    "hash": "8de997dac76efe939066e62b82182c03c53ef415d4cace129400aac6bb175ab6"
    },
    {
-    "ts": "2026-11-07T12:30:52+0530",
+    "ts": "2026-11-07T18:52:30+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
      "stage": "Visual forensic analysis",
      "note": ""
     },
-    "prev_hash": "74d6f743ed0c7bd37ebebd2100b65e4d5aefbf3096963f5b247993124867e1fb",
-    "hash": "82f3b77e2ef5b3175f6dbffc48d8f384648d8cdc65714d54e13252d39a50ec13"
+    "prev_hash": "8de997dac76efe939066e62b82182c03c53ef415d4cace129400aac6bb175ab6",
+    "hash": "46f9d10982a8ffa4acb23c757ead28d74403415ddeb42cb604a950ebdf6a7cb2"
    },
    {
-    "ts": "2026-11-07T12:30:55+0530",
+    "ts": "2026-11-07T18:52:36+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "visual_forensics",
     "payload": {
@@ -4589,11 +4589,11 @@
       }
      }
     },
-    "prev_hash": "82f3b77e2ef5b3175f6dbffc48d8f384648d8cdc65714d54e13252d39a50ec13",
-    "hash": "54e7c45ee847083f7caaeb4482d93b1d4578f9086f424a1df21d39074d235472"
+    "prev_hash": "46f9d10982a8ffa4acb23c757ead28d74403415ddeb42cb604a950ebdf6a7cb2",
+    "hash": "4ceae930c3680fe5a25951336457240ff320467cb2a6debfd5e584d75ce566c9"
    },
    {
-    "ts": "2026-11-07T12:30:59+0530",
+    "ts": "2026-11-07T18:52:44+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "visual_forensics",
     "payload": {
@@ -4615,11 +4615,11 @@
       }
      }
     },
-    "prev_hash": "54e7c45ee847083f7caaeb4482d93b1d4578f9086f424a1df21d39074d235472",
-    "hash": "b8e079bbb57a9d7b55d69b865574d932a82a69cd7788b881eb96e438f176e795"
+    "prev_hash": "4ceae930c3680fe5a25951336457240ff320467cb2a6debfd5e584d75ce566c9",
+    "hash": "78db3ec75142c2f4c24eb09aeb9f6763937ae6554829afce38b5a3a6407b2f0a"
    },
    {
-    "ts": "2026-11-07T12:31:01+0530",
+    "ts": "2026-11-07T18:52:48+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "visual_forensics",
     "payload": {
@@ -4641,55 +4641,55 @@
       }
      }
     },
-    "prev_hash": "b8e079bbb57a9d7b55d69b865574d932a82a69cd7788b881eb96e438f176e795",
-    "hash": "ee9ebe96fa31feddb7336aa9ddae0636f4795d786e6e1a52de38ccb9e07f6884"
+    "prev_hash": "78db3ec75142c2f4c24eb09aeb9f6763937ae6554829afce38b5a3a6407b2f0a",
+    "hash": "ecbd2ac6b0d9ad01ef172ae667a29dddb152104816c5e822a4342b7104b80024"
    },
    {
-    "ts": "2026-11-07T12:31:01+0530",
+    "ts": "2026-11-07T18:52:48+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
      "stage": "Contextual verification",
      "note": ""
     },
-    "prev_hash": "ee9ebe96fa31feddb7336aa9ddae0636f4795d786e6e1a52de38ccb9e07f6884",
-    "hash": "bf6c12015ee23854d2a0f77210d7fec9f9b7ec418fdd0445a1c5cdf6aa0cab65"
+    "prev_hash": "ecbd2ac6b0d9ad01ef172ae667a29dddb152104816c5e822a4342b7104b80024",
+    "hash": "963b2549623bcbd68fd50cf11e473889425a09e1d67e55304f2b69f6ebd05f5d"
    },
    {
-    "ts": "2026-11-07T12:31:03+0530",
+    "ts": "2026-11-07T18:52:51+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
      "stage": "Cross-document correlation",
      "note": ""
     },
-    "prev_hash": "bf6c12015ee23854d2a0f77210d7fec9f9b7ec418fdd0445a1c5cdf6aa0cab65",
-    "hash": "8ccd72ddba9500ab3ba66001bde5b3327b5d7c209c3ad5ca8bcf12d5d234ecc7"
+    "prev_hash": "963b2549623bcbd68fd50cf11e473889425a09e1d67e55304f2b69f6ebd05f5d",
+    "hash": "e6fc622c53e160148c33e1ddc45f90d09481ca2dfe9b885ec73efd5a2298b16f"
    },
    {
-    "ts": "2026-11-07T12:31:03+0530",
+    "ts": "2026-11-07T18:52:51+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
      "stage": "Anomaly investigation",
      "note": ""
     },
-    "prev_hash": "8ccd72ddba9500ab3ba66001bde5b3327b5d7c209c3ad5ca8bcf12d5d234ecc7",
-    "hash": "44ae3b4e5a53c37c587b40ce0c79370de5480ac9145aab3a3a484c113fc4e7a1"
+    "prev_hash": "e6fc622c53e160148c33e1ddc45f90d09481ca2dfe9b885ec73efd5a2298b16f",
+    "hash": "6298c04f29356003538a7fcc332fe67f97343964828749996843c63db2b81ae5"
    },
    {
-    "ts": "2026-11-07T12:31:03+0530",
+    "ts": "2026-11-07T18:52:51+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
      "stage": "Evidence generation",
      "note": ""
     },
-    "prev_hash": "44ae3b4e5a53c37c587b40ce0c79370de5480ac9145aab3a3a484c113fc4e7a1",
-    "hash": "26ed93a401c88d4d95c693a88fa1aac3fb730fc18c23f9000b1a0da5dd53e6f1"
+    "prev_hash": "6298c04f29356003538a7fcc332fe67f97343964828749996843c63db2b81ae5",
+    "hash": "9719c7d6c51081c916f726d1eb8e4696093ca26d85e01d5ea2823b9d430e8af8"
    },
    {
-    "ts": "2026-11-07T12:31:03+0530",
+    "ts": "2026-11-07T18:52:52+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "finding_recorded",
     "payload": {
@@ -4723,11 +4723,11 @@
       ]
      ]
     },
-    "prev_hash": "26ed93a401c88d4d95c693a88fa1aac3fb730fc18c23f9000b1a0da5dd53e6f1",
-    "hash": "a259473eaafd0374f67975569592e3db60764f4091bd54377e12c218370cd8d5"
+    "prev_hash": "9719c7d6c51081c916f726d1eb8e4696093ca26d85e01d5ea2823b9d430e8af8",
+    "hash": "e2bdf04293d2ad474aa0a7e29e617780d461128e8423df3603cad201afea2fa7"
    },
    {
-    "ts": "2026-11-07T12:31:04+0530",
+    "ts": "2026-11-07T18:52:52+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "finding_recorded",
     "payload": {
@@ -4751,11 +4751,11 @@
       ]
      ]
     },
-    "prev_hash": "a259473eaafd0374f67975569592e3db60764f4091bd54377e12c218370cd8d5",
-    "hash": "924dad2b5c047b9629c6ce3c21b61d6729c63c2a158690d72178f763c7cc1f43"
+    "prev_hash": "e2bdf04293d2ad474aa0a7e29e617780d461128e8423df3603cad201afea2fa7",
+    "hash": "944b16bda1fc9c1130e11f3d2b6a32ad222cfef3a7fbda49c24e6425c7777271"
    },
    {
-    "ts": "2026-11-07T12:31:04+0530",
+    "ts": "2026-11-07T18:52:52+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "finding_recorded",
     "payload": {
@@ -4779,11 +4779,11 @@
       ]
      ]
     },
-    "prev_hash": "924dad2b5c047b9629c6ce3c21b61d6729c63c2a158690d72178f763c7cc1f43",
-    "hash": "2e7fe3f08ed4a3d707b03458d83b12f76c570dc79ffaceb67cc03a576ae2449e"
+    "prev_hash": "944b16bda1fc9c1130e11f3d2b6a32ad222cfef3a7fbda49c24e6425c7777271",
+    "hash": "c8a283d28d1e64ccc582c3920febf454c4a8606013268dfb3fdc70d882134ff3"
    },
    {
-    "ts": "2026-11-07T12:31:04+0530",
+    "ts": "2026-11-07T18:52:53+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "finding_recorded",
     "payload": {
@@ -4857,11 +4857,11 @@
       ]
      ]
     },
-    "prev_hash": "2e7fe3f08ed4a3d707b03458d83b12f76c570dc79ffaceb67cc03a576ae2449e",
-    "hash": "9b47c653909cc8f207b38b7a020c31574415739015310be42834be27e27d7068"
+    "prev_hash": "c8a283d28d1e64ccc582c3920febf454c4a8606013268dfb3fdc70d882134ff3",
+    "hash": "a29af74f762106a01617d3f6916b8415e2aff5c15de31e01cb59c634daa29d0c"
    },
    {
-    "ts": "2026-11-07T12:31:05+0530",
+    "ts": "2026-11-07T18:52:54+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "finding_recorded",
     "payload": {
@@ -4926,11 +4926,11 @@
       ]
      ]
     },
-    "prev_hash": "9b47c653909cc8f207b38b7a020c31574415739015310be42834be27e27d7068",
-    "hash": "3c9b7269cdbd3eed8abeaa70966f55cf0dd3028815674f4d7bd16559128aa04f"
+    "prev_hash": "a29af74f762106a01617d3f6916b8415e2aff5c15de31e01cb59c634daa29d0c",
+    "hash": "81cd6acc03071d645dfeebc023b6e377f4951188b9485287d73a6e1aaebc826a"
    },
    {
-    "ts": "2026-11-07T12:31:05+0530",
+    "ts": "2026-11-07T18:52:56+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "finding_recorded",
     "payload": {
@@ -5024,11 +5024,11 @@
       ]
      ]
     },
-    "prev_hash": "3c9b7269cdbd3eed8abeaa70966f55cf0dd3028815674f4d7bd16559128aa04f",
-    "hash": "ab8049445a5d92381e611be4dc27529dfb3c5a634b3ac4801ecb4398e1a5a0bd"
+    "prev_hash": "81cd6acc03071d645dfeebc023b6e377f4951188b9485287d73a6e1aaebc826a",
+    "hash": "376470ac740411f7c75da440818fddcb7cab0b47bf2372a9e41dee2f151ed4d9"
    },
    {
-    "ts": "2026-11-07T12:31:06+0530",
+    "ts": "2026-11-07T18:52:57+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "finding_recorded",
     "payload": {
@@ -5074,11 +5074,11 @@
       ]
      ]
     },
-    "prev_hash": "ab8049445a5d92381e611be4dc27529dfb3c5a634b3ac4801ecb4398e1a5a0bd",
-    "hash": "b7a1baebfb00ebdf015bcd4767da58cbcd4e1fb672487dd31891250f06fda1a4"
+    "prev_hash": "376470ac740411f7c75da440818fddcb7cab0b47bf2372a9e41dee2f151ed4d9",
+    "hash": "e3f09eaf7638dc4d39e0157e6d5502bed55479f46983a1dec84718cef7056bb8"
    },
    {
-    "ts": "2026-11-07T12:31:06+0530",
+    "ts": "2026-11-07T18:52:57+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "finding_recorded",
     "payload": {
@@ -5100,30 +5100,30 @@
       ]
      ]
     },
-    "prev_hash": "b7a1baebfb00ebdf015bcd4767da58cbcd4e1fb672487dd31891250f06fda1a4",
-    "hash": "aaf49885e46703c8a5777b5f4dbecd0827b306da8ac705af58b4fabca585e01b"
+    "prev_hash": "e3f09eaf7638dc4d39e0157e6d5502bed55479f46983a1dec84718cef7056bb8",
+    "hash": "2e7145ec0ddf98b7013decfc521c5a576917a72de323fececb0fe48baa8d0340"
    },
    {
-    "ts": "2026-11-07T12:31:06+0530",
+    "ts": "2026-11-07T18:52:57+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "stage",
     "payload": {
      "stage": "Investigation dossier",
      "note": ""
     },
-    "prev_hash": "aaf49885e46703c8a5777b5f4dbecd0827b306da8ac705af58b4fabca585e01b",
-    "hash": "a351689d3db286ed3c3beb14c0815cc95377c46f1afd473a7c173825c1351a34"
+    "prev_hash": "2e7145ec0ddf98b7013decfc521c5a576917a72de323fececb0fe48baa8d0340",
+    "hash": "bb72db0a1ba4ba4a7e6603ac46c1721e46831f434ced18c857d8837eafc32cd3"
    },
    {
-    "ts": "2026-11-07T12:31:06+0530",
+    "ts": "2026-11-07T18:52:57+0530",
     "case_id": "RT8-SCANNED-PDF-EDITOR",
     "event": "dossier_generated",
     "payload": {
      "n_findings": 7,
-     "seconds": 21.4
+     "seconds": 44.0
     },
-    "prev_hash": "a351689d3db286ed3c3beb14c0815cc95377c46f1afd473a7c173825c1351a34",
-    "hash": "f40273c70831c6517a1e01b4051f4dfcc004256374714bd8e590bd7a63b7b314"
+    "prev_hash": "bb72db0a1ba4ba4a7e6603ac46c1721e46831f434ced18c857d8837eafc32cd3",
+    "hash": "24a299361ea64262e1fc9a89f1716ecad10727c241e9ba728e70f9c6bcb01f37"
    }
   ]
  },

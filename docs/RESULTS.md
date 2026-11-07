@@ -11,6 +11,7 @@ All numbers were measured on a Windows 11 laptop on 6-7 November 2026. Detection
 | Forgery Lab | `python tests/forgery_lab.py --seeds 2` | 6 forgery recipes x 2 seeds on fresh documents, a planned miss, 2 genuine re-scans | 12 of 12 detected (10 at POTENTIAL MANIPULATION); planned miss 0 of 2; genuine re-scans clean 1 of 2 |
 | Long and locked statements | `python tests/run_long_statement.py` | 13-page statement edited on page 8; password-locked copy | all pass: the page-8 edit is caught; passwords are never written to the dossier or audit trail and are forgotten even after a crash |
 | Cross-case memory | `python tests/run_registry_chain.py` | every case back to back into one memory | all pass (20 runs): only the identity ring is flagged |
+| Concurrent memory writes | `python tests/run_registry_lock.py` | 8 processes register different cases into one memory file at once; an unreadable memory file | all pass: all 8 cases kept, no lock or temporary file left, the unreadable file left untouched |
 | Console isolation | `python tests/run_console_worker.py` | demo case through the console's worker process | all pass: same counts as the pipeline, a stalled case is stopped with nothing left running, a second run during a run is refused |
 
 | Black-ink signatures | `python tests/run_signatures.py` | scanned letter and payslip signed in black ink | all pass: reproduced signature flagged as identical, different signatures not, no signature invented from printed text |

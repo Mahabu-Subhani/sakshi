@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.5
+* Cross-case memory is safe with several writers: a case is registered under a lock file, against a fresh read of the memory, and written atomically. Before, two cases saved at the same moment could overwrite each other (4 of 8 concurrent cases were lost in the new test), and an unreadable memory file was replaced by an empty one; it is now left untouched and the case notes that it was not remembered. New test: `run_registry_lock.py`.
+* The optional narrator sends the Gemini key in the `x-goog-api-key` header instead of the URL, so it cannot appear in proxy or error logs.
+* The innocent-explanation catalogue now describes the OCR-misread test the way the code applies it: low OCR confidence **and** a one-character difference. Detection is unchanged.
+* `docs/FORGERY_LAB_RESULTS.md` reports the Windows and Linux runs side by side; it previously showed only the Linux run, which disagreed with `docs/RESULTS.md`.
+* On Windows, `dossier.json` kept the full local path of every page and evidence image; paths are now stored relative to the case folder on every platform, as intended. The sample dossiers in `samples/` were regenerated on 1.0.5 (same findings).
+
 ## 1.0.4
 * Docker image: `docker build -t sakshi .` then `docker run -p 8501:8501 sakshi`. Python 3.12, Tesseract 5.5 with English and Hindi, Liberation fonts, non-root user, health check. Verified: `tests/run_eval.py` ALL PASS inside the container, the console answers and completes an uploaded case, and the command line runs on mounted files.
 * Demo video re-recorded on 1.0.4 (`docs/demo/SAKSHI_demo.mp4`, 3:58): the full brief checklist on the tampered case, including earlier-version recovery and strength of evidence; an under-the-hood walkthrough; the capability matrix; a genuine case with a deliberately damaged file, announced before it is uploaded; cross-case memory catching an identity ring (RT7); a red-team overlay peel (RT8); a hidden-instruction case; and the current test results.

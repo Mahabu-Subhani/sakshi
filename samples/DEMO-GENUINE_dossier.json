@@ -1,8 +1,8 @@
 {
  "case_id": "DEMO-GENUINE",
- "generated_at": "2026-11-07 12:30:39 +0530",
- "sakshi_version": "1.0.3",
- "processing_seconds": 21.7,
+ "generated_at": "2026-11-07 18:52:06 +0530",
+ "sakshi_version": "1.0.5",
+ "processing_seconds": 44.5,
  "status": "NO RULE-BREAKING ANOMALY FOUND (not proof of authenticity)",
  "counts": {
   "potential_manipulation": 0,
@@ -43,7 +43,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\genuine\\pages\\D1_p0.png",
+     "image": "pages\\D1_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": 0.1,
@@ -549,7 +549,7 @@
        1491.0,
        1385.0
       ],
-      "crop": "out\\readme\\genuine\\evidence\\D1_p0_sig0.png"
+      "crop": "evidence\\D1_p0_sig0.png"
      }
     ]
    },
@@ -596,7 +596,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\genuine\\pages\\D2_p0.png",
+     "image": "pages\\D2_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": 0.3,
@@ -1437,7 +1437,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\genuine\\evidence\\D2_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D2_p0_noise.jpg"
     },
     "signatures": [],
     "recurring": {
@@ -1490,7 +1490,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\genuine\\pages\\D3_p0.png",
+     "image": "pages\\D3_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": -0.3,
@@ -1896,7 +1896,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\genuine\\evidence\\D3_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D3_p0_noise.jpg"
     },
     "signatures": [
      {
@@ -1907,7 +1907,7 @@
        401.0,
        1794.0
       ],
-      "crop": "out\\readme\\genuine\\evidence\\D3_p0_sig0.png"
+      "crop": "evidence\\D3_p0_sig0.png"
      }
     ]
    },
@@ -1950,7 +1950,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\genuine\\pages\\D4_p0.png",
+     "image": "pages\\D4_p0.png",
      "width": 1300,
      "height": 820,
      "skew_deg": 0.1,
@@ -2119,7 +2119,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\genuine\\evidence\\D4_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D4_p0_noise.jpg"
     },
     "signatures": [
      {
@@ -2130,7 +2130,7 @@
        359.0,
        560.0
       ],
-      "crop": "out\\readme\\genuine\\evidence\\D4_p0_sig0.png"
+      "crop": "evidence\\D4_p0_sig0.png"
      }
     ]
    },
@@ -2174,7 +2174,7 @@
    "pages": [
     {
      "index": 0,
-     "image": "out\\readme\\genuine\\pages\\D5_p0.png",
+     "image": "pages\\D5_p0.png",
      "width": 1654,
      "height": 2339,
      "skew_deg": 0.3,
@@ -2333,7 +2333,7 @@
     "missing": [],
     "duplicates": [],
     "artifacts": {
-     "noise_heatmap_p0": "out\\readme\\genuine\\evidence\\D5_p0_noise.jpg"
+     "noise_heatmap_p0": "evidence\\D5_p0_noise.jpg"
     },
     "signatures": [
      {
@@ -2344,7 +2344,7 @@
        537.0,
        1123.0
       ],
-      "crop": "out\\readme\\genuine\\evidence\\D5_p0_sig0.png"
+      "crop": "evidence\\D5_p0_sig0.png"
      }
     ]
    },
@@ -2391,7 +2391,7 @@
      ],
      "note": "03_loan_application_form.jpg",
      "kind": "field",
-     "crop": "out\\readme\\genuine\\evidence\\F001_0.jpg",
+     "crop": "evidence\\F001_0.jpg",
      "value": "Mohammed Arif Khan"
     },
     {
@@ -2405,7 +2405,7 @@
      ],
      "note": "01_payslip_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\genuine\\evidence\\F001_1.jpg",
+     "crop": "evidence\\F001_1.jpg",
      "value": "Mohammed Arif Khan"
     },
     {
@@ -2419,7 +2419,7 @@
      ],
      "note": "05_employment_letter.jpg",
      "kind": "field",
-     "crop": "out\\readme\\genuine\\evidence\\F001_2.jpg",
+     "crop": "evidence\\F001_2.jpg",
      "value": "Mohammed Arif Khan"
     },
     {
@@ -2433,7 +2433,7 @@
      ],
      "note": "04_identity_card.jpg",
      "kind": "field",
-     "crop": "out\\readme\\genuine\\evidence\\F001_3.jpg",
+     "crop": "evidence\\F001_3.jpg",
      "value": "MOHAMMED ARIF KHAN"
     },
     {
@@ -2447,7 +2447,7 @@
      ],
      "note": "02_bank_statement_sep_oct2026.pdf",
      "kind": "field",
-     "crop": "out\\readme\\genuine\\evidence\\F001_4.jpg",
+     "crop": "evidence\\F001_4.jpg",
      "value": "MOHD ARIF KHAN"
     }
    ],
@@ -4346,7 +4346,7 @@
   "message": "audit chain intact",
   "records": [
    {
-    "ts": "2026-11-07T12:30:18+0530",
+    "ts": "2026-11-07T18:51:21+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
@@ -4354,10 +4354,10 @@
      "note": "5 file(s)"
     },
     "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-    "hash": "212a8ef0675c74af40d98abf49f348ec08988adc310738e784c07b9cad5d6d5d"
+    "hash": "38e78ca9f80ddd0dd393c9ce67413692aa8c1545198e367f454d2231ce40cde0"
    },
    {
-    "ts": "2026-11-07T12:30:18+0530",
+    "ts": "2026-11-07T18:51:21+0530",
     "case_id": "DEMO-GENUINE",
     "event": "case_opened",
     "payload": {
@@ -4368,13 +4368,13 @@
       "04_identity_card.jpg",
       "05_employment_letter.jpg"
      ],
-     "sakshi_version": "1.0.3"
+     "sakshi_version": "1.0.5"
     },
-    "prev_hash": "212a8ef0675c74af40d98abf49f348ec08988adc310738e784c07b9cad5d6d5d",
-    "hash": "ca103e305bd24905a03bdaa66c8ea7358537d522bf96979fc6665b3071f9f5de"
+    "prev_hash": "38e78ca9f80ddd0dd393c9ce67413692aa8c1545198e367f454d2231ce40cde0",
+    "hash": "0773d20716f36cb9c7e4bf35aeade75a7f55f294431929e3287ae733f7c12935"
    },
    {
-    "ts": "2026-11-07T12:30:18+0530",
+    "ts": "2026-11-07T18:51:22+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4384,11 +4384,11 @@
      "modality": "digital_pdf",
      "pages": 1
     },
-    "prev_hash": "ca103e305bd24905a03bdaa66c8ea7358537d522bf96979fc6665b3071f9f5de",
-    "hash": "b2e0c2c065c87f2f44aa2150f7936f10e303116742bb030a8b9b0d7382c41809"
+    "prev_hash": "0773d20716f36cb9c7e4bf35aeade75a7f55f294431929e3287ae733f7c12935",
+    "hash": "3455bc864598c13f66a5fe06828b40b4c4f2de088157417d9a5003cccb404fa5"
    },
    {
-    "ts": "2026-11-07T12:30:21+0530",
+    "ts": "2026-11-07T18:51:29+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4398,11 +4398,11 @@
      "modality": "scanned_pdf",
      "pages": 1
     },
-    "prev_hash": "b2e0c2c065c87f2f44aa2150f7936f10e303116742bb030a8b9b0d7382c41809",
-    "hash": "43975ee191a428e476c34a8b5f6b4a8c10a209eebbfa6a0ade710cb66bee1045"
+    "prev_hash": "3455bc864598c13f66a5fe06828b40b4c4f2de088157417d9a5003cccb404fa5",
+    "hash": "392720e92fb81782e1e1abc3a53cc0593028738850b591c9df596a6c8423cb5e"
    },
    {
-    "ts": "2026-11-07T12:30:23+0530",
+    "ts": "2026-11-07T18:51:34+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4412,11 +4412,11 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "43975ee191a428e476c34a8b5f6b4a8c10a209eebbfa6a0ade710cb66bee1045",
-    "hash": "411eec8d22bf81c358e9e39d322450b2aa2efe43409fdc2781a5d9a9f7ed33f6"
+    "prev_hash": "392720e92fb81782e1e1abc3a53cc0593028738850b591c9df596a6c8423cb5e",
+    "hash": "50fa3dff78d7fc254c22059412d061033174e72bc7d302da102c5ce9f7d5a872"
    },
    {
-    "ts": "2026-11-07T12:30:24+0530",
+    "ts": "2026-11-07T18:51:36+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4426,11 +4426,11 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "411eec8d22bf81c358e9e39d322450b2aa2efe43409fdc2781a5d9a9f7ed33f6",
-    "hash": "386ef3cee05ebdb2c98471d708ad8f8221748f25669ae342b6e7b97212543ae8"
+    "prev_hash": "50fa3dff78d7fc254c22059412d061033174e72bc7d302da102c5ce9f7d5a872",
+    "hash": "f2e1b44e71f377f1591bdc49d302d2850284d0420b14db81f63e101a3a51ea54"
    },
    {
-    "ts": "2026-11-07T12:30:26+0530",
+    "ts": "2026-11-07T18:51:41+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4440,22 +4440,22 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "386ef3cee05ebdb2c98471d708ad8f8221748f25669ae342b6e7b97212543ae8",
-    "hash": "04dea6d203c22503340d7a142773eb7cc98e6dd434271795958a4e0c10d310ba"
+    "prev_hash": "f2e1b44e71f377f1591bdc49d302d2850284d0420b14db81f63e101a3a51ea54",
+    "hash": "23bd4cc34f05d029a18cb8616d4b51d5e3159eac6c5fa069f9eca6320c403d29"
    },
    {
-    "ts": "2026-11-07T12:30:26+0530",
+    "ts": "2026-11-07T18:51:41+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Document classification",
      "note": ""
     },
-    "prev_hash": "04dea6d203c22503340d7a142773eb7cc98e6dd434271795958a4e0c10d310ba",
-    "hash": "e109ed086ca72411eca6ac9f8c41764803de93c301aa7b858fe60b3b552fe22d"
+    "prev_hash": "23bd4cc34f05d029a18cb8616d4b51d5e3159eac6c5fa069f9eca6320c403d29",
+    "hash": "bdc815ac85cae8de7409b6eb4b9010f6787026c02de3118149d4de2177ab180a"
    },
    {
-    "ts": "2026-11-07T12:30:26+0530",
+    "ts": "2026-11-07T18:51:41+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4473,11 +4473,11 @@
      ],
      "witness_level": 2
     },
-    "prev_hash": "e109ed086ca72411eca6ac9f8c41764803de93c301aa7b858fe60b3b552fe22d",
-    "hash": "7cf8b79e373a8341d2d36a8501d033fe14252916740fd43b7006a6e1f7bc3c7a"
+    "prev_hash": "bdc815ac85cae8de7409b6eb4b9010f6787026c02de3118149d4de2177ab180a",
+    "hash": "4758e9893f6bdb7fe9c1a8684af3a759fe69946397af8aeb8e828a3d404493b3"
    },
    {
-    "ts": "2026-11-07T12:30:26+0530",
+    "ts": "2026-11-07T18:51:41+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4495,11 +4495,11 @@
      ],
      "witness_level": 2
     },
-    "prev_hash": "7cf8b79e373a8341d2d36a8501d033fe14252916740fd43b7006a6e1f7bc3c7a",
-    "hash": "2ab34a79c393fb4c4229ef162a0839c1e6761b70251110008905d0978401b6c8"
+    "prev_hash": "4758e9893f6bdb7fe9c1a8684af3a759fe69946397af8aeb8e828a3d404493b3",
+    "hash": "bc52d0d2e2aabc77415746fb5a8899b0cf857c1847807593c8235922a95a33c9"
    },
    {
-    "ts": "2026-11-07T12:30:26+0530",
+    "ts": "2026-11-07T18:51:41+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4515,11 +4515,11 @@
      ],
      "witness_level": 0
     },
-    "prev_hash": "2ab34a79c393fb4c4229ef162a0839c1e6761b70251110008905d0978401b6c8",
-    "hash": "0c89e4f51d442a902efe9d0984b81590cf932b0dfcd92c5e40d6b32307eb550f"
+    "prev_hash": "bc52d0d2e2aabc77415746fb5a8899b0cf857c1847807593c8235922a95a33c9",
+    "hash": "79122718143609c253371d67c7a7c95e5948b623e1889a4f7046ff3a8fc9d554"
    },
    {
-    "ts": "2026-11-07T12:30:26+0530",
+    "ts": "2026-11-07T18:51:41+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4535,11 +4535,11 @@
      ],
      "witness_level": 2
     },
-    "prev_hash": "0c89e4f51d442a902efe9d0984b81590cf932b0dfcd92c5e40d6b32307eb550f",
-    "hash": "69d13172caa4c83211f64f75b3ab28ae0dfadd80f9683da57f8d7bb3b35aec76"
+    "prev_hash": "79122718143609c253371d67c7a7c95e5948b623e1889a4f7046ff3a8fc9d554",
+    "hash": "fecf9211f5cff3cfe45c6b6972dceab5312d759b178be3d9d5d1ba2ca8015155"
    },
    {
-    "ts": "2026-11-07T12:30:26+0530",
+    "ts": "2026-11-07T18:51:41+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4556,22 +4556,22 @@
      ],
      "witness_level": 1
     },
-    "prev_hash": "69d13172caa4c83211f64f75b3ab28ae0dfadd80f9683da57f8d7bb3b35aec76",
-    "hash": "a62c41039865d5435a5791ebfc7ac091132ee83799d95888947421f9ab52906e"
+    "prev_hash": "fecf9211f5cff3cfe45c6b6972dceab5312d759b178be3d9d5d1ba2ca8015155",
+    "hash": "21cb8b91e250cfd31c96c0e31793383de57778f5c8b8e465325a99164b621a76"
    },
    {
-    "ts": "2026-11-07T12:30:26+0530",
+    "ts": "2026-11-07T18:51:41+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "OCR & information extraction",
      "note": ""
     },
-    "prev_hash": "a62c41039865d5435a5791ebfc7ac091132ee83799d95888947421f9ab52906e",
-    "hash": "977fcdf0427d395f8b8c4068feb114285a50c044aeb3b7f801d91ef03fa2fb30"
+    "prev_hash": "21cb8b91e250cfd31c96c0e31793383de57778f5c8b8e465325a99164b621a76",
+    "hash": "591ea0cc64ce7b7304fd70ff2f740410eca44ad710519ac62d176a8d859f72e5"
    },
    {
-    "ts": "2026-11-07T12:30:28+0530",
+    "ts": "2026-11-07T18:51:44+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4580,11 +4580,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "977fcdf0427d395f8b8c4068feb114285a50c044aeb3b7f801d91ef03fa2fb30",
-    "hash": "93df5cf92985cbf99180fc7da72f84cb26e06adac2c5e6bbbcfd8aa5727e2ee6"
+    "prev_hash": "591ea0cc64ce7b7304fd70ff2f740410eca44ad710519ac62d176a8d859f72e5",
+    "hash": "9eeb14c87b4c0331d4ee1498903c6bb412807426237d43bbbf4cf00a404dd199"
    },
    {
-    "ts": "2026-11-07T12:30:28+0530",
+    "ts": "2026-11-07T18:51:44+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4593,11 +4593,11 @@
      "n_rows": 14,
      "missing": []
     },
-    "prev_hash": "93df5cf92985cbf99180fc7da72f84cb26e06adac2c5e6bbbcfd8aa5727e2ee6",
-    "hash": "22d9dfbe50702ab8d2ec85e61798706232f4877cfe4fe9b6fc1f8aa60fedf4c4"
+    "prev_hash": "9eeb14c87b4c0331d4ee1498903c6bb412807426237d43bbbf4cf00a404dd199",
+    "hash": "acf918eaf8b1a616788ec189c56d3cc33b13ab71fbd0f87b9a98963fb230e7fd"
    },
    {
-    "ts": "2026-11-07T12:30:28+0530",
+    "ts": "2026-11-07T18:51:44+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4606,11 +4606,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "22d9dfbe50702ab8d2ec85e61798706232f4877cfe4fe9b6fc1f8aa60fedf4c4",
-    "hash": "d705ab478859d4a30b0316896a1b8bd317c1e74bfdf690ca60e2b89225f13cad"
+    "prev_hash": "acf918eaf8b1a616788ec189c56d3cc33b13ab71fbd0f87b9a98963fb230e7fd",
+    "hash": "d77c579f3dbe4725cf09df61af2780e84ae109bdbeaf952ad1d649e91193ee67"
    },
    {
-    "ts": "2026-11-07T12:30:28+0530",
+    "ts": "2026-11-07T18:51:44+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4619,11 +4619,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "d705ab478859d4a30b0316896a1b8bd317c1e74bfdf690ca60e2b89225f13cad",
-    "hash": "71a5837c786d9448d3bc73af709d5138f4e49a0fb7bd6f3f7d1bea455c3d8b96"
+    "prev_hash": "d77c579f3dbe4725cf09df61af2780e84ae109bdbeaf952ad1d649e91193ee67",
+    "hash": "0dc9ebcc034f6446e486723dbcc9d75dff80c8c011f69115217fdde3b97a167a"
    },
    {
-    "ts": "2026-11-07T12:30:28+0530",
+    "ts": "2026-11-07T18:51:44+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4632,33 +4632,33 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "71a5837c786d9448d3bc73af709d5138f4e49a0fb7bd6f3f7d1bea455c3d8b96",
-    "hash": "862a9b357bafe0391eeab8b44b1e138d7821b44e5c14383c133ad4f55e0ddcee"
+    "prev_hash": "0dc9ebcc034f6446e486723dbcc9d75dff80c8c011f69115217fdde3b97a167a",
+    "hash": "5ec98a51b3089eb2649b8ec1bc1f7c94b19cd3a61ce81cdd34e6afb553e35ffa"
    },
    {
-    "ts": "2026-11-07T12:30:28+0530",
+    "ts": "2026-11-07T18:51:44+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Structural understanding",
      "note": ""
     },
-    "prev_hash": "862a9b357bafe0391eeab8b44b1e138d7821b44e5c14383c133ad4f55e0ddcee",
-    "hash": "03f5a19b96254b67bfbcabf078ba36746348867dc7e336efa266a0a3c9baee59"
+    "prev_hash": "5ec98a51b3089eb2649b8ec1bc1f7c94b19cd3a61ce81cdd34e6afb553e35ffa",
+    "hash": "60427e8e5aff287ee0ccee9a6d5345b501324f249997305e99fd886186fbed41"
    },
    {
-    "ts": "2026-11-07T12:30:28+0530",
+    "ts": "2026-11-07T18:51:44+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Visual forensic analysis",
      "note": ""
     },
-    "prev_hash": "03f5a19b96254b67bfbcabf078ba36746348867dc7e336efa266a0a3c9baee59",
-    "hash": "b99747dbd27b00c44caa08ecc16eff3e21459b7a150e5181e814019746cb2ab1"
+    "prev_hash": "60427e8e5aff287ee0ccee9a6d5345b501324f249997305e99fd886186fbed41",
+    "hash": "16260fd7f29d5d11685a10a23842a70331e8d60ec3b554cfeab9fe7f352f0377"
    },
    {
-    "ts": "2026-11-07T12:30:28+0530",
+    "ts": "2026-11-07T18:51:44+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4678,11 +4678,11 @@
       }
      }
     },
-    "prev_hash": "b99747dbd27b00c44caa08ecc16eff3e21459b7a150e5181e814019746cb2ab1",
-    "hash": "f317b2f7544ff61bb5f2d49d78b44216f4ecb62ab552c5a1924c9c6d460ebc12"
+    "prev_hash": "16260fd7f29d5d11685a10a23842a70331e8d60ec3b554cfeab9fe7f352f0377",
+    "hash": "e0ced9157b3e30e0331e874ab0f71d285d2a7905aa01982a9b9d9d1b461b8fb6"
    },
    {
-    "ts": "2026-11-07T12:30:32+0530",
+    "ts": "2026-11-07T18:51:53+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4704,11 +4704,11 @@
       }
      }
     },
-    "prev_hash": "f317b2f7544ff61bb5f2d49d78b44216f4ecb62ab552c5a1924c9c6d460ebc12",
-    "hash": "28f8f5c8479141f7e78e3f1a15b777b5b52526f10f7dfb51062992ea7a9a3cb9"
+    "prev_hash": "e0ced9157b3e30e0331e874ab0f71d285d2a7905aa01982a9b9d9d1b461b8fb6",
+    "hash": "7eb79bc2b210f225516d107fd94d2046e19c3031788ce9f9105902ef1c173c68"
    },
    {
-    "ts": "2026-11-07T12:30:34+0530",
+    "ts": "2026-11-07T18:51:57+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4730,11 +4730,11 @@
       }
      }
     },
-    "prev_hash": "28f8f5c8479141f7e78e3f1a15b777b5b52526f10f7dfb51062992ea7a9a3cb9",
-    "hash": "2a9e70839ec938055e499bdbcd2ec533ddb11fecd1b585c0190cc7cd2d99a96c"
+    "prev_hash": "7eb79bc2b210f225516d107fd94d2046e19c3031788ce9f9105902ef1c173c68",
+    "hash": "7c098b2c7dda8efc5c19ea434d8691ace5201be95e8bdb165a05f6fbb3d03064"
    },
    {
-    "ts": "2026-11-07T12:30:34+0530",
+    "ts": "2026-11-07T18:51:58+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4756,11 +4756,11 @@
       }
      }
     },
-    "prev_hash": "2a9e70839ec938055e499bdbcd2ec533ddb11fecd1b585c0190cc7cd2d99a96c",
-    "hash": "2195dfee566b3ece316ba8b42ef94eadaa7694ab777f0b6cc575745e10e53c79"
+    "prev_hash": "7c098b2c7dda8efc5c19ea434d8691ace5201be95e8bdb165a05f6fbb3d03064",
+    "hash": "539771594375bc16def505fdb28bbea40e5b9c4a3b622641104e920223e53c96"
    },
    {
-    "ts": "2026-11-07T12:30:37+0530",
+    "ts": "2026-11-07T18:52:02+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4782,55 +4782,55 @@
       }
      }
     },
-    "prev_hash": "2195dfee566b3ece316ba8b42ef94eadaa7694ab777f0b6cc575745e10e53c79",
-    "hash": "c0c046ae7029577b6815a991856eee8b092008a3eb539631f98593165f8db798"
+    "prev_hash": "539771594375bc16def505fdb28bbea40e5b9c4a3b622641104e920223e53c96",
+    "hash": "09daa4c094aba9f2be413c8df9fcc097c570f8358736aa173dd6a57de83fa701"
    },
    {
-    "ts": "2026-11-07T12:30:37+0530",
+    "ts": "2026-11-07T18:52:02+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Contextual verification",
      "note": ""
     },
-    "prev_hash": "c0c046ae7029577b6815a991856eee8b092008a3eb539631f98593165f8db798",
-    "hash": "0a953a3921d7be8b3ad54001be0b343dc07f95d13468887a5ec913e0a85b79a6"
+    "prev_hash": "09daa4c094aba9f2be413c8df9fcc097c570f8358736aa173dd6a57de83fa701",
+    "hash": "52515e7c0c2c403725ccddea6c294458770a44d4c829a93c5beaa868ddd148f0"
    },
    {
-    "ts": "2026-11-07T12:30:39+0530",
+    "ts": "2026-11-07T18:52:05+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Cross-document correlation",
      "note": ""
     },
-    "prev_hash": "0a953a3921d7be8b3ad54001be0b343dc07f95d13468887a5ec913e0a85b79a6",
-    "hash": "efb0456e178f18d214e398c29330cb6161d18ba7d890346fe687ac15babc748c"
+    "prev_hash": "52515e7c0c2c403725ccddea6c294458770a44d4c829a93c5beaa868ddd148f0",
+    "hash": "0d3e4c531d0af02aba783ca38f089a0cf083b66315c49623559f7d9bb27fe850"
    },
    {
-    "ts": "2026-11-07T12:30:39+0530",
+    "ts": "2026-11-07T18:52:05+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Anomaly investigation",
      "note": ""
     },
-    "prev_hash": "efb0456e178f18d214e398c29330cb6161d18ba7d890346fe687ac15babc748c",
-    "hash": "1205a53de7fae05ca2ec67e3aa69999c3673c035fc931eabacf95fb9b8795d42"
+    "prev_hash": "0d3e4c531d0af02aba783ca38f089a0cf083b66315c49623559f7d9bb27fe850",
+    "hash": "cfea0e5b55e99399ad73dc089753d1396f7793a7eb11e8268dd916bfa010c1d7"
    },
    {
-    "ts": "2026-11-07T12:30:39+0530",
+    "ts": "2026-11-07T18:52:05+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Evidence generation",
      "note": ""
     },
-    "prev_hash": "1205a53de7fae05ca2ec67e3aa69999c3673c035fc931eabacf95fb9b8795d42",
-    "hash": "95ea91540edb3dca3024353a6a8c2b8fab01abd754103e94a8565760aa83f0b6"
+    "prev_hash": "cfea0e5b55e99399ad73dc089753d1396f7793a7eb11e8268dd916bfa010c1d7",
+    "hash": "39e1c1897b1ddab6fc6072838a880fbd7c9fe8d4663d793f893706d7ddff43da"
    },
    {
-    "ts": "2026-11-07T12:30:39+0530",
+    "ts": "2026-11-07T18:52:06+0530",
     "case_id": "DEMO-GENUINE",
     "event": "finding_recorded",
     "payload": {
@@ -4898,30 +4898,30 @@
       ]
      ]
     },
-    "prev_hash": "95ea91540edb3dca3024353a6a8c2b8fab01abd754103e94a8565760aa83f0b6",
-    "hash": "091b8229d1c0cea251dc767ecb18a7149686febd65c6312c1baf195954b5e628"
+    "prev_hash": "39e1c1897b1ddab6fc6072838a880fbd7c9fe8d4663d793f893706d7ddff43da",
+    "hash": "4fac1906aa6ff7276bf0b02d5bb86b3ddc9876c92c13ba5d8cc55630b0a227de"
    },
    {
-    "ts": "2026-11-07T12:30:39+0530",
+    "ts": "2026-11-07T18:52:06+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Investigation dossier",
      "note": ""
     },
-    "prev_hash": "091b8229d1c0cea251dc767ecb18a7149686febd65c6312c1baf195954b5e628",
-    "hash": "7938c941292d9ea95a8ccf5650db2b181d3c2b8d6947a3fd9f791ce694052e8d"
+    "prev_hash": "4fac1906aa6ff7276bf0b02d5bb86b3ddc9876c92c13ba5d8cc55630b0a227de",
+    "hash": "47ef3d6c3f81d74d72699368d0c5b4f1ac31c5a834ca1bbc789c82bbefabd5dd"
    },
    {
-    "ts": "2026-11-07T12:30:39+0530",
+    "ts": "2026-11-07T18:52:06+0530",
     "case_id": "DEMO-GENUINE",
     "event": "dossier_generated",
     "payload": {
      "n_findings": 1,
-     "seconds": 21.7
+     "seconds": 44.5
     },
-    "prev_hash": "7938c941292d9ea95a8ccf5650db2b181d3c2b8d6947a3fd9f791ce694052e8d",
-    "hash": "f38d6626f9b5eb1bc76cad07ce30f390f067166c21aa203cb397aa5abea6de61"
+    "prev_hash": "47ef3d6c3f81d74d72699368d0c5b4f1ac31c5a834ca1bbc789c82bbefabd5dd",
+    "hash": "67e9f77eec445134dff1d87267a00d1453f60466bd3e2820cce2819e1c7599a3"
    }
   ]
  },

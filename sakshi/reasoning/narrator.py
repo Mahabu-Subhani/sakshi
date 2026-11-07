@@ -85,10 +85,11 @@ def llm(summary: str, findings) -> tuple[str, str] | None:
     text = model = None
     try:
         if mode == "gemini" and os.environ.get("GEMINI_API_KEY"):
-            url = ("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key="
-                   + os.environ["GEMINI_API_KEY"])
+            url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
             body = {"contents": [{"parts": [{"text": prompt}]}]}
-            req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json"})
+            # the key travels in a header, never in the URL, so it cannot end up in proxy or error logs
+            req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json",
+                                                                         "x-goog-api-key": os.environ["GEMINI_API_KEY"]})
             r = json.loads(urllib.request.urlopen(req, timeout=40).read())
             text, model = r["candidates"][0]["content"]["parts"][0]["text"], "gemini-2.5-flash"
         if mode == "claude" and os.environ.get("ANTHROPIC_API_KEY"):

@@ -3,14 +3,14 @@
   "arithmetic_break": [
     {"id": "rounding", "explanation": "Rounding differences in payroll software", "test": "absolute error below Rs. 1.00"},
     {"id": "unlisted_component", "explanation": "One-off component not shown as its own line (bonus, arrears, adjustment, reimbursement)", "test": "keywords bonus/arrears/adjustment/reimbursement/recovery present in the document text"},
-    {"id": "ocr_misread", "explanation": "OCR misread a digit", "test": "a blamed field has OCR confidence below 0.60, or the repaired value differs from the read value by one character"}
+    {"id": "ocr_misread", "explanation": "OCR misread a digit", "test": "a blamed field has OCR confidence below 0.60 and the repaired value differs from the read value by one character"}
   ],
   "amount_words_mismatch": [
     {"id": "ocr_misread", "explanation": "OCR misread a digit or a number word", "test": "OCR confidence below 0.60 on either value"},
     {"id": "words_template", "explanation": "Amount-in-words field generated from a different line (e.g. gross)", "test": "the words value equals another amount on the same document"}
   ],
   "balance_chain_break": [
-    {"id": "ocr_misread", "explanation": "OCR misread a balance or amount", "test": "OCR confidence below 0.60 on a blamed cell, or repaired value is one character away"},
+    {"id": "ocr_misread", "explanation": "OCR misread a balance or amount", "test": "OCR confidence below 0.60 on a blamed cell and the repaired value is one character away"},
     {"id": "missed_row", "explanation": "A transaction row was not parsed (wrapped narration, page break)", "test": "the residual equals the amount of a known row, or rows are not contiguous"},
     {"id": "rounding", "explanation": "Paise rounding", "test": "absolute error below Rs. 1.00"}
   ],
