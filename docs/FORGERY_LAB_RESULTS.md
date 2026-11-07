@@ -2,7 +2,7 @@
 
 `python tests/forgery_lab.py --seeds 2` makes fresh documents with the dataset generator, applies each forgery recipe and investigates the result. The generator draws the documents with the fonts installed on the machine, so Windows and Linux runs investigate slightly different documents; both runs are reported. Detection code and thresholds were the same in both.
 
-| Recipe | Windows 11 (`out/forgery_lab/results.json`, 7 Nov 2026) detected | at potential manipulation | Linux, Liberation fonts: detected | at potential manipulation |
+| Recipe | Windows 11 (7 Nov 2026): detected | at potential manipulation | Linux, Liberation fonts: detected | at potential manipulation |
 |---|---|---|---|---|
 | PDF white-box overlay, different font | 2/2 | 2/2 | 2/2 | 2/2 |
 | PDF white-box overlay, same font | 2/2 | 2/2 | 2/2 | 2/2 |
