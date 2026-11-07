@@ -120,6 +120,16 @@ python -m sakshi run a.pdf b.jpg --out out/mycase [--lang eng+hin] [--memory reg
 python -m sakshi verify-audit out/mycase/audit.jsonl
 ```
 
+**Or with Docker** (Tesseract with English and Hindi included, no local install):
+
+```bash
+docker build -t sakshi .
+docker run --rm -p 8501:8501 sakshi          # review console at http://localhost:8501
+docker run --rm -v "$PWD/in:/data" sakshi python -m sakshi run /data/a.pdf /data/b.jpg --out /data/out
+```
+
+The image ships Tesseract 5.5, which reads a few characters differently from the Tesseract 5.4 used for the numbers above: on the demo cases the potential-manipulation and inconsistency counts are identical, with up to two more explained observations (for example an IFSC read as `DCBLO0001234` is reported as a format observation, not an inconsistency). `tests/run_eval.py` passes inside the container.
+
 <details>
 <summary><b>Run the test suites</b></summary>
 
