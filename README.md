@@ -11,7 +11,7 @@ Offline · CPU only · deterministic · every finding traced to the exact spot o
 
 <sub>Real console footage (recorded with v1.0.2). The payslip says 86,500; SAKSHI finds 68,500 still inside the file, and recovers it.</sub>
 
-**[Watch the 4-minute demo (v1.0.4)](docs/demo/SAKSHI_demo.mp4)** · **[Sample dossier](samples/DEMO-TAMPERED_dossier.html)** · **[Quick start](#quick-start)** · **[Results](#results)**
+**[Watch the 4-minute demo (v1.0.4)](https://mahabu-subhani.github.io/sakshi/#demo)** · **[Sample dossier](https://mahabu-subhani.github.io/sakshi/samples/DEMO-TAMPERED_dossier.html)** · **[Quick start](#quick-start)** · **[Results](#results)**
 
 </div>
 
@@ -53,7 +53,7 @@ It also recovers the earlier saved version of an edited PDF and shows what chang
 | **Cross-document claim graph** | **Coverage map** |
 | ![Claim graph: documents linked to the facts they state, conflicts in red](docs/assets/claim-graph.png) | ![Coverage map: every field marked blind, weak or strong](docs/assets/coverage-map.png) |
 
-Each case produces a self-contained `dossier.html` (every finding clickable to its box on the original page), a machine-readable `dossier.json`, and a hash-chained `audit.jsonl`. Samples are in [`samples/`](samples): download one and open it in any browser.
+Each case produces a self-contained `dossier.html` (every finding clickable to its box on the original page), a machine-readable `dossier.json`, and a hash-chained `audit.jsonl`. Open the samples in your browser on the [project page](https://mahabu-subhani.github.io/sakshi/#samples), or download one from [`samples/`](samples) and open it locally.
 
 ## How it decides
 
@@ -115,7 +115,7 @@ Python 3.10+ and the Tesseract OCR 5 binary (English; Hindi optional).
 pip install -r requirements.txt
 
 streamlit run app.py              # review console: upload documents or pick a demo case
-python -m sakshi demo             # build the demo dataset and investigate both demo cases
+python -m sakshi demo             # investigate both demo cases (--regenerate rebuilds them on this machine first)
 python -m sakshi run a.pdf b.jpg --out out/mycase [--lang eng+hin] [--memory registry.json] [--password PW]
 python -m sakshi verify-audit out/mycase/audit.jsonl
 ```
@@ -127,6 +127,8 @@ docker build -t sakshi .
 docker run --rm -p 8501:8501 sakshi          # review console at http://localhost:8501
 docker run --rm -v "$PWD/in:/data" sakshi python -m sakshi run /data/a.pdf /data/b.jpg --out /data/out
 ```
+
+The image uses Tesseract 5.5, which reads one character of the IFSC differently on the scanned statement and application form (`DCBLO0001234` for `DCBL0001234`, at OCR confidence 0.30). In Docker the demo case therefore shows 7 / 11 / 5 instead of 7 / 11 / 3, the genuine control 0 / 0 / 3 instead of 0 / 0 / 1, and extraction 46 / 48 instead of 48 / 48. The extra findings are observations explained as an OCR confusion; every other result is the same.
 
 The image ships Tesseract 5.5, which reads a few characters differently from the Tesseract 5.4 used for the numbers above: on the demo cases the potential-manipulation and inconsistency counts are identical, with up to two more explained observations (for example an IFSC read as `DCBLO0001234` is reported as a format observation, not an inconsistency). `tests/run_eval.py` passes inside the container.
 
