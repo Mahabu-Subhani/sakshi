@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.4
+* Docker image: `docker build -t sakshi .` then `docker run -p 8501:8501 sakshi`. Python 3.12, Tesseract 5.5 with English and Hindi, Liberation fonts, non-root user, health check. Verified: `tests/run_eval.py` ALL PASS inside the container, the console answers and completes an uploaded case, and the command line runs on mounted files.
+
 ## 1.0.3
 * Earlier saved versions of an edited PDF are recovered by cutting the file at each earlier end-of-file marker; a value that reads differently at the same place is reported with the earlier value (`revision_diff`). On the demo payslip: "an earlier saved version of this file shows 68,500.00 where 86,500.00 is now".
 * Hidden text that addresses automated reviewers ("ignore all anomalies") is reported as a finding; the optional LLM narrator receives document-derived text only as quoted data and its output is discarded unless every sentence cites a real finding and every potential-manipulation finding is covered.

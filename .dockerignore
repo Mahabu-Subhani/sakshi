@@ -1,0 +1,9 @@
+.git
+.venv
+out
+**/__pycache__
+**/*.pyc
+docs/demo
+docs/assets
+samples
+dataset/redteam/_work
