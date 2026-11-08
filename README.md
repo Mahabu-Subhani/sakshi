@@ -132,7 +132,7 @@ docker run --rm -p 8501:8501 sakshi          # review console at http://localhos
 docker run --rm -v "$PWD/in:/data" sakshi python -m sakshi run /data/a.pdf /data/b.jpg --out /data/out
 ```
 
-The image uses Tesseract 5.5, which reads one character of the IFSC differently on the scanned statement and application form (`DCBLO0001234` for `DCBL0001234`, at OCR confidence 0.30). In Docker the demo case therefore shows 7 / 11 / 5 instead of 7 / 11 / 3, the genuine control 0 / 0 / 3 instead of 0 / 0 / 1, and extraction 46 / 48 instead of 48 / 48. The extra findings are observations explained as an OCR confusion; every other result is the same.
+The image uses Tesseract 5.5, which reads one character of the IFSC differently on the scanned statement and application form (`DCBLO0001234` for `DCBL0001234`, at OCR confidence 0.30). In Docker the demo case therefore shows 7 / 11 / 5 instead of 7 / 11 / 3, the genuine control 0 / 0 / 3 instead of 0 / 0 / 1, red-team RT8 5 / 1 / 3 instead of 5 / 1 / 1, and extraction 46 / 48 instead of 48 / 48. The test suites therefore compare against counts measured on the same machine, not against these numbers. The extra findings are observations explained as an OCR confusion; every other result is the same.
 
 <details>
 <summary><b>Run the test suites</b></summary>

@@ -58,12 +58,14 @@ def main() -> int:
 
         print("== demo cases with the bank's record")
         gen = sorted((ROOT / "dataset/cases/case_genuine").glob("0*"))
+        base = run(gen, tmp / "g0", "GENUINE-NO-AA")["counts"]  # this machine's own counts without bank data
         d = run(gen + [xml], tmp / "g", "AA-GENUINE")
         rep = d["issuer_data"][0]["statements"][0]
         check("genuine: every statement row matches the bank's record",
               rep["matched"] == rep["statement_rows"] == 13 and not issuer_findings(d), f"{rep['matched']}/13 matched")
-        check("genuine: counts unchanged (0 / 0 / 1)",
-              d["counts"] == {"potential_manipulation": 0, "inconsistency": 0, "observation": 1}, str(d["counts"]))
+        check("genuine: counts identical with and without the bank's record, nothing above observation",
+              d["counts"] == base and base["potential_manipulation"] == 0 and base["inconsistency"] == 0,
+              f"{d['counts']} vs {base}")
         tam = sorted((ROOT / "dataset/cases/case_tampered").glob("0*"))
         d = run(tam + [js], tmp / "t", "AA-TAMPERED")
         hit = [f for f in issuer_findings(d) if f["check"] == "issuer_amount_differs"]

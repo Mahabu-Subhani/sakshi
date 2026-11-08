@@ -24,13 +24,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from sakshi.audit import AuditLog  # noqa: E402
+from sakshi.pipeline import run_case  # noqa: E402
 from sakshi.service import batch, safe_name  # noqa: E402
 
-EXPECTED = {  # one-at-a-time results (README / samples)
-    "case_tampered": {"potential_manipulation": 7, "inconsistency": 11, "observation": 3},
-    "case_genuine": {"potential_manipulation": 0, "inconsistency": 0, "observation": 1},
-    "RT8_scanned_pdf_editor": {"potential_manipulation": 5, "inconsistency": 1, "observation": 1},
-}
+EXPECTED = {}  # one-at-a-time counts, measured on this machine first (the OCR engine version can move them)
 SOURCES = {"case_tampered": ROOT / "dataset/cases/case_tampered", "case_genuine": ROOT / "dataset/cases/case_genuine",
            "RT8_scanned_pdf_editor": ROOT / "dataset/redteam/RT8_scanned_pdf_editor"}
 results = []
@@ -68,6 +65,11 @@ def call(url, token=None, data=None, ctype=None):
 def main() -> int:
     tmp = Path(tempfile.mkdtemp(prefix="sakshi_service_"))
     try:
+        print("== one at a time (baseline on this machine)")
+        for name, src in SOURCES.items():
+            files = sorted(str(p) for p in src.iterdir() if p.suffix.lower() in (".pdf", ".jpg", ".png"))
+            EXPECTED[name] = run_case(files, tmp / "baseline" / name, case_id=name, html=False)["counts"]
+            print(f"  {name}: {EXPECTED[name]}")
         print("== batch: 3 applications on 3 workers")
         apps = tmp / "applications"
         for name, src in SOURCES.items():
