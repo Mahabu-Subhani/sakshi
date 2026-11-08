@@ -49,7 +49,7 @@ Full history: [`docs/CHANGELOG.md`](docs/CHANGELOG.md).
 
 | The brief asks for | Where SAKSHI does it |
 |---|---|
-| Upload and process multiple documents of one application | console uploader and `python -m sakshi run`; each case in its own worker process; a capability matrix in the console states what is implemented, partial, planned and unsupported |
+| Upload and process multiple documents of one application | console uploader, `python -m sakshi run`, `batch` and the REST API; each console, batch or API case in its own worker process; a capability matrix in the console states what is implemented, partial, planned and unsupported |
 | Classification and OCR | dossier 7.1: type, confidence, cues, modality, witness level, SHA-256 |
 | Structured representation of the content | dossier 7.2: every field with raw and normalised value, confidence, method and location |
 | Visual forensics with suspicious regions highlighted | nine pixel sensors, PDF layer archaeology and overlay peel; every hit boxed on its page (7.4) |
@@ -57,7 +57,7 @@ Full history: [`docs/CHANGELOG.md`](docs/CHANGELOG.md).
 | Relationships between findings | findings grouped into hypotheses that support each other |
 | Potential versus confirmed anomalies | three rungs, devil's advocate, witness levels; never "fraud" |
 | Traceable evidence and a final dossier | 7.5 traceability (click to the boxed region), 7.6 summary, HTML / JSON / hash-chained audit |
-| Safe failure and stated limits | damaged files rejected with a reason, forgery canaries, coverage map, `docs/LIMITATIONS.md` |
+| Safe failure and stated limits | damaged files rejected with a reason (an upload of only unreadable files is reported as nothing analysed, never as clean), forgery canaries, coverage map, `docs/LIMITATIONS.md` |
 
 </details>
 
