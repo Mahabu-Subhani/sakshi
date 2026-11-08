@@ -1,9 +1,9 @@
 {
  "case_id": "DEMO-GENUINE",
- "generated_at": "2026-11-08 18:00:14 +0530",
- "sakshi_version": "1.1.0",
+ "generated_at": "2026-11-08 23:31:22 +0530",
+ "sakshi_version": "1.1.1",
  "environment": {
-  "sakshi": "1.1.0",
+  "sakshi": "1.1.1",
   "python": "3.14.2",
   "platform": "Windows-11",
   "tesseract": "5.4.0.20240606",
@@ -19,7 +19,7 @@
   "warning": null,
   "executable_64bit": true
  },
- "processing_seconds": 42.1,
+ "processing_seconds": 20.3,
  "status": "NO RULE-BREAKING ANOMALY FOUND (not proof of authenticity)",
  "counts": {
   "potential_manipulation": 0,
@@ -28,6 +28,7 @@
  },
  "summary": "5 documents analysed. 0 potential manipulation finding(s), 0 inconsistencies, 1 observations. 0 investigation thread(s).\nNo rule-breaking inconsistency or corroborated anomaly was found. This is not proof of authenticity; see the coverage map for what could and could not be verified.\nAll findings are leads for a human analyst. None is a fraud determination.",
  "llm_summary": null,
+ "self_test_warnings": [],
  "documents": [
   {
    "doc_id": "D1",
@@ -569,7 +570,8 @@
        1491.0,
        1385.0
       ],
-      "crop": "evidence\\D1_p0_sig0.png"
+      "crop": "evidence\\D1_p0_sig0.png",
+      "ink": "blue"
      }
     ]
    },
@@ -583,7 +585,7 @@
     "compression": "n/a (born-digital)",
     "optics": "n/a (born-digital)",
     "scan_overlay": "n/a",
-    "signature": "ok (1 blue-ink signature(s))",
+    "signature": "ok (signatures found: 1 blue-ink)",
     "self_test": {
      "pdf_layers": "1/1 canaries caught"
     }
@@ -1486,7 +1488,7 @@
     "intra_token_font": "ok (49 numbers)",
     "optics": "ok (154 words)",
     "scan_overlay": "ok (nothing drawn over the scan)",
-    "signature": "ok (0 blue-ink signature(s))",
+    "signature": "ok (signatures found: none)",
     "self_test": {
      "copy_move": "4/4 canaries caught",
      "noise": "3/3 canaries caught"
@@ -1932,7 +1934,8 @@
        401.0,
        1794.0
       ],
-      "crop": "evidence\\D3_p0_sig0.png"
+      "crop": "evidence\\D3_p0_sig0.png",
+      "ink": "blue"
      }
     ]
    },
@@ -1947,7 +1950,7 @@
     "intra_token_font": "ok (9 numbers)",
     "optics": "ok (125 words)",
     "scan_overlay": "n/a",
-    "signature": "ok (1 blue-ink signature(s))",
+    "signature": "ok (signatures found: 1 blue-ink)",
     "self_test": {
      "copy_move": "4/4 canaries caught",
      "noise": "3/3 canaries caught"
@@ -2156,7 +2159,8 @@
        359.0,
        560.0
       ],
-      "crop": "evidence\\D4_p0_sig0.png"
+      "crop": "evidence\\D4_p0_sig0.png",
+      "ink": "blue"
      }
     ]
    },
@@ -2171,7 +2175,7 @@
     "intra_token_font": "ok (7 numbers)",
     "optics": "ok (27 words)",
     "scan_overlay": "n/a",
-    "signature": "ok (1 blue-ink signature(s))",
+    "signature": "ok (signatures found: 1 blue-ink)",
     "self_test": {
      "copy_move": "4/4 canaries caught",
      "noise": "3/3 canaries caught"
@@ -2371,7 +2375,8 @@
        537.0,
        1123.0
       ],
-      "crop": "evidence\\D5_p0_sig0.png"
+      "crop": "evidence\\D5_p0_sig0.png",
+      "ink": "blue"
      }
     ]
    },
@@ -2386,7 +2391,7 @@
     "intra_token_font": "ok (3 numbers)",
     "optics": "ok (92 words)",
     "scan_overlay": "n/a",
-    "signature": "ok (1 blue-ink signature(s))",
+    "signature": "ok (signatures found: 1 blue-ink)",
     "self_test": {
      "copy_move": "4/4 canaries caught",
      "noise": "3/3 canaries caught"
@@ -4374,7 +4379,7 @@
   "message": "audit chain intact",
   "records": [
    {
-    "ts": "2026-11-08T17:59:32+0530",
+    "ts": "2026-11-08T23:31:02+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
@@ -4382,10 +4387,10 @@
      "note": "5 file(s)"
     },
     "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
-    "hash": "7cb12aec48543e785e12dc65f839c4ec40061cdfede535ad5c7d749c15be7eea"
+    "hash": "621b4c73f93dfbd7c235ff2df39e15efadb207f570808b53c9a628e440e251b3"
    },
    {
-    "ts": "2026-11-08T17:59:33+0530",
+    "ts": "2026-11-08T23:31:02+0530",
     "case_id": "DEMO-GENUINE",
     "event": "case_opened",
     "payload": {
@@ -4396,9 +4401,9 @@
       "04_identity_card.jpg",
       "05_employment_letter.jpg"
      ],
-     "sakshi_version": "1.1.0",
+     "sakshi_version": "1.1.1",
      "environment": {
-      "sakshi": "1.1.0",
+      "sakshi": "1.1.1",
       "python": "3.14.2",
       "platform": "Windows-11",
       "tesseract": "5.4.0.20240606",
@@ -4415,11 +4420,11 @@
       "executable_64bit": true
      }
     },
-    "prev_hash": "7cb12aec48543e785e12dc65f839c4ec40061cdfede535ad5c7d749c15be7eea",
-    "hash": "22c7f866b024b0d443f80103c75f90d6b96dec075769da56ca6ecad5eb209461"
+    "prev_hash": "621b4c73f93dfbd7c235ff2df39e15efadb207f570808b53c9a628e440e251b3",
+    "hash": "3ef877f5e3c23b83bdcced49a0d6a91a5e2621cbc20658b010baf05b457f3aee"
    },
    {
-    "ts": "2026-11-08T17:59:33+0530",
+    "ts": "2026-11-08T23:31:02+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4429,11 +4434,11 @@
      "modality": "digital_pdf",
      "pages": 1
     },
-    "prev_hash": "22c7f866b024b0d443f80103c75f90d6b96dec075769da56ca6ecad5eb209461",
-    "hash": "3b91cf6944012f44531a247d3d1b71236e7c3fbeddcaa2fd92f6142f5b8514cb"
+    "prev_hash": "3ef877f5e3c23b83bdcced49a0d6a91a5e2621cbc20658b010baf05b457f3aee",
+    "hash": "3bf6908e3d46bb068971945f021af2147d08b35cd32b173cfadeae0b1df20b6b"
    },
    {
-    "ts": "2026-11-08T17:59:38+0530",
+    "ts": "2026-11-08T23:31:05+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4443,11 +4448,11 @@
      "modality": "scanned_pdf",
      "pages": 1
     },
-    "prev_hash": "3b91cf6944012f44531a247d3d1b71236e7c3fbeddcaa2fd92f6142f5b8514cb",
-    "hash": "41c9420e773ecda38d37065c55ce47d7f809d5b54cbc5f3cdc05fdd786800eb8"
+    "prev_hash": "3bf6908e3d46bb068971945f021af2147d08b35cd32b173cfadeae0b1df20b6b",
+    "hash": "6008cb1610bf1ea393c0d170803939bb87686b4e3596b723364d43d9b265c7c5"
    },
    {
-    "ts": "2026-11-08T17:59:42+0530",
+    "ts": "2026-11-08T23:31:07+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4457,11 +4462,11 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "41c9420e773ecda38d37065c55ce47d7f809d5b54cbc5f3cdc05fdd786800eb8",
-    "hash": "62c6bc58536fd46e0a0afdbd4ffe924e0cf3cee9a7f0a280f96133447c3484f4"
+    "prev_hash": "6008cb1610bf1ea393c0d170803939bb87686b4e3596b723364d43d9b265c7c5",
+    "hash": "520f369242be6ba08589247c69acd2baef1761a9d7a2f14a1ed968157a0c1982"
    },
    {
-    "ts": "2026-11-08T17:59:44+0530",
+    "ts": "2026-11-08T23:31:07+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4471,11 +4476,11 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "62c6bc58536fd46e0a0afdbd4ffe924e0cf3cee9a7f0a280f96133447c3484f4",
-    "hash": "025e891c03f5a2cf81f5f26a5c437a597afc182805ba912c67af1d2c158d25e2"
+    "prev_hash": "520f369242be6ba08589247c69acd2baef1761a9d7a2f14a1ed968157a0c1982",
+    "hash": "a56e6fc9fed79ad3f54a364625c81561ad942cd6d0ead08751c78423dc89b39d"
    },
    {
-    "ts": "2026-11-08T17:59:48+0530",
+    "ts": "2026-11-08T23:31:09+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_ingested",
     "payload": {
@@ -4485,22 +4490,22 @@
      "modality": "image",
      "pages": 1
     },
-    "prev_hash": "025e891c03f5a2cf81f5f26a5c437a597afc182805ba912c67af1d2c158d25e2",
-    "hash": "a3dc7899049186107a5738325befc528106f1adba22808fb9215f6414c1a10f7"
+    "prev_hash": "a56e6fc9fed79ad3f54a364625c81561ad942cd6d0ead08751c78423dc89b39d",
+    "hash": "60a4d55afaa1ac476fc9d63ab921947567a662e869783a503397d29684fef52a"
    },
    {
-    "ts": "2026-11-08T17:59:48+0530",
+    "ts": "2026-11-08T23:31:09+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Document classification",
      "note": ""
     },
-    "prev_hash": "a3dc7899049186107a5738325befc528106f1adba22808fb9215f6414c1a10f7",
-    "hash": "865e5900061d461f2cf697996c799ad0632cdb6b6785691b951f3cde79abc5ee"
+    "prev_hash": "60a4d55afaa1ac476fc9d63ab921947567a662e869783a503397d29684fef52a",
+    "hash": "6900a5d498ba47f9d76cc77bb7b212ab4ee050d265bd108621a025e8482e0792"
    },
    {
-    "ts": "2026-11-08T17:59:49+0530",
+    "ts": "2026-11-08T23:31:10+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4521,11 +4526,11 @@
       "signed": false
      }
     },
-    "prev_hash": "865e5900061d461f2cf697996c799ad0632cdb6b6785691b951f3cde79abc5ee",
-    "hash": "0ee808c7d63539ab90e2a54ce04833f83370b62eb4e51eef28ad75aad8c41d3b"
+    "prev_hash": "6900a5d498ba47f9d76cc77bb7b212ab4ee050d265bd108621a025e8482e0792",
+    "hash": "b32e0ad4acce1abead30ec17df3b92a3c72fec09f2344104ab09b7ecb283a0ab"
    },
    {
-    "ts": "2026-11-08T17:59:49+0530",
+    "ts": "2026-11-08T23:31:10+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4546,11 +4551,11 @@
       "signed": false
      }
     },
-    "prev_hash": "0ee808c7d63539ab90e2a54ce04833f83370b62eb4e51eef28ad75aad8c41d3b",
-    "hash": "42faea4ebea5f846ed45ef2c9020a19bc8d14cdb0148a6acc49559625f7e5523"
+    "prev_hash": "b32e0ad4acce1abead30ec17df3b92a3c72fec09f2344104ab09b7ecb283a0ab",
+    "hash": "584e12b5270230af503b4fca6cbd448c229f0eaeeb649d3aa90d975a285ccffb"
    },
    {
-    "ts": "2026-11-08T17:59:49+0530",
+    "ts": "2026-11-08T23:31:10+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4567,11 +4572,11 @@
      "witness_level": 0,
      "digital_signature": null
     },
-    "prev_hash": "42faea4ebea5f846ed45ef2c9020a19bc8d14cdb0148a6acc49559625f7e5523",
-    "hash": "00756adf0a84d0aad435aef6cd5f368c2d42c1bd2e545c927fc7552141abf20f"
+    "prev_hash": "584e12b5270230af503b4fca6cbd448c229f0eaeeb649d3aa90d975a285ccffb",
+    "hash": "63e04236138a4492beef0dfccfcebb685759a1c451b05b69417b8eb7e0910ec4"
    },
    {
-    "ts": "2026-11-08T17:59:49+0530",
+    "ts": "2026-11-08T23:31:10+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4588,11 +4593,11 @@
      "witness_level": 2,
      "digital_signature": null
     },
-    "prev_hash": "00756adf0a84d0aad435aef6cd5f368c2d42c1bd2e545c927fc7552141abf20f",
-    "hash": "4be1fefc47686b4b6b1806aaae6b5c7fb3ebeac16e5d7e5e6a324ee4911104e7"
+    "prev_hash": "63e04236138a4492beef0dfccfcebb685759a1c451b05b69417b8eb7e0910ec4",
+    "hash": "c0dd0de1fc5a98606325f5b22a2fbdcd7bacbd2dfd3d184b109674102a9bedb7"
    },
    {
-    "ts": "2026-11-08T17:59:49+0530",
+    "ts": "2026-11-08T23:31:10+0530",
     "case_id": "DEMO-GENUINE",
     "event": "document_classified",
     "payload": {
@@ -4610,22 +4615,22 @@
      "witness_level": 1,
      "digital_signature": null
     },
-    "prev_hash": "4be1fefc47686b4b6b1806aaae6b5c7fb3ebeac16e5d7e5e6a324ee4911104e7",
-    "hash": "bd7be397cfee7b8db478526149293bc1dad492f02614195b7b2d16d1e5ffb1bf"
+    "prev_hash": "c0dd0de1fc5a98606325f5b22a2fbdcd7bacbd2dfd3d184b109674102a9bedb7",
+    "hash": "1bc203dd0b2563efdcc5dd1010a7b00c7eca6cef6519d732e15869132635b712"
    },
    {
-    "ts": "2026-11-08T17:59:49+0530",
+    "ts": "2026-11-08T23:31:10+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "OCR & information extraction",
      "note": ""
     },
-    "prev_hash": "bd7be397cfee7b8db478526149293bc1dad492f02614195b7b2d16d1e5ffb1bf",
-    "hash": "e2066defcdbd3630ff0e5f74261f62522a86925bb8da69150be89d5db97defa9"
+    "prev_hash": "1bc203dd0b2563efdcc5dd1010a7b00c7eca6cef6519d732e15869132635b712",
+    "hash": "2889734ec9ca60bad40bb97dca7f8cbb3ea266a36d46144013e8e0cdfec4b536"
    },
    {
-    "ts": "2026-11-08T17:59:50+0530",
+    "ts": "2026-11-08T23:31:11+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4634,11 +4639,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "e2066defcdbd3630ff0e5f74261f62522a86925bb8da69150be89d5db97defa9",
-    "hash": "f27f70b379a9ed6fa9e2ac6ad53dd538d40dbf79b02c3c08059d69e4055e63bb"
+    "prev_hash": "2889734ec9ca60bad40bb97dca7f8cbb3ea266a36d46144013e8e0cdfec4b536",
+    "hash": "73a216c1b8aa14216f463fbb4f53b3454518a27365a20bc890a716f48d08acfe"
    },
    {
-    "ts": "2026-11-08T17:59:50+0530",
+    "ts": "2026-11-08T23:31:11+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4647,11 +4652,11 @@
      "n_rows": 14,
      "missing": []
     },
-    "prev_hash": "f27f70b379a9ed6fa9e2ac6ad53dd538d40dbf79b02c3c08059d69e4055e63bb",
-    "hash": "0cc232928aa028cc37ccbfebccba8d8eec99723a9237a6e41a3f6c9058c5ebf0"
+    "prev_hash": "73a216c1b8aa14216f463fbb4f53b3454518a27365a20bc890a716f48d08acfe",
+    "hash": "52e821d930b7ec580f436c52614a43624378e232123a1658fad82c91b511375b"
    },
    {
-    "ts": "2026-11-08T17:59:50+0530",
+    "ts": "2026-11-08T23:31:11+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4660,11 +4665,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "0cc232928aa028cc37ccbfebccba8d8eec99723a9237a6e41a3f6c9058c5ebf0",
-    "hash": "37782c8c750121ecc9626063425d2a19ba53b056bb9ab01bbf021a5481e19219"
+    "prev_hash": "52e821d930b7ec580f436c52614a43624378e232123a1658fad82c91b511375b",
+    "hash": "272bc4f2dc9743c6b7516e9a01c21afb554fad23baa052561a004e95b578d95c"
    },
    {
-    "ts": "2026-11-08T17:59:50+0530",
+    "ts": "2026-11-08T23:31:11+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4673,11 +4678,11 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "37782c8c750121ecc9626063425d2a19ba53b056bb9ab01bbf021a5481e19219",
-    "hash": "71e6a807891b06323d8d05fe221ea56cf3eddb97c286c681beb5c44e95391877"
+    "prev_hash": "272bc4f2dc9743c6b7516e9a01c21afb554fad23baa052561a004e95b578d95c",
+    "hash": "3b6f40546580ccc6685da9c8d05e65a599d9161b13b7f2c523e4272f36d6e8b6"
    },
    {
-    "ts": "2026-11-08T17:59:50+0530",
+    "ts": "2026-11-08T23:31:11+0530",
     "case_id": "DEMO-GENUINE",
     "event": "fields_extracted",
     "payload": {
@@ -4686,33 +4691,33 @@
      "n_rows": 0,
      "missing": []
     },
-    "prev_hash": "71e6a807891b06323d8d05fe221ea56cf3eddb97c286c681beb5c44e95391877",
-    "hash": "6ae2805f04b5b93a85ad899ff4810dc01b51eb4130693f3ce0ed8c4f19280fb7"
+    "prev_hash": "3b6f40546580ccc6685da9c8d05e65a599d9161b13b7f2c523e4272f36d6e8b6",
+    "hash": "9a10f4068e5a40130db11d0c17dca8d66ce9b23c221647c09a3dc27d1c7bc0a7"
    },
    {
-    "ts": "2026-11-08T17:59:50+0530",
+    "ts": "2026-11-08T23:31:11+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Structural understanding",
      "note": ""
     },
-    "prev_hash": "6ae2805f04b5b93a85ad899ff4810dc01b51eb4130693f3ce0ed8c4f19280fb7",
-    "hash": "f9ead2804003e7cd8414c65a340d71711c8329797dbad1af8b2a4651876b2f8b"
+    "prev_hash": "9a10f4068e5a40130db11d0c17dca8d66ce9b23c221647c09a3dc27d1c7bc0a7",
+    "hash": "978c43962d4a90ace85d317540aa49e431901d58f1528ad38e279bf7b594f7e8"
    },
    {
-    "ts": "2026-11-08T17:59:50+0530",
+    "ts": "2026-11-08T23:31:11+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Visual forensic analysis",
      "note": ""
     },
-    "prev_hash": "f9ead2804003e7cd8414c65a340d71711c8329797dbad1af8b2a4651876b2f8b",
-    "hash": "a96f377632d62964891640230fc52f730d07be6832070a70582d4bc04bada602"
+    "prev_hash": "978c43962d4a90ace85d317540aa49e431901d58f1528ad38e279bf7b594f7e8",
+    "hash": "18e4c505cd97c9374297312b569589eba66f2d81eac57a53f7900f318cc8d620"
    },
    {
-    "ts": "2026-11-08T17:59:50+0530",
+    "ts": "2026-11-08T23:31:11+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4727,17 +4732,17 @@
       "compression": "n/a (born-digital)",
       "optics": "n/a (born-digital)",
       "scan_overlay": "n/a",
-      "signature": "ok (1 blue-ink signature(s))",
+      "signature": "ok (signatures found: 1 blue-ink)",
       "self_test": {
        "pdf_layers": "1/1 canaries caught"
       }
      }
     },
-    "prev_hash": "a96f377632d62964891640230fc52f730d07be6832070a70582d4bc04bada602",
-    "hash": "09682521c7c198b969bafeee9b0679e62158bc9253e9c24934e46da0e8001299"
+    "prev_hash": "18e4c505cd97c9374297312b569589eba66f2d81eac57a53f7900f318cc8d620",
+    "hash": "50176d15683204a2e1a8ee9cf178015a2462059725768887a9f8f7039ba4fe9f"
    },
    {
-    "ts": "2026-11-08T18:00:00+0530",
+    "ts": "2026-11-08T23:31:15+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4753,18 +4758,18 @@
       "intra_token_font": "ok (49 numbers)",
       "optics": "ok (154 words)",
       "scan_overlay": "ok (nothing drawn over the scan)",
-      "signature": "ok (0 blue-ink signature(s))",
+      "signature": "ok (signatures found: none)",
       "self_test": {
        "copy_move": "4/4 canaries caught",
        "noise": "3/3 canaries caught"
       }
      }
     },
-    "prev_hash": "09682521c7c198b969bafeee9b0679e62158bc9253e9c24934e46da0e8001299",
-    "hash": "310013db74bfba8141735b798c8aaf49f3679b91a56aeeac8e844b9f410bf80c"
+    "prev_hash": "50176d15683204a2e1a8ee9cf178015a2462059725768887a9f8f7039ba4fe9f",
+    "hash": "baee4778e3240f5aacbb32ff4a1a79a9d5906b532dc45e272a1e4df5af946136"
    },
    {
-    "ts": "2026-11-08T18:00:05+0530",
+    "ts": "2026-11-08T23:31:17+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4780,18 +4785,18 @@
       "intra_token_font": "ok (9 numbers)",
       "optics": "ok (125 words)",
       "scan_overlay": "n/a",
-      "signature": "ok (1 blue-ink signature(s))",
+      "signature": "ok (signatures found: 1 blue-ink)",
       "self_test": {
        "copy_move": "4/4 canaries caught",
        "noise": "3/3 canaries caught"
       }
      }
     },
-    "prev_hash": "310013db74bfba8141735b798c8aaf49f3679b91a56aeeac8e844b9f410bf80c",
-    "hash": "f5ccfa79bca6d67b05fbdd33ad9dc1ceb8a8e51a89cf8e5486fc6f288432a5c8"
+    "prev_hash": "baee4778e3240f5aacbb32ff4a1a79a9d5906b532dc45e272a1e4df5af946136",
+    "hash": "3e813f196e2d0386ef7dc293c4e50335c16ab64448ce194411989c8ee898ada8"
    },
    {
-    "ts": "2026-11-08T18:00:06+0530",
+    "ts": "2026-11-08T23:31:18+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4807,18 +4812,18 @@
       "intra_token_font": "ok (7 numbers)",
       "optics": "ok (27 words)",
       "scan_overlay": "n/a",
-      "signature": "ok (1 blue-ink signature(s))",
+      "signature": "ok (signatures found: 1 blue-ink)",
       "self_test": {
        "copy_move": "4/4 canaries caught",
        "noise": "3/3 canaries caught"
       }
      }
     },
-    "prev_hash": "f5ccfa79bca6d67b05fbdd33ad9dc1ceb8a8e51a89cf8e5486fc6f288432a5c8",
-    "hash": "bec254c781f4b2d34c882718f61f02f26603386eb508f1022ceb283ad45f4b1f"
+    "prev_hash": "3e813f196e2d0386ef7dc293c4e50335c16ab64448ce194411989c8ee898ada8",
+    "hash": "082a950ee6fa0bceeea3c533ebe87c4770fc5580b89bba5a5ee9fb61d441acbe"
    },
    {
-    "ts": "2026-11-08T18:00:10+0530",
+    "ts": "2026-11-08T23:31:20+0530",
     "case_id": "DEMO-GENUINE",
     "event": "visual_forensics",
     "payload": {
@@ -4834,62 +4839,62 @@
       "intra_token_font": "ok (3 numbers)",
       "optics": "ok (92 words)",
       "scan_overlay": "n/a",
-      "signature": "ok (1 blue-ink signature(s))",
+      "signature": "ok (signatures found: 1 blue-ink)",
       "self_test": {
        "copy_move": "4/4 canaries caught",
        "noise": "3/3 canaries caught"
       }
      }
     },
-    "prev_hash": "bec254c781f4b2d34c882718f61f02f26603386eb508f1022ceb283ad45f4b1f",
-    "hash": "c3d41e3e609ca616a2e67a7412c704291d6af471d9066cb84085f461b458ffee"
+    "prev_hash": "082a950ee6fa0bceeea3c533ebe87c4770fc5580b89bba5a5ee9fb61d441acbe",
+    "hash": "43d29432e607f0b65932e4d33ae3c574fa549f41b47ed3eafc0f052a480aaefc"
    },
    {
-    "ts": "2026-11-08T18:00:10+0530",
+    "ts": "2026-11-08T23:31:20+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Contextual verification",
      "note": ""
     },
-    "prev_hash": "c3d41e3e609ca616a2e67a7412c704291d6af471d9066cb84085f461b458ffee",
-    "hash": "5d4128af7580755fdd43fc6c1cf22b7da6e6524a8e06392aa3474cfaca566ba7"
+    "prev_hash": "43d29432e607f0b65932e4d33ae3c574fa549f41b47ed3eafc0f052a480aaefc",
+    "hash": "f6b6149d9857f9c831e69f187e37130f2df5e30aa035ca12d652c5d2bb83c7a2"
    },
    {
-    "ts": "2026-11-08T18:00:14+0530",
+    "ts": "2026-11-08T23:31:22+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Cross-document correlation",
      "note": ""
     },
-    "prev_hash": "5d4128af7580755fdd43fc6c1cf22b7da6e6524a8e06392aa3474cfaca566ba7",
-    "hash": "5389705da2da661df478dfad4952e9731dc0c545a52e63169dc42535c1c43a38"
+    "prev_hash": "f6b6149d9857f9c831e69f187e37130f2df5e30aa035ca12d652c5d2bb83c7a2",
+    "hash": "306b75549b992ade2213e8bcf26fe166ea90c325f5a2d5438f57c3bb1aa4f730"
    },
    {
-    "ts": "2026-11-08T18:00:14+0530",
+    "ts": "2026-11-08T23:31:22+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Anomaly investigation",
      "note": ""
     },
-    "prev_hash": "5389705da2da661df478dfad4952e9731dc0c545a52e63169dc42535c1c43a38",
-    "hash": "63c6848c985ee11b7b92f0a0d15eb988be9b13bb66709920d750f591bf6920ff"
+    "prev_hash": "306b75549b992ade2213e8bcf26fe166ea90c325f5a2d5438f57c3bb1aa4f730",
+    "hash": "be812eea51b1c896f4c21601c6cd8d39680c8690b3af477739bb7202ea1dda48"
    },
    {
-    "ts": "2026-11-08T18:00:14+0530",
+    "ts": "2026-11-08T23:31:22+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Evidence generation",
      "note": ""
     },
-    "prev_hash": "63c6848c985ee11b7b92f0a0d15eb988be9b13bb66709920d750f591bf6920ff",
-    "hash": "6d259535cc871ff96ab3446e7738d259f03a293bc522e4dd148b77f588e343fa"
+    "prev_hash": "be812eea51b1c896f4c21601c6cd8d39680c8690b3af477739bb7202ea1dda48",
+    "hash": "a7380d2bcaa088c76408ba7e9186c882452a336a254ebe08634ab77bafe1182f"
    },
    {
-    "ts": "2026-11-08T18:00:14+0530",
+    "ts": "2026-11-08T23:31:22+0530",
     "case_id": "DEMO-GENUINE",
     "event": "finding_recorded",
     "payload": {
@@ -4957,30 +4962,30 @@
       ]
      ]
     },
-    "prev_hash": "6d259535cc871ff96ab3446e7738d259f03a293bc522e4dd148b77f588e343fa",
-    "hash": "eff366fb83fa3c2735dafd3de254db97a97335ad9a32cbeaf23090a13d7deb83"
+    "prev_hash": "a7380d2bcaa088c76408ba7e9186c882452a336a254ebe08634ab77bafe1182f",
+    "hash": "38e50b2cf3b1b2d60a6350e0361008d3038620348bcaafb2d6516efecbd2efbf"
    },
    {
-    "ts": "2026-11-08T18:00:14+0530",
+    "ts": "2026-11-08T23:31:22+0530",
     "case_id": "DEMO-GENUINE",
     "event": "stage",
     "payload": {
      "stage": "Investigation dossier",
      "note": ""
     },
-    "prev_hash": "eff366fb83fa3c2735dafd3de254db97a97335ad9a32cbeaf23090a13d7deb83",
-    "hash": "347458e35831696c3eef6899bce67ad509946e5ea3b77fa53ca8205c72c8b732"
+    "prev_hash": "38e50b2cf3b1b2d60a6350e0361008d3038620348bcaafb2d6516efecbd2efbf",
+    "hash": "94debc248f81bb97f3dcc64c02464a753102034df2ca741b7ad8f6797b43554b"
    },
    {
-    "ts": "2026-11-08T18:00:15+0530",
+    "ts": "2026-11-08T23:31:22+0530",
     "case_id": "DEMO-GENUINE",
     "event": "dossier_generated",
     "payload": {
      "n_findings": 1,
-     "seconds": 42.1
+     "seconds": 20.3
     },
-    "prev_hash": "347458e35831696c3eef6899bce67ad509946e5ea3b77fa53ca8205c72c8b732",
-    "hash": "554918780affefdabb31f90255d785fa11ad9ec385dd9d6d803daad0874c676f"
+    "prev_hash": "94debc248f81bb97f3dcc64c02464a753102034df2ca741b7ad8f6797b43554b",
+    "hash": "b8cc10548a326b7c998d7b902b5a2532d99dfb5f3c14608f7558de80cbb0eed7"
    }
   ]
  },

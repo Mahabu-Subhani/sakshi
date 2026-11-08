@@ -11,7 +11,7 @@ Offline · CPU only · deterministic · every finding traced to the exact spot o
 
 <sub>Real console footage (recorded with v1.0.2). The payslip says 86,500; SAKSHI finds 68,500 still inside the file, and recovers it.</sub>
 
-**[Watch the 4-minute demo (v1.0.4)](https://mahabu-subhani.github.io/sakshi/#demo)** · **[Sample dossier](https://mahabu-subhani.github.io/sakshi/samples/DEMO-TAMPERED_dossier.html)** · **[Quick start](#quick-start)** · **[Results](#results)**
+**[Watch the demo (4:26, v1.1.1)](https://mahabu-subhani.github.io/sakshi/#demo)** · **[Sample dossier](https://mahabu-subhani.github.io/sakshi/samples/DEMO-TAMPERED_dossier.html)** · **[Quick start](#quick-start)** · **[Results](#results)**
 
 </div>
 
