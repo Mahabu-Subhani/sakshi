@@ -38,6 +38,29 @@ def _rect_overlap(a, b) -> float:
     return inter / area if area > 0 else 0.0
 
 
+def covered_text(spans, rect, before_seq):
+    """Value-like text painted before step `before_seq` and covered by `rect`.
+
+    A whole span counts when at least 60% of it is covered. Many generators (pdfTeX among them) write a whole
+    line as one text run, so a box over one word of that line covers only a small part of the span; for those,
+    the characters themselves are measured and the covered run of characters is returned as its own piece."""
+    out = []
+    for s in spans:
+        if s["seq"] >= before_seq:
+            continue
+        if _rect_overlap(s["bbox"], rect) > 0.6:
+            if VALUE_RE.search(s["text"]):
+                out.append(s)
+            continue
+        chars = [c for c in s.get("chars", []) if _rect_overlap(tuple(c[3]), rect) > 0.6]
+        text = "".join(chr(c[0]) for c in chars).strip()
+        if chars and VALUE_RE.search(text):
+            xs = [c[3] for c in chars]
+            out.append(dict(s, text=text, bbox=(min(b[0] for b in xs), min(b[1] for b in xs),
+                                               max(b[2] for b in xs), max(b[3] for b in xs))))
+    return out
+
+
 def _pdf_date(s: str):
     m = re.match(r"D:(\d{4})(\d{2})(\d{2})(\d{2})?(\d{2})?", s or "")
     if not m:
@@ -115,13 +138,12 @@ def analyse(doc: Document, new_id) -> list[Finding]:
             txt = "".join(chr(c[0]) for c in s["chars"])
             spans.append({"text": txt, "seq": s["seqno"], "font": s["font"], "size": s["size"],
                           "bbox": tuple(s["bbox"]), "type": s.get("type", 0), "opacity": s.get("opacity", 1.0),
-                          "color": s.get("color")})
+                          "color": s.get("color"), "chars": s["chars"]})
         shapes = [d for d in page.get_drawings() if d.get("fill") is not None and d["type"] in ("f", "fs")]
         hidden_boxes, hidden_seq, hidden_txt = [], set(), []
         for sh in shapes:
             r = tuple(sh["rect"])
-            under = [s for s in spans if s["seq"] < sh["seqno"] and _rect_overlap(s["bbox"], r) > 0.6
-                     and VALUE_RE.search(s["text"])]
+            under = covered_text(spans, r, sh["seqno"])
             over = [s for s in spans if s["seq"] > sh["seqno"] and _rect_overlap(s["bbox"], r) > 0.5]
             if not under:
                 continue
