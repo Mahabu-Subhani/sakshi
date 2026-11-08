@@ -429,13 +429,13 @@ def build_dossier(case_id, docs, findings, threads, ctx, coverage, rejected, sum
 
 LIMITATIONS = [
     "Handwritten text is not recognised (Tesseract printed-text model). Handwritten fields are reported as missing, not verified.",
-    "Signatures: blue ink is found anywhere on a page; black ink only just above a readable signature caption.",
+    "Signatures: blue ink is found anywhere on a page except inside words read as printed text; black ink only just above a readable signature caption; in born-digital PDFs, pasted signature images are found. A signature is never verified against a reference specimen.",
     "Pixel forensics (noise, copy-move, typography) need a real scan with measurable sensor noise; they declare themselves blind on clean digital exports and screenshots.",
     "Copy-move detection compares digit glyphs only; larger copied regions (logos, stamps) are not searched.",
     "Extraction relies on common Indian labels (Net Pay, Gross Earnings, Statement of Account, ...). Unseen layouts fall back to generic label:value harvesting with fewer cross-checks.",
     "The repair solver handles linear rules and up to 3 simultaneous field changes. Forgeries consistent across every rule are only caught where an independent document disagrees.",
-    "No issuer verification: SAKSHI cannot confirm a document with the bank, employer or registry. Witness level L3/L4 sources are modelled but not connected.",
-    "Multi-page support is limited to the first 6 pages per document.",
+    "Issuer evidence is limited to what the lender supplies: the bank's own record (Account Aggregator FI data attached as a file, L4) and digitally signed PDFs whose certificate chains to the lender's trust store (L3; revocation not checked). SAKSHI fetches nothing live and cannot confirm a document with the employer, UIDAI or the PAN registry.",
+    "Up to 40 pages per document are read for arithmetic and structure; pixel forensics run on the first 6 pages only.",
     "Classification is keyword based and may label unusual documents as 'unknown'; contextual rules are then skipped for that document.",
     "Thresholds were set on synthetic data; they are documented in the code and need calibration on real, authorised samples before any production use.",
 ]
