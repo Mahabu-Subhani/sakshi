@@ -3,6 +3,8 @@
   python -m sakshi demo [--regenerate]          investigate both demo cases (the documents in dataset/cases)
   python -m sakshi run FILE [FILE ...] --out DIR [--case-id ID] [--lang eng+hin] [--memory registry.json] [--password PW ...]
   python -m sakshi redteam [--regenerate]       score SAKSHI on the red-team cases (the documents in dataset/redteam)
+  python -m sakshi batch APPLICATIONS_DIR --out DIR [--workers N] [--memory registry.json]
+  python -m sakshi serve [--host 127.0.0.1] [--port 8600] [--workers N] [--out DIR] [--memory registry.json]
   python -m sakshi verify-audit DIR/audit.jsonl
 """
 from __future__ import annotations
@@ -50,6 +52,19 @@ def main(argv=None):
     rt.add_argument(regen[0], **regen[1])
     dm = sub.add_parser("demo", help="investigate both demo cases")
     dm.add_argument(regen[0], **regen[1])
+    b = sub.add_parser("batch", help="investigate every application in a folder (one sub-folder each), in parallel")
+    b.add_argument("folder")
+    b.add_argument("--out", required=True)
+    b.add_argument("--workers", type=int, default=2, help="cases run side by side, each in its own process")
+    b.add_argument("--memory", help="cross-case memory file")
+    b.add_argument("--lang", default="eng")
+    sv = sub.add_parser("serve", help="REST API for a loan-origination system (POST /v1/cases)")
+    sv.add_argument("--host", default="127.0.0.1")
+    sv.add_argument("--port", type=int, default=8600)
+    sv.add_argument("--workers", type=int, default=2)
+    sv.add_argument("--out", default=str(ROOT / "out" / "service"))
+    sv.add_argument("--memory", help="cross-case memory file")
+    sv.add_argument("--lang", default="eng")
     v = sub.add_parser("verify-audit", help="verify a hash-chained audit log")
     v.add_argument("path")
     a = ap.parse_args(argv)
@@ -79,6 +94,12 @@ def main(argv=None):
         if a.regenerate or not any(_has_docs(d) for d in rdir.glob("*") if d.is_dir() and not d.name.startswith("_")):
             subprocess.run([sys.executable, str(ROOT / "dataset" / "redteam.py")], check=True)
         subprocess.run([sys.executable, str(ROOT / "tests" / "run_redteam.py")], check=True)
+    elif a.cmd == "batch":
+        from .service import batch
+        batch(a.folder, a.out, workers=a.workers, memory=a.memory, lang=a.lang)
+    elif a.cmd == "serve":
+        from .service import serve
+        serve(host=a.host, port=a.port, workers=a.workers, out=a.out, memory=a.memory, lang=a.lang)
     elif a.cmd == "verify-audit":
         from .audit import AuditLog
         ok, msg = AuditLog(a.path, "verify").verify()

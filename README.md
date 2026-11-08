@@ -45,6 +45,8 @@ Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensic
 
 It also recovers the earlier saved version of an edited PDF and shows what changed (on the demo payslip: 68,500.00 before the later save, 86,500.00 after), flags hidden text that tells automated reviewers to ignore anomalies, and catches a digit copied from elsewhere on a scanned statement, a white-out and retype on an application form, an EMI row deleted from a statement, an October payslip made from September's scan, a spliced ID photo, and the same ID photo or salary account reused by a "different" applicant across cases.
 
+**With the bank's own record it also catches what no document can reveal.** A statement regenerated with one amount changed and every later balance recomputed is internally perfect; from the documents alone SAKSHI reports that field as blind. Attach the Account Aggregator data for the account (the lender's FI data in the ReBIT deposit format, XML or JSON) and every statement row is reconciled against the bank's record: on the demo, *"The bank's own record shows 24,500.00 where the uploaded statement shows 14,500.00"*, and the Forgery Lab's regenerated statement is caught 5 times out of 5. SAKSHI reads that file; it is not an FIU and fetches nothing from the AA network.
+
 ## See it
 
 | The review console | The investigation dossier |
@@ -97,13 +99,13 @@ The ten stages follow the brief: document submission, classification, OCR and ex
 
 ## Results
 
-<img src="docs/assets/results.png" width="760" alt="Red team: 9 of 9 attacks caught, 6 at the top rung. Forgery Lab: 12 of 12, 10 at the top rung; planned miss: 0 of 2 detected. Genuine: demo control clean, 7 of 7 look-alikes clean, 1 of 2 re-scans clean">
+<img src="docs/assets/results.png" width="760" alt="Red team: 9 of 9 attacks caught, 5 at the top rung. Forgery Lab: 12 of 12, 10 at the top rung. Regenerated statement: missed from the documents alone, caught 5 of 5 with the bank's own record. Genuine: demo control clean, 7 of 7 look-alikes clean, 1 of 2 re-scans clean">
 
 Extraction is measured against the generator's ground truth: **48 of 48 fields** and **13 of 13 statement rows** exact on the clean demo documents, **18 of 19 fields** on WhatsApp-forwarded phone photos (one PAN not read), with no wrong value extracted. On the demo application, all **9 planted manipulations** are found (14 of 14 expected detections) and the original net pay of **68,500** is recovered; the same applicant's genuine documents come back with **0 potential manipulation and 0 inconsistencies**. The synthetic suites were built for this project, and the red team is a regression suite for known attacks, not a blind test. So SAKSHI was also run, unchanged, on public data it was never tuned for:
 
-<img src="docs/assets/receipts.png" width="760" alt="Public receipts: the middle rung flags forged and genuine receipts at about the same rate; 0 of 342 genuine receipts reach the top rung">
+<img src="docs/assets/receipts.png" width="760" alt="Public receipts: the middle rung flags forged and genuine receipts at about the same rate; 0 of 825 genuine receipts reach the top rung">
 
-On real receipts the middle rung cannot separate forged from genuine, and that is stated plainly. The rung an analyst acts on held: **none of 342 genuine receipts** was escalated to potential manipulation. A five-document case takes **25-80 s** on a laptop CPU. Full tables, commands and caveats: [`docs/RESULTS.md`](docs/RESULTS.md).
+On real receipts the middle rung cannot separate forged from genuine, and that is stated plainly; a learned layer trained on the receipts' own train split did not fix it (ROC AUC 0.60 and 0.54, intervals including 0.5), so it is published as a negative result and not used. The rung an analyst acts on held: **none of 825 genuine receipts, and none of 199 real scanned business forms (FUNSD), was escalated to potential manipulation**, though the middle rung flags about one real business form in four. On 600 real document images from RTM (300 tampered by people), the pixel sensors flagged tampered and genuine images at the same rate (31% and 33%) and boxed the edit in only 17 of 300: they are not a detector for real single-image tampering, and none of the 300 genuine images reached the top rung either (0 of 1,324 real genuine documents in all). A five-document case takes **25-80 s** on a laptop CPU. Full tables, commands and caveats: [`docs/RESULTS.md`](docs/RESULTS.md).
 
 ## Quick start
 
@@ -112,12 +114,14 @@ Python 3.10+ and the Tesseract OCR 5 binary (English; Hindi optional).
 ```bash
 # Ubuntu: sudo apt install tesseract-ocr tesseract-ocr-hin
 # Windows: UB Mannheim installer, then add it to PATH.  macOS: brew install tesseract tesseract-lang
-pip install -r requirements.txt
+pip install -r requirements.txt   # or requirements.lock for the exact versions this release was tested with
 
 streamlit run app.py              # review console: upload documents or pick a demo case
 python -m sakshi demo             # investigate both demo cases (--regenerate rebuilds them on this machine first)
 python -m sakshi run a.pdf b.jpg --out out/mycase [--lang eng+hin] [--memory registry.json] [--password PW]
 python -m sakshi verify-audit out/mycase/audit.jsonl
+python -m sakshi batch applications/ --out out/batch --workers 4   # one sub-folder per application, in parallel
+python -m sakshi serve --port 8600 --workers 4                     # REST API: POST /v1/cases (see below)
 ```
 
 **Or with Docker** (Tesseract with English and Hindi included, no local install):
@@ -128,9 +132,7 @@ docker run --rm -p 8501:8501 sakshi          # review console at http://localhos
 docker run --rm -v "$PWD/in:/data" sakshi python -m sakshi run /data/a.pdf /data/b.jpg --out /data/out
 ```
 
-The image uses Tesseract 5.5, which reads one character of the IFSC differently on the scanned statement and application form (`DCBLO0001234` for `DCBL0001234`, at OCR confidence 0.30). In Docker the demo case therefore shows 7 / 11 / 5 instead of 7 / 11 / 3, the genuine control 0 / 0 / 3 instead of 0 / 0 / 1, and extraction 46 / 48 instead of 48 / 48. The extra findings are observations explained as an OCR confusion; every other result is the same.
-
-The image ships Tesseract 5.5, which reads a few characters differently from the Tesseract 5.4 used for the numbers above: on the demo cases the potential-manipulation and inconsistency counts are identical, with up to two more explained observations (for example an IFSC read as `DCBLO0001234` is reported as a format observation, not an inconsistency). `tests/run_eval.py` passes inside the container.
+The image uses Tesseract 5.5, which reads one character of the IFSC differently on the scanned statement and application form (`DCBLO0001234` for `DCBL0001234`, at OCR confidence 0.30). In Docker the demo case therefore shows 7 / 11 / 5 instead of 7 / 11 / 3, the genuine control 0 / 0 / 3 instead of 0 / 0 / 1, red-team RT8 5 / 1 / 3 instead of 5 / 1 / 1, and extraction 46 / 48 instead of 48 / 48. The test suites therefore compare against counts measured on the same machine, not against these numbers. The extra findings are observations explained as an OCR confusion; every other result is the same.
 
 <details>
 <summary><b>Run the test suites</b></summary>
@@ -146,24 +148,41 @@ python tests/run_console_worker.py        # the console's isolated worker
 python tests/run_extraction_accuracy.py   # field-level extraction accuracy against ground truth
 python tests/run_signatures.py            # black-ink signatures: detection, identity, no false signatures
 python tests/run_prompt_injection.py      # hidden instructions caught; the narrator cannot be steered
+python tests/run_issuer.py                # bank's own record (Account Aggregator data) reconciled with the statement
+python tests/run_pdf_signatures.py        # signed PDFs: edits after signing, broken signatures, trust store
+python tests/run_service.py               # batch mode and REST API: same results in parallel, token required
 python tests/run_findit.py --data PATH/TO/findit2   # public receipts (download the dataset first)
+python tests/learn_receipts.py --runs OUTDIR        # learned layer on the receipts: train split only, scored once
+python tests/run_image_benchmark.py --images DIR --name NAME --out OUTDIR [--tampered-list FILE]   # FUNSD, RTM
+python tests/score_localization.py --bench OUTDIR --masks DIR                                      # boxes vs masks
+python tests/bench_throughput.py --workers 4        # cases per hour, 1 worker vs 4
 ```
 
 </details>
+
+## Deploying it
+
+| Need | What SAKSHI provides |
+|---|---|
+| Integrate with a loan-origination system | `sakshi serve`: `POST /v1/cases` (multipart `files`, optional `case_id`) returns a job; `GET /v1/cases/{id}` gives status, verdict and counts; the dossier, JSON and audit trail download from the job. A bearer token (`SAKSHI_API_TOKEN`) is required before it listens beyond localhost. |
+| Volume | `sakshi batch` and the API run several cases side by side, each in its own process with a hard timeout; a stalled case cannot take the others down. Measured on a 12-thread laptop: 124 five-document cases an hour on one worker, 424 on four, with identical results. |
+| The bank's record | Account Aggregator FI data (ReBIT deposit schema) attached as a file is an L4 witness: row-by-row reconciliation with the statement, boxed on the page. |
+| Issuer-signed documents | Signed PDFs are checked offline: a broken signature or content added after signing is reported. A document counts as issuer-signed (L3) only when its certificate chains to CA certificates the lender puts in `SAKSHI_TRUST_DIR`; none ship with SAKSHI, and revocation is not checked. |
+| Reproducible results | `requirements.lock` pins every library; each dossier records the OCR engine and library versions and warns when Tesseract differs from the calibrated 5.4. |
 
 ## Limitations
 
 * Thresholds were calibrated on synthetic data; SAKSHI has not been tested on real Indian payslips or statements.
 * On low-resolution images such as thermal receipts, the middle rung does not separate forged from genuine.
-* A statement row changed with every later balance regenerated leaves no trace; that field is reported blind.
+* A statement row changed with every later balance regenerated leaves no trace in the documents; that field is reported blind unless the bank's own record is attached.
 * Pixel forensics run on the first 6 pages (up to 40 are read); no handwriting analysis; black-ink signatures are found only just above a readable signature caption.
-* Issuer verification (bank, UIDAI) is modelled as witness levels L3-L4, not connected; cross-case memory has no per-applicant erasure yet.
+* The bank's record is read from a file the lender supplies; SAKSHI does not fetch it as an FIU, and UIDAI and PAN verification are not connected. Cross-case memory flags a shared identity as contested on both sides until the bank's record settles it (photos stay contested), and has no per-applicant erasure yet.
 
-More in [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md). Next: a resolution gate for the pixel sensors judged once on the 577 unread receipts, calibration on consented real documents, and Account Aggregator and UIDAI as witnesses that outrank any upload.
+More in [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md). Next: calibration on consented real documents, a resolution gate for the pixel sensors judged on newly collected receipts (all 988 public receipts have been seen), live AA fetching as a registered FIU, and UIDAI and PAN verification.
 
 ## Built with
 
-Python · PyMuPDF · Tesseract 5 · OpenCV · scikit-image · NumPy · Pillow · Streamlit · ReportLab (synthetic test data). Everything runs on one laptop and documents never leave it (if the optional narrator is switched on, it sends only the structured findings to an LLM API, never the documents).
+Python · PyMuPDF · Tesseract 5 · OpenCV · scikit-image · NumPy · Pillow · pyHanko · Streamlit · Starlette and Uvicorn · ReportLab (synthetic test data). Everything runs on one laptop and documents never leave it (if the optional narrator is switched on, it sends only the structured findings to an LLM API, never the documents).
 
 Use only authorised or synthetic documents. Every document in this repository is synthetic and labelled SYNTHETIC SPECIMEN, except the public receipts, which are not bundled.
 

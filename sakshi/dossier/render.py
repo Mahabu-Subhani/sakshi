@@ -200,8 +200,10 @@ function header(){
   $("#h-title").textContent = `Case ${D.case_id}`;
   $("#h-meta").innerHTML = [
     `${D.documents.length} documents`, `generated ${esc(D.generated_at)}`, `${D.processing_seconds}s processing`,
-    `SAKSHI ${esc(D.sakshi_version)}`, `audit chain: <b style="color:var(${D.audit.verified?'--ok':'--pm'})">${esc(D.audit.message)}</b>`
-  ].map(x=>`<span>${x}</span>`).join("");
+    `SAKSHI ${esc(D.sakshi_version)}`, D.environment ? `OCR Tesseract ${esc(D.environment.tesseract)}` : "",
+    `audit chain: <b style="color:var(${D.audit.verified?'--ok':'--pm'})">${esc(D.audit.message)}</b>`,
+    D.environment && D.environment.warning ? `<b style="color:var(--inc)" title="${esc(D.environment.warning)}">OCR version differs from the calibrated one</b>` : ""
+  ].filter(Boolean).map(x=>`<span>${x}</span>`).join("");
   const c = D.counts, cls = c.potential_manipulation ? "pm" : c.inconsistency ? "inc" : "ok";
   $("#h-status").innerHTML = `<span class="status ${cls}">${esc(D.status)}</span>`;
   $("#h-counts").innerHTML = `${tierTag("POTENTIAL_MANIPULATION")} <b>${c.potential_manipulation}</b> ${tierTag("INCONSISTENCY")} <b>${c.inconsistency}</b> ${tierTag("OBSERVATION")} <b>${c.observation}</b>`;

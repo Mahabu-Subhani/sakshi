@@ -73,7 +73,7 @@ def _grid_iou(a: str, b: str) -> float:
     return float((A & B).sum() / max(1, (A | B).sum()))
 
 
-def fingerprint(case_id: str, docs: dict, sigs: list) -> dict:
+def fingerprint(case_id: str, docs: dict, sigs: list, verified: dict | None = None) -> dict:
     names, ids = set(), {"pan": set(), "account": set(), "mobile": set(), "id_no": set(), "employee": set()}
     refs = {}
     display = ""
@@ -104,7 +104,7 @@ def fingerprint(case_id: str, docs: dict, sigs: list) -> dict:
     applicant = display or (sorted(names, key=len)[-1] if names else "")
     return {"case_id": case_id, "ts": time.strftime("%Y-%m-%d %H:%M:%S"), "applicant": applicant, "names": sorted(names),
             "ids": {k: sorted(v) for k, v in ids.items()}, "files": {d.filename: d.sha256 for d in docs.values()},
-            "photos": photos, "signatures": signatures, "refs": refs}
+            "photos": photos, "signatures": signatures, "refs": refs, "verified": verified or {}}
 
 
 class Registry:
@@ -118,37 +118,45 @@ class Registry:
                 self.data = {"cases": []}
 
     def check(self, fp: dict, docs: dict, new_id) -> list[Finding]:
+        """Compare this application with every remembered one.
+
+        Who used an identifier first decides nothing (v1.1): a ring that registers a victim's identifiers first must
+        not get the victim flagged. A conflict between two different people is CONTESTED on this application, and a
+        notice is recorded against the other one, until an issuer settles it: an identifier the bank's own record
+        (Account Aggregator data) confirms for one of the two applicants belongs to that applicant. Photos,
+        signatures and identical files cannot be verified by an issuer offline, so their conflicts stay contested.
+        Each conflict is reported once, naming every remembered application involved."""
         out = []
         me = set(fp["names"])
+        fp.setdefault("contests", [])
+        mine_verified = fp.get("verified", {})
 
         def other_person(c):
             return not (set(c["names"]) & me)
 
-        cases = self.data["cases"]
-        order = {c["case_id"]: i for i, c in enumerate(cases)}
-        # this applicant's own earlier submissions (including an earlier run under the same case ID)
-        mine = [c for c in cases if not other_person(c)]
+        def settle(c, key, v) -> str:
+            ours = v in mine_verified.get(key, [])
+            theirs = v in c.get("verified", {}).get(key, [])
+            return "mine" if ours and not theirs else "theirs" if theirs and not ours else "contested"
 
-        def held_before(other, test) -> bool:
-            """True if THIS applicant already held the thing in a case registered before the other person's case:
-            then this applicant is the earlier holder and the other case is the one to review (demo-order safety)."""
-            return any(order[c0["case_id"]] < order[other["case_id"]] and test(c0) for c0 in mine)
-
-        def reused_by_other(other, label, did, bbox_ev):
-            return Finding(
-                id=new_id(), check="cross_case_reused_by_other", family="cross_case", sensor="registry",
-                title=f"{label} was later used by a different applicant in case {other['case_id']} ({other['applicant'].title()})",
-                detail=("This applicant held it first, in an earlier case. The later case under a different name is the one "
-                        "to review; recorded here so the two applications stay linked."),
-                confidence=0.4, localized=False, evidence=bbox_ev, docs=[did] if did else [],
-                repair={"other_case": other["case_id"]})
+        def contest(c, label):
+            fp["contests"].append({"case_id": c["case_id"], "by_case": fp["case_id"], "what": label})
 
         def ev_for(key):
             r = fp["refs"].get(key)
             if not r:
                 return []
-            d = docs[r[0]]
             return [Evidence(r[0], r[1], tuple(r[2]), "this application", kind="field")]
+
+        def whom(cs):
+            names = [f"case {c['case_id']} ({c['applicant'].title()})" for c in cs[:3]]
+            return ", ".join(names) + (f" and {len(cs) - 3} more" if len(cs) > 3 else "")
+
+        contested = ("Which application is genuine is unknown until an issuer verifies it; both sides are flagged, "
+                     "whichever came first.")
+        verify = ("Obtain the bank's Account Aggregator data (or a UIDAI / PAN check) for the applicants involved; "
+                  "the verified holder settles it.")
+        files_g, ids_g, photo_g, sig_g = {}, {}, {}, {}
 
         for c in self.data["cases"]:
             if c["case_id"] == fp["case_id"]:
@@ -169,88 +177,110 @@ class Registry:
                     evidence=[Evidence(did, 0, (0, 0, docs[did].pages[0].width, docs[did].pages[0].height), "whole file", kind="file")],
                     docs=[did], repair={"other_case": c["case_id"], "files": [a for a, _ in same]}))
                 continue
-            for fname, h in fp["files"].items():
-                for of, oh in c["files"].items():
-                    if h == oh:
-                        did = next(d.doc_id for d in docs.values() if d.filename == fname)
-                        if other_person(c) and held_before(c, lambda c0, h=h: h in c0["files"].values()):
-                            out.append(reused_by_other(c, f"The file {fname}", did, [Evidence(
-                                did, 0, (0, 0, docs[did].pages[0].width, docs[did].pages[0].height), "whole file", kind="file")]))
-                            continue
-                        out.append(Finding(
-                            id=new_id(), check="cross_case_file_reuse", family="cross_case", sensor="registry",
-                            title=f"{fname} is byte-for-byte the same file as '{of}' in case {c['case_id']}"
-                                  + (f" (applicant {c['applicant'].title()})" if other_person(c) else ""),
-                            detail="Identical SHA-256. The same document file was submitted in another application.",
-                            confidence=0.97, localized=True, smoking_gun=other_person(c),
-                            evidence=[Evidence(did, 0, (0, 0, docs[did].pages[0].width, docs[did].pages[0].height), "whole file", kind="file")],
-                            docs=[did], repair={"other_case": c["case_id"]}))
             if not other_person(c):
                 continue
+            for fname, of in same:
+                files_g.setdefault(fname, []).append((c, of))
+                contest(c, f"file {fname}")
             for key, vals in fp["ids"].items():
-                shared = set(vals) & set(c["ids"].get(key, []))
-                for v in shared:
-                    label = {"pan": "PAN", "account": "Salary account number", "mobile": "Mobile number",
-                             "id_no": "ID number", "employee": "Employer + employee ID"}[key]
-                    ev = ev_for(f"{key}:{v}")
-                    if held_before(c, lambda c0, key=key, v=v: v in c0["ids"].get(key, [])):
-                        out.append(reused_by_other(c, f"{label} {v.split('|')[-1]}", ev[0].doc_id if ev else None,
-                                                   ev or [Evidence(next(iter(docs)), 0, (0, 0, 10, 10), "case")]))
-                        continue
-                    out.append(Finding(
-                        id=new_id(), check="cross_case_identifier_reuse", family="cross_case", sensor="registry",
-                        title=f"{label} {v.split('|')[-1]} also appears in case {c['case_id']} under a different name "
-                              f"({c['applicant'].title()})",
-                        detail=(f"This application ({', '.join(n.title() for n in fp['names'])}) and case {c['case_id']} "
-                                f"({c['applicant'].title()}) share the same {label.lower()}. One identifier belonging to two "
-                                "different people is a known pattern of identity recycling and mule accounts. Innocent "
-                                "explanation: a family member's or a joint account, a data-entry error."),
-                        confidence=0.85, localized=bool(ev),
-                        evidence=ev or [Evidence(next(iter(docs)), 0, (0, 0, 10, 10), "case")],
-                        fields=[], docs=[ev[0].doc_id] if ev else [], repair={"other_case": c["case_id"], "identifier": key}))
-            for p in fp["photos"]:
-                for q in c.get("photos", []):
-                    hd = _ham(p["hash"], q["hash"])
-                    if hd <= 8 and held_before(c, lambda c0, p=p: any(_ham(p["hash"], r["hash"]) <= 8 for r in c0.get("photos", []))):
-                        out.append(reused_by_other(c, "The ID photo", p["doc"],
-                                                   [Evidence(p["doc"], 0, tuple(p["bbox"]), "photo on this application")]))
-                        continue
-                    if hd <= 8:
-                        out.append(Finding(
-                            id=new_id(), check="cross_case_photo_reuse", family="cross_case", sensor="registry",
-                            title=f"The ID photo is the same image as the ID photo in case {c['case_id']} "
-                                  f"({c['applicant'].title()}), under a different name",
-                            detail=(f"Perceptual hashes differ in {hd} of 63 bits (independent photos of different people "
-                                    "differ in about 32). The same face image is being used for two identities."),
-                            confidence=0.92, localized=True, smoking_gun=hd <= 4,
-                            evidence=[Evidence(p["doc"], 0, tuple(p["bbox"]), "photo on this application")],
-                            docs=[p["doc"]], repair={"other_case": c["case_id"], "hamming": hd}))
-            for s in fp["signatures"]:
-                if s["doc_type"] not in ("application_form",):
+                for v in sorted(set(vals) & set(c["ids"].get(key, []))):
+                    state = settle(c, key, v)
+                    ids_g.setdefault((key, v), []).append((c, state))
+                    contest(c, f"{key} {v.split('|')[-1]}" + (f" verified for {fp['case_id']}" if state == "mine" else ""))
+            for i, p in enumerate(fp["photos"]):
+                hd = min((_ham(p["hash"], q["hash"]) for q in c.get("photos", [])), default=99)
+                if hd <= 8:
+                    photo_g.setdefault(i, []).append((c, hd))
+                    contest(c, "ID photo")
+            for i, s_ in enumerate(fp["signatures"]):
+                if s_["doc_type"] != "application_form":
                     continue
-                for t in c.get("signatures", []):
-                    if t.get("doc_type") != "application_form":
-                        continue
-                    iou = _grid_iou(s["grid"], t["grid"])
-                    if iou >= 0.8 and held_before(c, lambda c0, s=s: any(_grid_iou(s["grid"], u["grid"]) >= 0.8 for u in
-                                                                         c0.get("signatures", []) if u.get("doc_type") == "application_form")):
-                        out.append(reused_by_other(c, "The applicant's signature", s["doc"],
-                                                   [Evidence(s["doc"], 0, tuple(s["bbox"]), "signature on this application")]))
-                        continue
-                    if iou >= 0.8:
-                        out.append(Finding(
-                            id=new_id(), check="cross_case_signature_reuse", family="cross_case", sensor="registry",
-                            title=f"The applicant's signature matches the applicant signature in case {c['case_id']} "
-                                  f"({c['applicant'].title()})",
-                            detail=f"Stroke-density grids overlap at {iou:.2f}; two people do not sign alike.",
-                            confidence=0.8, localized=True,
-                            evidence=[Evidence(s["doc"], 0, tuple(s["bbox"]), "signature on this application")],
-                            docs=[s["doc"]], repair={"other_case": c["case_id"], "iou": round(iou, 3)}))
+                iou = max((_grid_iou(s_["grid"], t["grid"]) for t in c.get("signatures", [])
+                           if t.get("doc_type") == "application_form"), default=0.0)
+                if iou >= 0.8:
+                    sig_g.setdefault(i, []).append((c, iou))
+                    contest(c, "applicant signature")
+
+        for fname, hits in files_g.items():
+            did = next(d.doc_id for d in docs.values() if d.filename == fname)
+            cs = [c for c, _ in hits]
+            out.append(Finding(
+                id=new_id(), check="cross_case_file_reuse", family="cross_case", sensor="registry",
+                title=f"{fname} is byte-for-byte the same file as one in {whom(cs)}, a different applicant: contested",
+                detail="Identical SHA-256: the same document file was submitted in another person's application. "
+                       + contested,
+                confidence=0.97, localized=True, verify_next=verify,
+                evidence=[Evidence(did, 0, (0, 0, docs[did].pages[0].width, docs[did].pages[0].height), "whole file", kind="file")],
+                docs=[did], repair={"other_cases": [c["case_id"] for c in cs], "identity_contested": True}))
+        labels = {"pan": "PAN", "account": "Salary account number", "mobile": "Mobile number", "id_no": "ID number",
+                  "employee": "Employer + employee ID"}
+        for (key, v), hits in ids_g.items():
+            label, shown = labels[key], v.split("|")[-1]
+            ev = ev_for(f"{key}:{v}")
+            evid = ev or [Evidence(next(iter(docs)), 0, (0, 0, 10, 10), "case")]
+            theirs = [c for c, s in hits if s == "theirs"]
+            mine = [c for c, s in hits if s == "mine"]
+            open_ = [c for c, s in hits if s == "contested"]
+            if theirs:
+                out.append(Finding(
+                    id=new_id(), check="cross_case_identifier_reuse", family="cross_case", sensor="registry",
+                    title=f"{label} {shown} is verified by the bank's own record as belonging to {whom(theirs)}, "
+                          "not to this applicant",
+                    detail=("The Account Aggregator data attached to the other application confirms its holder. This "
+                            f"application ({', '.join(n.title() for n in fp['names'])}) uses it under a different name."),
+                    confidence=0.95, localized=bool(ev), smoking_gun=True, evidence=evid,
+                    docs=[evid[0].doc_id] if ev else [],
+                    repair={"other_cases": [c["case_id"] for c in theirs], "identifier": key, "verified": "other case"}))
+            elif open_:
+                out.append(Finding(
+                    id=new_id(), check="cross_case_identifier_reuse", family="cross_case", sensor="registry",
+                    title=f"{label} {shown} also appears under a different name in {whom(open_)}: contested",
+                    detail=(f"This application ({', '.join(n.title() for n in fp['names'])}) shares its {label.lower()} "
+                            "with another person. One identifier used by two different people is a known pattern of "
+                            "identity recycling and mule accounts; innocent explanations are a family member's or a joint "
+                            "account, or a data-entry error. " + contested),
+                    confidence=0.85, localized=bool(ev), verify_next=verify, evidence=evid,
+                    docs=[evid[0].doc_id] if ev else [],
+                    repair={"other_cases": [c["case_id"] for c in open_], "identifier": key, "identity_contested": True}))
+            if mine and not theirs:
+                out.append(Finding(
+                    id=new_id(), check="cross_case_reused_by_other", family="cross_case", sensor="registry",
+                    title=f"{label} {shown} is verified by the bank's own record as this applicant's; {whom(mine)} "
+                          "used it under another name",
+                    detail="The Account Aggregator data attached to this case confirms the holder. The other "
+                           "application is the one to review; recorded so the applications stay linked.",
+                    confidence=0.6, localized=False, evidence=evid, docs=[evid[0].doc_id],
+                    repair={"other_cases": [c["case_id"] for c in mine], "identifier": key, "verified": "this case"}))
+        for i, hits in photo_g.items():
+            p = fp["photos"][i]
+            cs = [c for c, _ in hits]
+            hd = min(h for _, h in hits)
+            out.append(Finding(
+                id=new_id(), check="cross_case_photo_reuse", family="cross_case", sensor="registry",
+                title=f"The ID photo is the same image as the ID photo in {whom(cs)}, under a different name: contested",
+                detail=(f"Perceptual hashes differ in {hd} of 63 bits (independent photos of different people differ in "
+                        "about 32). The same face image is used for two identities. " + contested),
+                confidence=0.92, localized=True, verify_next=verify,
+                evidence=[Evidence(p["doc"], 0, tuple(p["bbox"]), "photo on this application")],
+                docs=[p["doc"]], repair={"other_cases": [c["case_id"] for c in cs], "hamming": hd,
+                                         "identity_contested": True}))
+        for i, hits in sig_g.items():
+            s_ = fp["signatures"][i]
+            cs = [c for c, _ in hits]
+            iou = max(x for _, x in hits)
+            out.append(Finding(
+                id=new_id(), check="cross_case_signature_reuse", family="cross_case", sensor="registry",
+                title=f"The applicant's signature matches the applicant signature in {whom(cs)}: contested",
+                detail=f"Stroke-density grids overlap at {iou:.2f}; two people do not sign alike. " + contested,
+                confidence=0.8, localized=True, verify_next=verify,
+                evidence=[Evidence(s_["doc"], 0, tuple(s_["bbox"]), "signature on this application")],
+                docs=[s_["doc"]], repair={"other_cases": [c["case_id"] for c in cs], "iou": round(iou, 3),
+                                          "identity_contested": True}))
         return out
 
     def register(self, fp: dict):
         # a re-run keeps the case's original position: registration order is "who held it first"
-        rec = {k: v for k, v in fp.items() if k != "refs"}
+        rec = {k: v for k, v in fp.items() if k not in ("refs", "contests")}
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with _FileLock(self.path.with_name(self.path.name + ".lock")):
             # re-read under the lock: another process (console worker, command line) may have registered a case
@@ -261,6 +291,12 @@ class Registry:
                 except Exception:
                     raise RuntimeError(f"cross-case memory {self.path} is unreadable; it was left untouched") from None
             ids = [c["case_id"] for c in self.data["cases"]]
+            for n in fp.get("contests", []):  # the other application in each conflict is flagged too
+                if n["case_id"] in ids:
+                    other = self.data["cases"][ids.index(n["case_id"])]
+                    note = {"by_case": n["by_case"], "what": n["what"]}
+                    if note not in other.setdefault("contested_by", []):
+                        other["contested_by"].append(note)
             if fp["case_id"] in ids:
                 self.data["cases"][ids.index(fp["case_id"])] = rec
             else:

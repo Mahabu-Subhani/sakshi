@@ -65,6 +65,17 @@ def _benign_overlay(f: Finding, docs: dict):
 def run(f: Finding, docs: dict, ctx: dict) -> list[BenignTest]:
     fields, vals = ctx["fields"], ctx["vals"]
     c = f.check
+    if c.startswith("issuer_"):  # disagreements with the bank's own record (Account Aggregator data)
+        from ..issuer import benign_tests
+        return benign_tests(f, docs, ctx)
+    if c == "signed_then_modified":
+        lvl = (f.repair.get("signature") or {}).get("modification_level")
+        return [BenignTest("A reviewer's stamp or comment added after signing",
+                           "only annotations were added; content changes rule it out",
+                           "plausible" if lvl == "ANNOTATIONS" else "ruled_out", f"pyHanko modification level {lvl}")]
+    if c == "signature_broken":
+        return [BenignTest("File damaged in transit", "a damaged file usually fails to open; this one opens and only "
+                           "the signed bytes disagree", "not_testable", "")]
     T = []
     ov = _benign_overlay(f, docs)
     if ov:
@@ -182,6 +193,15 @@ def run(f: Finding, docs: dict, ctx: dict) -> list[BenignTest]:
             T.append(BenignTest("Minor spelling or punctuation difference", "edit distance at most 3",
                                 "plausible" if ed <= 3 else "ruled_out", f"edit distance {ed}"))
         return T
+    if c.startswith("cross_case_") and c not in ("cross_case_resubmission", "cross_case_reused_by_other"):
+        if f.repair.get("verified") == "other case":
+            T.append(BenignTest("This applicant is the genuine holder and the other application took the identity",
+                                "the bank's own record attached to the other case confirms its holder", "ruled_out",
+                                "verified by Account Aggregator data"))
+        else:
+            T.append(BenignTest("This applicant is the genuine holder and the other application took the identity",
+                                "an issuer must confirm who holds it; the order in which the applications arrived "
+                                "proves nothing", "plausible", "no issuer verification on either application"))
     if c == "cross_case_photo_reuse":
         T.append(BenignTest("Same person photographed for two cards", "identical image hash, not just a similar face",
                             "ruled_out", f"hash distance {f.repair.get('hamming')} bits"))

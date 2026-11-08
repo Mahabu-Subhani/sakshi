@@ -19,7 +19,7 @@ from . import devils_advocate
 OBS_ONLY = {"metadata_dates", "incremental_update", "hidden_text", "duplicate_field", "ocr_self_heal",
             "salary_pass_through", "same_amount_in_out", "salary_variation", "cross_case_resubmission",
             "scan_annotation", "unreadable_field",
-            "cross_case_reused_by_other", "statement_unverified"}
+            "cross_case_reused_by_other", "statement_unverified", "digital_signature_info"}
 # Visual evidence is split by the physics it measures (v1.0). Pixel statistics
 # (sensor noise, duplication, compression) count as ONE witness because one paste moves them all together.
 PHYSICS = {"noise_inconsistency": "pixel", "copy_move": "pixel", "zero_variance_patch": "pixel",
@@ -30,7 +30,7 @@ PHYSICS = {"noise_inconsistency": "pixel", "copy_move": "pixel", "zero_variance_
            "cross_case_photo_reuse": "cross_case", "cross_case_identifier_reuse": "cross_case",
            "cross_case_signature_reuse": "cross_case", "cross_case_file_reuse": "cross_case"}
 INDEPENDENT = {"pixel", "optics", "typography", "geometry", "signature", "file_structure", "logical", "cross_document",
-               "identity", "pattern", "statutory", "cross_case"}
+               "identity", "pattern", "statutory", "cross_case", "issuer"}
 
 
 def family_of(f) -> set:

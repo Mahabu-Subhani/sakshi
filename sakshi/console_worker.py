@@ -79,9 +79,20 @@ def _kill_tree(pid: int) -> None:
 
 def run_isolated(files, out_dir, *, case_id, lang="eng", registry_path=None, passwords=None, progress=None,
                  timeout_s: float = TIMEOUT_S) -> dict:
-    """Run one case in a worker process and return its dossier (as written to dossier.json)."""
+    """Run one case in a worker process and return its dossier (as written to dossier.json). One at a time."""
     if not _ONE_CASE.acquire(blocking=False):
         raise ConsoleBusy("another case is still running in this console")
+    try:
+        return run_in_worker(files, out_dir, case_id=case_id, lang=lang, registry_path=registry_path,
+                             passwords=passwords, progress=progress, timeout_s=timeout_s)
+    finally:
+        _ONE_CASE.release()
+
+
+def run_in_worker(files, out_dir, *, case_id, lang="eng", registry_path=None, passwords=None, progress=None,
+                  timeout_s: float = TIMEOUT_S) -> dict:
+    """The same isolation without the one-case lock: batch mode and the API run several of these side by side,
+    each case in its own process with its own hard timeout."""
     proc = None
     try:
         ctx = mp.get_context("spawn")
@@ -117,4 +128,3 @@ def run_isolated(files, out_dir, *, case_id, lang="eng", registry_path=None, pas
     finally:
         if proc is not None and proc.is_alive():
             _kill_tree(proc.pid)
-        _ONE_CASE.release()
