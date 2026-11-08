@@ -129,7 +129,8 @@ if "last" in st.session_state:
         for r in d["rejected"]:
             reason = r["reason"].removeprefix(f"{r['file']}: ")
             reason = re.sub(r"\s*\([A-Za-z]+Error\)$", "", reason)  # the exception class is kept in the audit trail
-            st.warning(f"**Skipped {r['file']}**: {reason}. The other documents were analysed as normal.", icon="⚠️")
+            rest = "The other documents were analysed as normal." if d["documents"] else "No document could be analysed."
+            st.warning(f"**Skipped {r['file']}**: {reason}. {rest}", icon="⚠️")
     for rep in d.get("issuer_data") or []:
         iss = rep.get("issuer", {})
         for s_ in rep.get("statements", []):

@@ -25,6 +25,10 @@ def deterministic(findings, threads, docs) -> str:
     pm = [f for f in findings if f.tier == Tier.POTENTIAL_MANIPULATION]
     inc = [f for f in findings if f.tier == Tier.INCONSISTENCY]
     obs = [f for f in findings if f.tier == Tier.OBSERVATION]
+    if not docs:
+        return ("No document could be analysed: every uploaded file was rejected (the skipped files and the reason for each "
+                "are listed). Nothing was checked, so this is not a clean result.\n"
+                "All findings are leads for a human analyst. None is a fraud determination.")
     lines = [f"{len(docs)} documents analysed. {len(pm)} potential manipulation finding(s), {len(inc)} inconsistencies, "
              f"{len(obs)} observations. {len(threads)} investigation thread(s)."]
     if not pm and not inc:
