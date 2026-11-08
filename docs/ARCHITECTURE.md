@@ -73,7 +73,10 @@ flowchart TB
 | OCR & extraction | `ingest.py`, `extract.py` | Tesseract 5 (LSTM), PDF text layer | word boxes + confidence, label-anchored fields, table parsing, number-words parser |
 | Structural understanding | `extract.py` | layout geometry | sections, required/missing/duplicate fields, label-value relations, row/column structure |
 | Visual forensics | `forensics/*.py` | OpenCV, scikit-image, NumPy | noise consistency, copy-move, typography, layout rhythm, signatures, PDF archaeology; v1.0: `compression.py`, `raster.py` (stroke, optics, scan clones), `scan_overlay.py` (overlay peel), `table_parser.py` |
-| Cross-case memory | `registry.py` | pHash, SHA-256, stroke grids | identity rings across applications |
+| Cross-case memory | `registry.py` | pHash, SHA-256, stroke grids | identity rings across applications; a shared identity is contested on both sides until the bank's record settles it (v1.1) |
+| Bank's own record (v1.1) | `issuer.py` | ReBIT deposit schema (XML/JSON) | Account Aggregator FI data supplied by the lender, an L4 witness reconciled row by row with the statement |
+| Signed PDFs (v1.1) | `forensics/pdf_signature.py` | pyHanko | integrity, content added after signing, issuer-signed (L3) only through `SAKSHI_TRUST_DIR` |
+| Batch and REST API (v1.1) | `service.py`, `cli.py` | Starlette, Uvicorn, multiprocessing | isolated worker per case with a hard timeout, bearer token, `sakshi batch` / `sakshi serve` |
 | Contextual verification | `reasoning/invariants.py`, `engine.py` | rule library | arithmetic, balance chain, totals, formats (PAN/IFSC), dates, expectations |
 | Cross-document correlation | `invariants.py`, `repair.py` | linear algebra, entity matching | cross-doc numeric links, equality groups with transliteration and OCR-confusion handling |
 | Anomaly investigation | `repair.py`, `devils_advocate.py`, `fusion.py` | model-based diagnosis, deterministic tests | minimal repairs, innocent explanations, tiering, hypotheses |

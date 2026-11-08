@@ -17,7 +17,32 @@ Offline · CPU only · deterministic · every finding traced to the exact spot o
 
 *Sakshi* (साक्षी) is Hindi for *witness*. SAKSHI reads every document in a loan application, weighs how reliable each one is, and cross-examines them against each other. Instead of a fraud score it asks one question: **what would the documents have to say for every rule to hold?** The answer points at the edited field, often recovers its original value, and comes with the exact evidence an analyst can check in seconds. It never says "fraud"; a human decides.
 
+<div align="center">
+
+| **9 / 9** | **9 / 9** | **5 / 5** | **0 / 1,324** | **424 / h** |
+|:---:|:---:|:---:|:---:|:---:|
+| planted manipulations found on the demo application, original net pay recovered | red-team attacks caught; 7 of 7 genuine look-alikes clean | regenerated statements caught with the bank's own record (0 of 2 without it) | real genuine documents from three public datasets escalated to the top rung | five-document cases an hour on one laptop, four workers |
+
+</div>
+
+Every number above comes from a test in this repository that anyone can rerun ([`docs/RESULTS.md`](docs/RESULTS.md)), and the weaknesses are measured just as openly: see [Results](#results) and [Limitations](#limitations).
+
 Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensics and Contextual Intelligence System*.
+
+<details>
+<summary><b>What's new in 1.1</b></summary>
+
+* **The bank's own record.** Account Aggregator FI data (ReBIT deposit format, XML or JSON) supplied by the lender is reconciled row by row with the uploaded statement, which catches a regenerated statement that no document can reveal.
+* **Signed PDFs.** Broken signatures and content added after signing are reported offline; a document counts as issuer-signed only through the lender's own certificate store.
+* **Built to plug in.** `sakshi batch` and a REST API with a bearer token, each case in its own process with a hard timeout; 124 cases an hour on one worker, 424 on four.
+* **Fairer cross-case memory.** When two applicants share an identity, arrival order decides nothing: both sides stay *contested* until the bank's record settles who owns the identifier.
+* **Reproducible.** `requirements.lock` pins every library; each dossier records the OCR engine it used and warns when it differs from the calibrated one.
+* **1.1.1, from a real document.** A real born-digital document made with LaTeX, tested privately, showed that a white box over one number inside a whole-line text run went unseen. It is now found and the original value recovered, and a sensor that misses its own planted canary is reported *blind on this document*, never clean.
+* **1.1.1 signatures.** Coloured printed text (a navy letterhead) is no longer mistaken for ink; signature images pasted into born-digital PDFs are found, and one added in a later save is reported.
+
+Full history: [`docs/CHANGELOG.md`](docs/CHANGELOG.md).
+
+</details>
 
 <details>
 <summary><b>How SAKSHI covers the problem statement</b></summary>
@@ -28,7 +53,7 @@ Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensic
 | Classification and OCR | dossier 7.1: type, confidence, cues, modality, witness level, SHA-256 |
 | Structured representation of the content | dossier 7.2: every field with raw and normalised value, confidence, method and location |
 | Visual forensics with suspicious regions highlighted | nine pixel sensors, PDF layer archaeology and overlay peel; every hit boxed on its page (7.4) |
-| Contextual and cross-document verification | rules, counterfactual repair, claim graph and income triangulation (7.3) |
+| Contextual and cross-document verification | rules, counterfactual repair, claim graph and income triangulation (7.3); the bank's own record (Account Aggregator data) when the lender supplies it; signed-PDF verification |
 | Relationships between findings | findings grouped into hypotheses that support each other |
 | Potential versus confirmed anomalies | three rungs, devil's advocate, witness levels; never "fraud" |
 | Traceable evidence and a final dossier | 7.5 traceability (click to the boxed region), 7.6 summary, HTML / JSON / hash-chained audit |
@@ -81,16 +106,20 @@ Every number SAKSHI reports comes from deterministic code: rules, solvers and im
 | Technique | What it does | Code |
 |---|---|---|
 | Counterfactual repair | Treats the documents as a program with invariants (gross = sum of earnings, net = gross - deductions, running balances, payslip net = salary credit, declared EMI = EMI debits) and finds the smallest, most plausible set of field changes (up to 3, weighted by witness level and OCR confidence) that makes every rule hold. | `reasoning/repair.py` |
-| PDF layer archaeology | Finds values covered by a filled shape in born-digital PDFs and recovers the hidden original from the content stream. | `forensics/pdf_layers.py` |
+| PDF layer archaeology | Finds values covered by a filled shape in born-digital PDFs and recovers the hidden original from the content stream; when a whole line is one text run (LaTeX and similar), the covered characters are measured on their own. | `forensics/pdf_layers.py` |
 | Overlay peel | Renders what a reader sees, extracts the bare scan from the same file and compares them; covers objects, comment annotations and nested XObjects, and recognises redactions. | `forensics/scan_overlay.py` |
-| Nine pixel sensors | Paper noise, copy-move (scanner grain), scanner optics, glyph typography, intra-number strokes, erasure patches, JPEG ghosts, scan clones, blue-ink signatures. | `forensics/` |
+| Nine pixel sensors | Paper noise, copy-move (scanner grain), scanner optics, glyph typography, intra-number strokes, erasure patches, JPEG ghosts, scan clones, signature ink. | `forensics/` |
+| Signatures | Blue ink anywhere on the page, except inside words read confidently as printed text; black ink just above a readable signature caption; signature images pasted into born-digital PDFs, with one added in a later save reported. The same stroke shape on two documents where one is a supposed wet signature is a reproduced signature. | `forensics/signature.py` |
 | Constraint-guided statement parser | Picks the column layout (debit/credit, credit/debit, amount + Dr/Cr, signed amount) that makes the running balance hold; doubtful cells get a second OCR pass that never sees the expected value. | `forensics/table_parser.py` |
 | Income triangulation | Weighs every independent witness to monthly income; a self-contradicting document is impeached, but the part that exposes the contradiction keeps its weight. Without a clear majority, nobody is blamed. | `reasoning/engine.py` |
 | Payroll physics, deleted rows | Employee PF must be at least 12% of the basic printed; a balance break whose gap equals a missing recurring EMI, with no printed line between the rows, is a removed row. | `reasoning/invariants.py`, `reasoning/engine.py` |
 | Forgery canaries | Before trusting a sensor's silence, SAKSHI forges each upload in memory from its own pixels; a sensor that misses its own canary reports "blind on this document". | `reasoning/selftest.py` |
 | Earlier-version recovery | An incremental save appends changes after the original end-of-file marker; cutting the file there recovers the document as it was, and values that changed at the same place are reported with their earlier reading. | `forensics/pdf_layers.py` |
 | Hidden instructions, grounded narrator | Invisible text addressed to automated reviewers is a finding. The optional LLM narrator gets document text only as quoted data; its output is discarded unless every sentence cites a real finding id and every potential-manipulation finding is covered. | `forensics/pdf_layers.py`, `reasoning/narrator.py` |
-| Cross-case memory | Fingerprints of earlier cases (photo hash, PAN, account numbers, file hashes, signature grids) expose identity rings. | `registry.py` |
+| The bank's own record | Account Aggregator FI data in the ReBIT deposit schema is an L4 witness: every statement row is matched to the bank's transactions and each difference is boxed on the page. Data for a different account compares nothing and says so. | `issuer.py` |
+| Signed PDFs | pyHanko checks every signature offline: integrity, content added after signing, and whether the certificate chains to CA certificates in the lender's `SAKSHI_TRUST_DIR` (only then L3). | `forensics/pdf_signature.py` |
+| Cross-case memory | Fingerprints of earlier cases (photo hash, PAN, account numbers, file hashes, signature grids) expose identity rings. A shared identity is contested on both sides whatever the arrival order, until the bank's record shows whose identifier it is. | `registry.py` |
+| Batch and REST API | Each case runs in an isolated worker process with a hard timeout; the API requires a bearer token before it listens beyond localhost. | `service.py` |
 | Hash-chained audit | Every stage and finding is logged with the hash of the previous entry; `verify-audit` detects any later edit. | `audit.py` |
 
 The ten stages follow the brief: document submission, classification, OCR and extraction, structural understanding, visual forensic analysis, contextual verification, cross-document correlation, anomaly investigation, evidence generation, investigation dossier. Methods and thresholds are in [`docs/TECHNICAL.md`](docs/TECHNICAL.md); the data flow is in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
@@ -174,13 +203,25 @@ python tests/bench_throughput.py --workers 4        # cases per hour, 1 worker v
 
 ## Limitations
 
-* Thresholds were calibrated on synthetic data; SAKSHI has not been tested on real Indian payslips or statements.
-* On low-resolution images such as thermal receipts, the middle rung does not separate forged from genuine.
+* Thresholds were calibrated on synthetic data. Real-world testing so far is three public datasets (1,324 genuine documents, none escalated to the top rung) and one real born-digital document made with LaTeX, tested privately; SAKSHI has not been tested on real Indian payslips or statements, because no public set exists.
+* On real single images (receipts, RTM) the pixel sensors flag forged and genuine documents at about the same rate, so the middle rung does not separate them there.
+* Handwriting is not read: a Microsoft TrOCR trial read FUNSD's real forms worse than Tesseract and was not adopted.
 * A statement row changed with every later balance regenerated leaves no trace in the documents; that field is reported blind unless the bank's own record is attached.
-* Pixel forensics run on the first 6 pages (up to 40 are read); no handwriting analysis; black-ink signatures are found only just above a readable signature caption.
+* Pixel forensics run on the first 6 pages (up to 40 are read); black-ink signatures are found only just above a readable signature caption.
 * The bank's record is read from a file the lender supplies; SAKSHI does not fetch it as an FIU, and UIDAI and PAN verification are not connected. Cross-case memory flags a shared identity as contested on both sides until the bank's record settles it (photos stay contested), and has no per-applicant erasure yet.
 
 More in [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md). Next: calibration on consented real documents, a resolution gate for the pixel sensors judged on newly collected receipts (all 988 public receipts have been seen), live AA fetching as a registered FIU, and UIDAI and PAN verification.
+
+## Documentation
+
+| Document | What is in it |
+|---|---|
+| [`docs/RESULTS.md`](docs/RESULTS.md) | every measured result, the command that produces it, and its caveats |
+| [`docs/LIMITATIONS.md`](docs/LIMITATIONS.md) | capability matrix (implemented, partial, planned, unsupported) and known failure modes |
+| [`docs/TECHNICAL.md`](docs/TECHNICAL.md) | methods and thresholds, sensor by sensor |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | data flow, modules, evidence model, where the AI is and is not |
+| [`docs/FORGERY_LAB_RESULTS.md`](docs/FORGERY_LAB_RESULTS.md) | forgery recipes on freshly generated documents |
+| [`docs/CHANGELOG.md`](docs/CHANGELOG.md) | what changed in each release |
 
 ## Built with
 
