@@ -25,7 +25,7 @@ Offline · CPU only · deterministic · every finding traced to the exact spot o
 
 </div>
 
-Every number above comes from a test in this repository that anyone can rerun ([`docs/RESULTS.md`](docs/RESULTS.md)), and the weaknesses are measured just as openly: see [Results](#results) and [Limitations](#limitations).
+Every number above comes from a test in this repository that anyone can rerun ([`docs/RESULTS.md`](docs/RESULTS.md)), and the weaknesses are measured just as openly. Read the 0 / 1,324 with its other half: none of 300 real tampered images (RTM) reached the top rung either. On a single real image the top rung is cautious, not a detector for real image edits; SAKSHI's detection on loan files comes from arithmetic, cross-document rules, PDF structure and the bank's record, and the 9 / 9 and 5 / 5 results are on synthetic documents built for this project. See [Results](#results) and [Limitations](#limitations).
 
 Built for the DataOps Innovation Hackathon problem *AI-Powered Document Forensics and Contextual Intelligence System*.
 
