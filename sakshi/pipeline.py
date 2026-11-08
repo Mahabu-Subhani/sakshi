@@ -20,11 +20,13 @@ import cv2
 import numpy as np
 
 from . import __version__
-from .audit import AuditLog
+from . import issuer
+from .audit import AuditLog, sha256_file
+from .environment import environment
 from .classify import LABELS, classify
 from .extract import extract
 from .fonts import label_font
-from .forensics import copy_move, glyphs, layout, noise, pdf_layers, raster, scan_overlay, signature
+from .forensics import copy_move, glyphs, layout, noise, pdf_layers, pdf_signature, raster, scan_overlay, signature
 from .ingest import MAX_PAGES, UnsupportedInput, dual_read, forget_passwords, group_lines, ingest, make_reocr
 from .models import Tier
 from .reasoning import coverage as cov
@@ -127,9 +129,23 @@ def _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, pass
 
     # 1 submission
     step(0, f"{len(paths)} file(s)")
-    audit.log("case_opened", files=[Path(p).name for p in paths], sakshi_version=__version__)
-    docs, rejected = {}, []
-    for i, p in enumerate(paths):
+    env = environment()
+    audit.log("case_opened", files=[Path(p).name for p in paths], sakshi_version=__version__, environment=env)
+    docs, rejected, issuer_data = {}, [], []
+    doc_paths = []
+    for p in paths:  # bank data (Account Aggregator FI data) is a witness, not a document to read
+        if issuer.is_issuer_file(p):
+            try:
+                acc = issuer.load(p)
+                issuer_data.append(acc)
+                audit.log("issuer_data_loaded", file=Path(p).name, sha256=sha256_file(p), format=acc.fmt,
+                          masked_account=acc.masked_account, transactions=len(acc.txns), witness_level=4)
+            except issuer.NotIssuerData as e:
+                rejected.append({"file": Path(p).name, "reason": f"not Account Aggregator deposit data: {e}"})
+                audit.log("document_rejected", file=Path(p).name, reason=str(e))
+        else:
+            doc_paths.append(p)
+    for i, p in enumerate(doc_paths):
         did = f"D{i + 1}"
         try:
             d = ingest(p, did, out / "pages", lang=lang, passwords=passwords or ())
@@ -174,8 +190,11 @@ def _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, pass
     step(1)
     for d in docs.values():
         classify(d)
+        # an issuer signature that chains to the lender's trust store raises the witness level (L3)
+        findings += safe("digital_signature", d, pdf_signature.analyse, d, new_id, passwords or ())
         audit.log("document_classified", doc_id=d.doc_id, type=d.doc_type, confidence=d.type_confidence,
-                  cues=d.type_evidence, witness_level=d.witness)
+                  cues=d.type_evidence, witness_level=d.witness,
+                  digital_signature=d.structure.get("digital_signature"))
     # 3 extraction
     step(2)
     for d in docs.values():
@@ -221,12 +240,27 @@ def _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, pass
     step(6)
     logical, ctx = engine.run(docs, new_id)
     findings += logical
+    issuer_reports = []
+    for acc in issuer_data:
+        try:
+            hits, rep = issuer.reconcile(acc, docs, new_id)
+            findings += hits
+            issuer_reports.append(rep)
+            audit.log("issuer_reconciled", source=acc.source, findings=len(hits),
+                      statements=[{k: v for k, v in s.items() if k != "filename"} for s in rep["statements"]])
+        except Exception as e:
+            audit.log("sensor_failed", sensor="issuer", error=traceback.format_exc(limit=3))
+            issuer_reports.append({"issuer": acc.summary(), "error": f"{type(e).__name__}: {e}"})
     reg, fp = None, None
     if registry_path:
         try:
             from .registry import Registry, fingerprint
             reg = Registry(registry_path)
-            fp = fingerprint(case_id, docs, sigs)
+            verified = {}
+            for acc in issuer_data:  # identifiers the bank's own record confirms for this applicant
+                for k, v in issuer.verified_identifiers(acc, docs).items():
+                    verified[k] = sorted(set(verified.get(k, [])) | set(v))
+            fp = fingerprint(case_id, docs, sigs, verified)
             hits = reg.check(fp, docs, new_id)
             findings += hits
             audit.log("cross_case_check", registry=str(registry_path), prior_cases=len(reg.data["cases"]), matches=len(hits))
@@ -279,6 +313,7 @@ def _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, pass
                             {"verified": ok, "message": msg}, time.time() - t0)
     dossier["document_assessments"] = [f.to_dict() for f in assessments]
     dossier["cross_case"] = {"enabled": bool(reg), "prior_cases": len(reg.data["cases"]) if reg else 0}
+    dossier["issuer_data"] = issuer_reports
     if reg and fp:
         try:
             reg.register(fp)
@@ -362,6 +397,7 @@ def build_dossier(case_id, docs, findings, threads, ctx, coverage, rejected, sum
     n_inc = sum(1 for f in findings if f.tier == Tier.INCONSISTENCY)
     return {
         "case_id": case_id, "generated_at": time.strftime("%Y-%m-%d %H:%M:%S %z"), "sakshi_version": __version__,
+        "environment": environment(),
         "processing_seconds": round(secs, 1),
         "status": ("REFER: corroborated anomalies need human review" if n_pm else
                    "REVIEW: inconsistencies need explanation" if n_inc else "NO RULE-BREAKING ANOMALY FOUND (not proof of authenticity)"),

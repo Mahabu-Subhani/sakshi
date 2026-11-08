@@ -84,6 +84,12 @@
         <a href="samples/DEMO-GENUINE_dossier.html">Open the dossier</a>
       </div>
       <div class="card">
+        <h3>Tampered application + the bank’s own record</h3>
+        <p>The same file with the bank’s Account Aggregator data attached: every statement row is checked against the bank, and the hidden EMI change is caught at the source.</p>
+        <div class="counts">8 potential manipulation · 11 inconsistencies · 3 observations</div>
+        <a href="samples/DEMO-TAMPERED-AA_dossier.html">Open the dossier</a>
+      </div>
+      <div class="card">
         <h3>Red team RT8 · PDF editor</h3>
         <p>A scanned payslip edited in a PDF editor: the reader sees 88,500, the scan underneath says 68,500.</p>
         <div class="counts">5 potential manipulation · 1 inconsistency · 1 observation</div>
@@ -99,6 +105,7 @@
 cd sakshi
 docker build -t sakshi .
 docker run --rm -p 8501:8501 sakshi</pre>
+    <p class="sub">For a loan-origination system: <code>python -m sakshi serve</code> accepts cases at <code>POST /v1/cases</code> (bearer token) and runs several side by side; <code>python -m sakshi batch</code> does the same for a folder of applications.</p>
     <p class="sub">Without Docker, see the <a href="https://github.com/Mahabu-Subhani/sakshi#quick-start">quick start</a>. Results, limitations and the technical design are in the <a href="https://github.com/Mahabu-Subhani/sakshi#results">README</a> and <a href="https://github.com/Mahabu-Subhani/sakshi/tree/main/docs">docs</a>.</p>
   </section>
 </main>

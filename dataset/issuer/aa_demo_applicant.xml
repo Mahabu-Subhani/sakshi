@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- SYNTHETIC SPECIMEN - HACKATHON DEMO DATA - NOT REAL FI DATA -->
+<Account xmlns="http://api.rebit.org.in/FISchema/deposit" type="deposit" maskedAccNumber="XXXXXXXXXX7812" version="1.1" linkedAccRef="SYNTHETIC-LINK-0001">
+  <Profile>
+    <Holders type="SINGLE">
+      <Holder name="MOHD ARIF KHAN" dob="1996-03-14" mobile="9000012345" pan="AFKPK4821Q" ckycCompliance="true" />
+    </Holders>
+  </Profile>
+  <Summary currentBalance="126486.50" currency="INR" balanceDateTime="2026-10-31T23:59:59+05:30" type="SAVINGS" branch="HSR LAYOUT" ifscCode="DCBL0001234" openingDate="2021-07-01" status="ACTIVE" />
+  <Transactions startDate="2026-09-01" endDate="2026-10-31">
+    <Transaction txnId="S26090000" type="DEBIT" mode="UPI" amount="640.00" currentBalance="81700.50" transactionTimestamp="2026-09-02T10:00:00+05:30" valueDate="2026-09-02" narration="UPI/SWIGGY/BLR/882131" reference="REF000000" />
+    <Transaction txnId="S26090001" type="DEBIT" mode="OTHERS" amount="24500.00" currentBalance="57200.50" transactionTimestamp="2026-09-05T10:00:00+05:30" valueDate="2026-09-05" narration="EMI DEMO HOME FIN LN88213" reference="REF000001" />
+    <Transaction txnId="S26090002" type="DEBIT" mode="NEFT" amount="18000.00" currentBalance="39200.50" transactionTimestamp="2026-09-08T10:00:00+05:30" valueDate="2026-09-08" narration="NEFT RENT LAKEVIEW ASSOC" reference="REF000002" />
+    <Transaction txnId="S26090003" type="DEBIT" mode="UPI" amount="1320.00" currentBalance="37880.50" transactionTimestamp="2026-09-14T10:00:00+05:30" valueDate="2026-09-14" narration="UPI/BESCOM ELECTRICITY" reference="REF000003" />
+    <Transaction txnId="S26090004" type="DEBIT" mode="ATM" amount="5000.00" currentBalance="32880.50" transactionTimestamp="2026-09-21T10:00:00+05:30" valueDate="2026-09-21" narration="ATM WDL HSR LAYOUT" reference="REF000004" />
+    <Transaction txnId="S26090005" type="CREDIT" mode="NEFT" amount="68500.00" currentBalance="101380.50" transactionTimestamp="2026-09-30T10:00:00+05:30" valueDate="2026-09-30" narration="SALARY NIMBUS ANALYTICS SEP" reference="REF000005" />
+    <Transaction txnId="S26090006" type="DEBIT" mode="UPI" amount="2415.00" currentBalance="98965.50" transactionTimestamp="2026-10-03T10:00:00+05:30" valueDate="2026-10-03" narration="UPI/BIGBASKET/772910" reference="REF000006" />
+    <Transaction txnId="S26090007" type="DEBIT" mode="OTHERS" amount="24500.00" currentBalance="74465.50" transactionTimestamp="2026-10-05T10:00:00+05:30" valueDate="2026-10-05" narration="EMI DEMO HOME FIN LN88213" reference="REF000007" />
+    <Transaction txnId="S26090008" type="DEBIT" mode="NEFT" amount="18000.00" currentBalance="56465.50" transactionTimestamp="2026-10-08T10:00:00+05:30" valueDate="2026-10-08" narration="NEFT RENT LAKEVIEW ASSOC" reference="REF000008" />
+    <Transaction txnId="S26090009" type="DEBIT" mode="UPI" amount="299.00" currentBalance="56166.50" transactionTimestamp="2026-10-12T10:00:00+05:30" valueDate="2026-10-12" narration="UPI/JIO RECHARGE" reference="REF000009" />
+    <Transaction txnId="S26090010" type="CREDIT" mode="IMPS" amount="3000.00" currentBalance="59166.50" transactionTimestamp="2026-10-19T10:00:00+05:30" valueDate="2026-10-19" narration="IMPS FROM AYESHA KHAN" reference="REF000010" />
+    <Transaction txnId="S26090011" type="DEBIT" mode="UPI" amount="1180.00" currentBalance="57986.50" transactionTimestamp="2026-10-24T10:00:00+05:30" valueDate="2026-10-24" narration="UPI/BESCOM ELECTRICITY" reference="REF000011" />
+    <Transaction txnId="S26090012" type="CREDIT" mode="NEFT" amount="68500.00" currentBalance="126486.50" transactionTimestamp="2026-10-31T10:00:00+05:30" valueDate="2026-10-31" narration="SALARY NIMBUS ANALYTICS OCT" reference="REF000012" />
+  </Transactions>
+</Account>

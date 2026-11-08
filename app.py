@@ -32,14 +32,18 @@ with st.expander("What SAKSHI can and cannot do (capability matrix)"):
 
 left, right = st.columns([3, 2])
 with left:
-    ups = st.file_uploader("Documents (PDF, JPG, PNG, TIFF)", type=["pdf", "jpg", "jpeg", "png", "tif", "tiff", "webp"],
+    ups = st.file_uploader("Documents (PDF, JPG, PNG, TIFF), plus the bank's Account Aggregator data (XML or JSON) "
+                           "if the lender holds it", type=["pdf", "jpg", "jpeg", "png", "tif", "tiff", "webp", "xml", "json"],
                            accept_multiple_files=True)
 REG = ROOT / "out" / "registry.json"
 RT = ROOT / "dataset" / "redteam"
 with right:
     st.write("Or load a demo case (synthetic, clearly labelled specimens):")
     rt_cases = sorted(p.name for p in RT.glob("*_*") if (p / "MANIFEST_ground_truth.json").exists()) if RT.exists() else []
-    demo = st.selectbox("Demo case", ["none", "tampered application", "genuine control"] + [f"red team: {c}" for c in rt_cases])
+    demo = st.selectbox("Demo case", ["none", "tampered application", "genuine control",
+                                      "tampered application + bank's own record (Account Aggregator)",
+                                      "genuine control + bank's own record (Account Aggregator)"]
+                        + [f"red team: {c}" for c in rt_cases])
     lang = st.selectbox("OCR languages", ["eng", "eng+hin"], index=0)
     with st.expander("Locked PDFs: passwords (each is tried on every locked PDF; never stored)"):
         pdf_passwords = [st.text_input(f"Password {i + 1}", type="password", key=f"pdf_pw_{i}") for i in range(3)]
@@ -78,6 +82,13 @@ if go:
             subprocess.run([sys.executable, str(ROOT / "dataset" / "generate.py")], check=True)
         files = sorted(str(p) for p in src.glob("0*"))
         cid = "DEMO-TAMPERED" if case == "case_tampered" else "DEMO-GENUINE"
+        if "Account Aggregator" in demo:
+            aa = ROOT / "dataset" / "issuer" / "aa_demo_applicant.xml"
+            if not aa.exists():
+                import subprocess, sys
+                subprocess.run([sys.executable, str(ROOT / "dataset" / "aa.py")], check=True)
+            files.append(str(aa))
+            cid += "-AA"
     if not files:
         st.warning("Add at least one document or pick a demo case.")
         st.stop()
@@ -119,6 +130,20 @@ if "last" in st.session_state:
             reason = r["reason"].removeprefix(f"{r['file']}: ")
             reason = re.sub(r"\s*\([A-Za-z]+Error\)$", "", reason)  # the exception class is kept in the audit trail
             st.warning(f"**Skipped {r['file']}**: {reason}. The other documents were analysed as normal.", icon="⚠️")
+    for rep in d.get("issuer_data") or []:
+        iss = rep.get("issuer", {})
+        for s_ in rep.get("statements", []):
+            if s_.get("compared"):
+                st.info(f"**Bank's own record (Account Aggregator data, L4)** for account {iss.get('masked_account')}: "
+                        f"{s_['statement_rows_compared']} statement rows compared, {s_['matched']} match, "
+                        f"{s_['amounts_differ']} amount(s) differ, {s_['only_on_statement']} only on the statement, "
+                        f"{s_['only_in_bank_data']} only at the bank. SAKSHI read this file; it did not fetch it "
+                        "from the AA network.", icon="🏦")
+            else:
+                st.warning(f"Bank data not compared with {s_['filename']}: {s_.get('reason', 'not comparable')}.")
+    env = d.get("environment") or {}
+    if env.get("warning"):
+        st.caption("⚠️ " + env["warning"])
     with st.expander("What each sensor could and could not check on these documents"):
         for doc in d["documents"]:
             st.write(f"**{doc['filename']}** ({doc['type_label']}, {doc['modality'].replace('_', ' ')})")

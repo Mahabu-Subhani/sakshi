@@ -10,8 +10,8 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
+COPY requirements.txt requirements.lock ./
+RUN pip install -r requirements.lock
 
 COPY . .
 RUN useradd --create-home sakshi && chown -R sakshi /app
