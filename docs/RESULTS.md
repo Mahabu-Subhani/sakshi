@@ -16,6 +16,7 @@ The synthetic suites were measured on a Windows 11 laptop (Tesseract 5.4) on 6-8
 | Digital signatures | `python tests/run_pdf_signatures.py` | the genuine payslip signed with a test CA generated in the test; edited after signing; one byte flipped | all pass: with the CA in the trust store the payslip is issuer-signed (L3) and nothing is flagged; without it the signature is information only (L2); an edit after signing and a broken signature are each POTENTIAL MANIPULATION; the genuine case with the signed payslip stays clean |
 | Batch mode and REST API | `python tests/run_service.py` | tampered, genuine and RT8 cases on 3 workers; a case posted to the API | all pass: identical counts to one-at-a-time runs, audit trails intact; requests without the bearer token refused (401); dossier and audit trail downloadable; upload names cannot leave the upload folder |
 | Text under a box in whole-line text runs | `python tests/run_pdf_layer_lines.py` | a synthetic born-digital letter whose lines are single text runs, edited with a white box over one number; the unedited letter; a sensor forced to miss its canary | all pass: the hidden 68,500.00 is recovered under the displayed 86,500.00 at POTENTIAL MANIPULATION; the unedited letter is clean and its canary is caught; a sensor that misses its canary is reported blind (the edit was missed and the canary failed on 1.1.0) |
+| Signatures on letters | `python tests/run_signature_images.py` | synthetic letters: navy-blue printed heading and footer; a signature image above "Authorised Signatory"; the same image pasted in a later save; a scan with navy printed text and a blue pen signature | all pass: no printed text reported as a signature; the pasted image found; the later paste reported as INCONSISTENCY, the original placement not; the pen signature found and the heading not |
 | Console isolation | `python tests/run_console_worker.py` | demo case through the console's worker process | all pass: same counts as the pipeline, a stalled case is stopped with nothing left running, a second run during a run is refused |
 
 | Black-ink signatures | `python tests/run_signatures.py` | scanned letter and payslip signed in black ink | all pass: reproduced signature flagged as identical, different signatures not, no signature invented from printed text |
@@ -86,6 +87,17 @@ Together with the receipts, **none of 1,024 real genuine documents reached POTEN
 | 300 tampered | 94 (31%) | 0 | 17 (6%) |
 
 **SAKSHI's pixel sensors do not detect real single-image tampering**: they flag tampered and genuine images at the same rate and rarely point at the edit. This is the same result as the receipts, now on a second, independent public dataset. What holds again is the top rung: none of the 300 genuine images reached POTENTIAL MANIPULATION, which makes **0 of 1,324 real genuine documents** across three public datasets. SAKSHI's detection power on loan files comes from arithmetic, cross-document rules, PDF structure, the bank's own record and signatures, which a single tampered image does not exercise; none of those has been measured on real Indian loan files, because no public set exists.
+
+## Handwriting: a TrOCR trial, not adopted
+
+Could a handwriting model read what Tesseract cannot? Microsoft TrOCR (`microsoft/trocr-base-handwritten`, MIT, trained on the IAM English handwriting set) was run on CPU against Tesseract on every single-line text entity of FUNSD's 50 test forms (real scanned forms, handwritten entries included), each engine reading the same crop, scored by character error rate (case and spacing ignored).
+
+| Lines | Tesseract error rate | TrOCR error rate | Read exactly: Tesseract / TrOCR |
+|---|---|---|---|
+| all 2,025 single-line entities | **0.219** | 0.316 | 811 / 434 |
+| the 497 that Tesseract read with confidence below 0.5 | 0.562 | 0.551 | 56 / 60 |
+
+TrOCR was worse overall and no better on the lines it would have been used for (202 lines read better by TrOCR, 210 by Tesseract); using it only on those lines would have moved the overall error rate from 0.219 to 0.216, at about 80 minutes of CPU for these lines and roughly 2 GB of extra dependencies. It was therefore **not added**. Handwriting stays unsupported and is reported as not read.
 
 ## Runtime
 

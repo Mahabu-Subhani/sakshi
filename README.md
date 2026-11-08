@@ -151,6 +151,7 @@ python tests/run_prompt_injection.py      # hidden instructions caught; the narr
 python tests/run_issuer.py                # bank's own record (Account Aggregator data) reconciled with the statement
 python tests/run_pdf_signatures.py        # signed PDFs: edits after signing, broken signatures, trust store
 python tests/run_pdf_layer_lines.py       # text hidden under a box when a whole line is one text run (LaTeX)
+python tests/run_signature_images.py      # coloured print is not a signature; pasted signature images are seen
 python tests/run_service.py               # batch mode and REST API: same results in parallel, token required
 python tests/run_findit.py --data PATH/TO/findit2   # public receipts (download the dataset first)
 python tests/learn_receipts.py --runs OUTDIR        # learned layer on the receipts: train split only, scored once

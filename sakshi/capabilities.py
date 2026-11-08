@@ -13,7 +13,7 @@ CAPABILITIES = [
     ("Implemented", "Digital signatures", "Signed PDFs checked offline: a broken signature or content added after signing is reported; issuer-signed (L3) only when the certificate chains to a trust store the lender configures. Revocation not checked"),
     ("Implemented", "Integration", "Batch mode over a folder of applications and a REST API (POST /v1/cases, bearer token), several isolated worker processes side by side"),
     ("Implemented", "Reproducibility", "Exact library versions locked; every dossier records the OCR engine and library versions and warns when the OCR engine differs from the calibrated one"),
-    ("Partial", "Signatures", "Blue ink anywhere on the page; black ink only above a readable signature caption"),
+    ("Partial", "Signatures", "Blue ink anywhere except inside printed words (coloured letterheads); pasted signature images in born-digital PDFs, flagged when added in a later save; black ink only above a readable signature caption; no comparison with a reference specimen"),
     ("Partial", "Long statements", "Up to 40 pages read for arithmetic and structure; pixel forensics on the first 6 pages"),
     ("Partial", "Single real images", "Measured on 988 public receipts, 199 real business forms and 600 real document images: pixel sensors flag forged and genuine alike; none of 1,324 genuine documents reached potential manipulation"),
     ("Partial", "Phone photos", "Read and checked logically; ink sensors limited; rotation is corrected, perspective is not"),

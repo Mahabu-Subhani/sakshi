@@ -7,7 +7,7 @@
 | Ingestion of PDF (digital and scanned), JPG, PNG, TIFF, WEBP, BMP; multiple documents per case | Implemented |
 | Classification (salary slip, bank statement, application form, identity card, employment letter, unknown) | Implemented (keyword evidence) |
 | Printed text OCR with word confidence; Hindi via `--lang eng+hin` | Implemented (Hindi not evaluated on our dataset) |
-| Handwritten text recognition | **Unsupported** |
+| Handwritten text recognition | **Unsupported**. A trial of Microsoft TrOCR (trocr-base-handwritten) on FUNSD's real forms read worse than Tesseract overall and no better on the lines Tesseract struggles with, so it was not adopted (RESULTS) |
 | Structured extraction with bbox traceability | Implemented for the five document types; generic label:value harvesting for others |
 | PDF layer archaeology, font mix, invisible text, incremental updates | Implemented |
 | Overlay peel on scanned PDFs (rendered page vs embedded scan; objects, annotations, nested XObjects) | Implemented (v1.0) |
@@ -20,7 +20,7 @@
 | Cross-case memory (photo pHash, identifiers, file hashes, signature grids) | Implemented (v1.0), local JSON on one machine; safe with several writers on that machine (v1.0.5); conflicts contested until the bank's record settles them, whatever the order (v1.1); not shared between machines |
 | Noise consistency, copy-move on digits, digit typography, layout rhythm | Implemented for scans; declared not applicable on born-digital renders |
 | Copy-move of large regions (logos, stamps, whole rows) | Planned |
-| Signature detection and identity | Implemented for blue ink anywhere on the page; black ink **partial**: found only just above a readable signature caption (a signature drawn over its own caption is not found) |
+| Signature detection and identity | Implemented for blue ink anywhere on the page, except where the ink lies inside words read as printed text (coloured letterheads); in born-digital PDFs, pasted signature images are found and one added in a later save is reported (v1.1.1); black ink **partial**: found only just above a readable signature caption (a signature drawn over its own caption is not found) |
 | Earlier saved versions of an edited PDF (incremental saves) recovered and compared | Implemented (v1.0.3) |
 | Hidden text addressed to automated reviewers (prompt injection); narrator output must cite real findings | Implemented (v1.0.3) |
 | Signature verification against a reference specimen | **Unsupported** |

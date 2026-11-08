@@ -225,7 +225,10 @@ def _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, pass
         sigs += s
         findings += safe("signature", d, first_pages(signature.placement, d), d, s, new_id)
         findings += safe("signature_image", d, signature.pasted_later, d, s, new_id)
-        d.capabilities.setdefault("signature", f"ok ({len(s)} blue-ink signature(s))")
+        kinds = {"blue": "blue-ink", "black": "black-ink", "image": "pasted image"}
+        found = ", ".join(f"{sum(1 for x in s if x.get('ink') == k)} {v}" for k, v in kinds.items()
+                          if any(x.get("ink") == k for x in s)) or "none"
+        d.capabilities.setdefault("signature", f"ok (signatures found: {found})")
         st = first_pages(selftest.run, d)(d)
         d.capabilities["self_test"] = st
         for sensor, res in st.items():

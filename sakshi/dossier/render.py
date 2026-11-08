@@ -391,7 +391,7 @@ function visual(){
   const sigs = D.documents.flatMap(d=>(d.structure.signatures||[]).map(s=>({...s,d})));
   $("#main").innerHTML = `<p class="section-note">Observed visual and file-structure characteristics. These are observations about pixels and file objects; whether they amount to manipulation is decided in the fusion step with innocent explanations tested.</p>
   <div class="stack"><div class="panel"><h2>Visual and file-structure findings</h2>${listOf(vf)}</div>
-  <div class="panel"><h2>Signatures found</h2><div class="sigs">${sigs.map(s=>`<figure>${s.img?`<img src="${s.img}" alt="signature on ${esc(s.d.filename)}">`:""}<figcaption>${esc(s.d.doc_id)} · ${esc(s.d.filename)} · p${s.page+1}</figcaption></figure>`).join("")||`<p class="muted">No blue-ink signatures detected.</p>`}</div></div>
+  <div class="panel"><h2>Signatures found</h2><div class="sigs">${sigs.map(s=>`<figure>${s.img?`<img src="${s.img}" alt="signature on ${esc(s.d.filename)}">`:""}<figcaption>${esc(s.d.doc_id)} · ${esc(s.d.filename)} · p${s.page+1}</figcaption></figure>`).join("")||`<p class="muted">No signatures detected.</p>`}</div></div>
   <div class="panel"><h2>Sensor-noise maps</h2><p class="muted" style="margin-top:-4px">Blue = cleaner than the page's own scanner noise, red = noisier. A pasted or whited-out region shows up as a solid block.</p><div class="grid2">${heat.map(h=>`<figure style="margin:0"><img src="${h.v}" alt="noise map ${esc(h.d.filename)}"><figcaption class="muted">${esc(h.d.doc_id)} · ${esc(h.d.filename)}</figcaption></figure>`).join("")||`<p class="muted">No scanned pages.</p>`}</div></div></div>`;
   bindList();
 }
