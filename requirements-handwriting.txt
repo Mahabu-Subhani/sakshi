@@ -1,0 +1,6 @@
+# Optional handwriting reader (sakshi/handwriting.py, `sakshi run --handwriting`): Microsoft TrOCR on CPU.
+# Install on top of requirements.txt. The model files (about 1.3 GB) are downloaded once from
+# https://huggingface.co/microsoft/trocr-base-handwritten into SAKSHI_TROCR_DIR (default ~/models/trocr-base-handwritten).
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch>=2.5
+transformers>=4.45,<5

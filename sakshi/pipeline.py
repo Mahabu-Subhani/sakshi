@@ -224,6 +224,7 @@ def _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, pass
         s = safe("signature", d, first_pages(signature.detect, d), d, out / "evidence")
         sigs += s
         findings += safe("signature", d, first_pages(signature.placement, d), d, s, new_id)
+        findings += safe("signature_image", d, signature.pasted_later, d, s, new_id)
         d.capabilities.setdefault("signature", f"ok ({len(s)} blue-ink signature(s))")
         st = first_pages(selftest.run, d)(d)
         d.capabilities["self_test"] = st
