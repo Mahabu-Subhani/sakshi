@@ -20,10 +20,23 @@ from ..models import Document, Evidence, Finding
 LABEL_RE = re.compile(r"^(for\s.*)?(authori[sz]ed\s+)?(signatory|signature)(\s+of\s+[a-z ]+)?\s*:?$", re.I)
 
 
+def _printed_text_mask(P, shape) -> np.ndarray:
+    """Pixels inside words read confidently as printed text: the PDF text layer, or OCR words read with
+    confidence of at least 0.6 and at least two characters. Coloured printed text (a navy letterhead) is not ink."""
+    m = np.zeros(shape[:2], np.uint8)
+    for w in P.words:
+        if len(w.text.strip()) < 2 or (w.source != "pdf_text" and w.conf < 0.6):
+            continue
+        x0, y0, x1, y1 = (int(round(v)) for v in w.bbox)
+        m[max(0, y0 - 2):y1 + 2, max(0, x0 - 2):x1 + 2] = 1
+    return m
+
+
 def detect(doc: Document, ev_dir) -> list[dict]:
     sigs = []
     for P in doc.pages:
         bgr = cv2.imread(P.image_path)
+        printed = _printed_text_mask(P, bgr.shape)
         hsv = cv2.cvtColor(bgr, cv2.COLOR_BGR2HSV)
         b, g, r = [bgr[:, :, i].astype(np.int16) for i in range(3)]
         blue = ((hsv[:, :, 0] >= 95) & (hsv[:, :, 0] <= 135) & (hsv[:, :, 1] > 70) & (hsv[:, :, 2] < 230)
@@ -42,6 +55,8 @@ def detect(doc: Document, ev_dir) -> list[dict]:
             sk = skeletonize(ink > 0).sum()
             if sk == 0 or ink.sum() / sk > 7.0:
                 continue  # thick filled shapes (photo, logo), not pen strokes
+            if (ink & printed[y:y + h, x:x + w]).sum() >= 0.5 * ink.sum():
+                continue  # mostly inside words read as printed text: coloured print, not a pen
             ys, xs = np.nonzero(ink)
             bb = (x + xs.min(), y + ys.min(), x + xs.max() + 1, y + ys.max() + 1)
             mask = ink[ys.min():ys.max() + 1, xs.min():xs.max() + 1].astype(np.uint8)
@@ -50,8 +65,83 @@ def detect(doc: Document, ev_dir) -> list[dict]:
             sigs.append({"doc": doc.doc_id, "page": P.index, "bbox": tuple(float(v) for v in bb), "mask": mask,
                          "crop": str(crop_path), "modality": doc.modality, "ink": "blue"})
         sigs += _black_near_captions(doc, P, bgr, [s for s in sigs if s["page"] == P.index], ev_dir, len(sigs))
-    doc.structure["signatures"] = [{"page": s["page"], "bbox": s["bbox"], "crop": s["crop"]} for s in sigs]
+        if doc.modality == "digital_pdf":
+            sigs += _pdf_signature_images(doc, P, bgr, [s for s in sigs if s["page"] == P.index], ev_dir, len(sigs))
+    doc.structure["signatures"] = [{"page": s["page"], "bbox": s["bbox"], "crop": s["crop"], "ink": s.get("ink")}
+                                   for s in sigs]
     return sigs
+
+
+def _pdf_signature_images(doc: Document, P, bgr, found: list[dict], ev_dir, start: int) -> list[dict]:
+    """In a born-digital PDF a signature is usually a pasted image, not pen strokes on the page. An embedded image
+    counts as a signature when it is small, wider than tall, mostly paper with thin dark strokes (not a photo or a
+    filled logo) and sits on the lower part of the page or just above a signature caption."""
+    from ..ingest import open_pdf
+    out = []
+    try:
+        pdf = open_pdf(doc.path)
+        page = pdf[P.index]
+    except Exception:
+        return out
+    k = P.width / page.rect.width
+    labels = [l for l in P.lines if LABEL_RE.search(l.text.strip()) and len(l.text) < 45]
+    for img in page.get_images(full=True):
+        xref = img[0]
+        for r in page.get_image_rects(xref):
+            bb = (r.x0 * k, r.y0 * k, r.x1 * k, r.y1 * k)
+            w, h = bb[2] - bb[0], bb[3] - bb[1]
+            if w < 40 or h < 15 or not (1.2 <= w / h <= 8.0) or w * h > 0.15 * P.width * P.height:
+                continue
+            near_caption = any(-40 < l.bbox[1] - bb[3] < 260 and bb[0] < l.bbox[2] + 250 and bb[2] > l.bbox[0] - 250
+                               for l in labels)
+            if not near_caption and bb[1] < 0.45 * P.height:
+                continue
+            x0, y0, x1, y1 = (int(v) for v in bb)
+            crop = bgr[max(0, y0):y1, max(0, x0):x1]
+            if crop.size == 0:
+                continue
+            ink = (cv2.cvtColor(crop, cv2.COLOR_BGR2GRAY) < 170).astype(np.uint8)
+            frac = ink.mean()
+            sk = skeletonize(ink > 0).sum()
+            # a pasted image may be scaled, so stroke width (ink / skeleton) is judged against the image's height
+            if not (0.01 <= frac <= 0.30) or sk == 0 or ink.sum() / sk > max(7.0, 0.1 * h):
+                continue  # blank, a filled logo or a photo, not handwriting
+            if any(min(bb[2], s["bbox"][2]) > max(bb[0], s["bbox"][0]) and min(bb[3], s["bbox"][3]) > max(bb[1], s["bbox"][1])
+                   for s in found + out):
+                continue  # already found as ink
+            crop_path = ev_dir / f"{doc.doc_id}_p{P.index}_sig{start + len(out)}.png"
+            cv2.imwrite(str(crop_path), bgr[max(0, y0 - 6):y1 + 6, max(0, x0 - 6):x1 + 6])
+            out.append({"doc": doc.doc_id, "page": P.index, "bbox": tuple(float(v) for v in bb), "mask": ink,
+                        "crop": str(crop_path), "modality": doc.modality, "ink": "image", "xref": xref,
+                        "near_caption": near_caption})
+    pdf.close()
+    return out
+
+
+def pasted_later(doc: Document, sigs: list[dict], new_id) -> list[Finding]:
+    """A signature image whose object first appears after the file's first end-of-file marker was added in a later
+    save. E-signing tools do this too, so it is an inconsistency, and it is not reported when the file carries a
+    digital signature."""
+    out = []
+    mine = [s for s in sigs if s.get("ink") == "image" and s["doc"] == doc.doc_id]
+    if not mine or (doc.structure.get("digital_signature") or {}).get("signed"):
+        return out
+    raw = open(doc.path, "rb").read()
+    first_eof = raw.find(b"%%EOF")
+    if first_eof < 0 or raw.count(b"%%EOF") < 2:
+        return out
+    for s in mine:
+        m = re.search(rb"(?:^|\s)%d 0 obj" % s["xref"], raw)
+        if m and m.start() > first_eof:
+            out.append(Finding(
+                id=new_id(), check="signature_image_added_later", family="file_structure", sensor="signature",
+                title=f"{doc.filename}: the signature image was added in a later save, after the document was first made",
+                detail="The image object is not in the file's first saved version; it was appended by a later "
+                       "save. Signing tools can do this legitimately, so this is a question to ask, not proof.",
+                confidence=0.7, localized=True,
+                evidence=[Evidence(doc.doc_id, s["page"], s["bbox"], "signature image added later", crop=s["crop"])],
+                docs=[doc.doc_id], verify_next="Ask the issuer for the original signed document."))
+    return out
 
 
 def _black_near_captions(doc: Document, P, bgr, blue_here: list[dict], ev_dir, start: int) -> list[dict]:

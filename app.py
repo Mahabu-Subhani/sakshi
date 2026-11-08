@@ -141,6 +141,10 @@ if "last" in st.session_state:
                         "from the AA network.", icon="🏦")
             else:
                 st.warning(f"Bank data not compared with {s_['filename']}: {s_.get('reason', 'not comparable')}.")
+    for w in d.get("self_test_warnings") or []:
+        st.warning(f"**{w['filename']}: the {w['sensor'].replace('_', ' ')} sensor is blind on this document.** It did "
+                   "not catch an edit SAKSHI planted in a copy of it, so a clean result from that sensor here is not "
+                   "evidence.", icon="🕳️")
     env = d.get("environment") or {}
     if env.get("warning"):
         st.caption("⚠️ " + env["warning"])

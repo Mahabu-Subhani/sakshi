@@ -10,6 +10,7 @@ recorded as unavailable for that document instead of crashing the case.
 from __future__ import annotations
 
 import itertools
+import re
 import json
 import time
 import traceback
@@ -223,9 +224,21 @@ def _run_case(paths, out_dir, case_id, progress, lang, html, registry_path, pass
         s = safe("signature", d, first_pages(signature.detect, d), d, out / "evidence")
         sigs += s
         findings += safe("signature", d, first_pages(signature.placement, d), d, s, new_id)
-        d.capabilities.setdefault("signature", f"ok ({len(s)} blue-ink signature(s))")
+        findings += safe("signature_image", d, signature.pasted_later, d, s, new_id)
+        kinds = {"blue": "blue-ink", "black": "black-ink", "image": "pasted image"}
+        found = ", ".join(f"{sum(1 for x in s if x.get('ink') == k)} {v}" for k, v in kinds.items()
+                          if any(x.get("ink") == k for x in s)) or "none"
+        d.capabilities.setdefault("signature", f"ok (signatures found: {found})")
         st = first_pages(selftest.run, d)(d)
         d.capabilities["self_test"] = st
+        for sensor, res in st.items():
+            # a sensor that cannot catch its own planted edit on this document is blind here: its silence is
+            # reported as "blind on this document", never as clean
+            m = re.match(r"(\d+)/(\d+) canaries caught", str(res))
+            if m and int(m[2]) > 0 and int(m[1]) == 0:
+                d.capabilities[sensor] = f"blind on this document (missed its own planted edit, {res})"
+                d.notes.append(f"The {sensor.replace('_', ' ')} sensor did not catch an edit SAKSHI planted in a copy "
+                               "of this document, so its silence here is not evidence that the document is clean.")
         audit.log("visual_forensics", doc_id=d.doc_id, capabilities=d.capabilities)
     # 6/7 contextual + cross-document
     step(5)
@@ -404,6 +417,9 @@ def build_dossier(case_id, docs, findings, threads, ctx, coverage, rejected, sum
         "counts": {"potential_manipulation": n_pm, "inconsistency": n_inc,
                    "observation": sum(1 for f in findings if f.tier == Tier.OBSERVATION)},
         "summary": summary, "llm_summary": ({"text": llm[0], "model": llm[1]} if llm else None),
+        "self_test_warnings": [{"doc_id": d.doc_id, "filename": d.filename, "sensor": k, "result": v}
+                               for d in docs.values() for k, v in d.capabilities.items()
+                               if isinstance(v, str) and v.startswith("blind on this document")],
         "documents": ddocs, "rejected": rejected, "findings": [f.to_dict() for f in findings], "threads": threads,
         "diagnoses": ctx["diagnoses"], "rules": rules,
         "expectations": ctx["rules"].expectations, "coverage": coverage, "claim_graph": claim_graph(docs, ctx, findings),

@@ -88,11 +88,12 @@ def _pdf_canary(doc) -> str:
         r = fitz.Rect(w[:4])
         page.draw_rect(r, color=None, fill=(1, 1, 1), overlay=True)
         page.insert_text(fitz.Point(r.x0, r.y1 - 1), "99,999.00", fontsize=max(6, r.height * 0.8), overlay=True)
-        tt = page.get_texttrace()
+        spans = [{"text": "".join(chr(c[0]) for c in t["chars"]), "seq": t["seqno"], "bbox": tuple(t["bbox"]),
+                  "chars": t["chars"]} for t in page.get_texttrace()]
         dr = [d for d in page.get_drawings() if d.get("fill") is not None]
         last = max(d["seqno"] for d in dr)
         shape = next(d for d in dr if d["seqno"] == last)
-        under = [s for s in tt if s["seqno"] < last and pdf_layers._rect_overlap(tuple(s["bbox"]), tuple(shape["rect"])) > 0.6]
+        under = pdf_layers.covered_text(spans, tuple(shape["rect"]), last)  # the detector itself, not a copy of it
         pdf.close()
         return "1/1 canaries caught" if under else "0/1 canaries caught"
     except Exception as e:  # never let a self-test crash the case
