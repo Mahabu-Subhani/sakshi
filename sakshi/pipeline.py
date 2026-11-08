@@ -412,7 +412,8 @@ def build_dossier(case_id, docs, findings, threads, ctx, coverage, rejected, sum
         "case_id": case_id, "generated_at": time.strftime("%Y-%m-%d %H:%M:%S %z"), "sakshi_version": __version__,
         "environment": environment(),
         "processing_seconds": round(secs, 1),
-        "status": ("REFER: corroborated anomalies need human review" if n_pm else
+        "status": ("NOTHING ANALYSED: every uploaded file was rejected (not a clean result)" if not ddocs else
+                   "REFER: corroborated anomalies need human review" if n_pm else
                    "REVIEW: inconsistencies need explanation" if n_inc else "NO RULE-BREAKING ANOMALY FOUND (not proof of authenticity)"),
         "counts": {"potential_manipulation": n_pm, "inconsistency": n_inc,
                    "observation": sum(1 for f in findings if f.tier == Tier.OBSERVATION)},

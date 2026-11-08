@@ -182,6 +182,7 @@ python tests/run_pdf_signatures.py        # signed PDFs: edits after signing, br
 python tests/run_pdf_layer_lines.py       # text hidden under a box when a whole line is one text run (LaTeX)
 python tests/run_signature_images.py      # coloured print is not a signature; pasted signature images are seen
 python tests/run_service.py               # batch mode and REST API: same results in parallel, token required
+python tests/run_rejected_files.py        # every file unreadable: reported as nothing analysed, never as clean
 python tests/run_findit.py --data PATH/TO/findit2   # public receipts (download the dataset first)
 python tests/learn_receipts.py --runs OUTDIR        # learned layer on the receipts: train split only, scored once
 python tests/run_image_benchmark.py --images DIR --name NAME --out OUTDIR [--tampered-list FILE]   # FUNSD, RTM

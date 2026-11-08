@@ -205,7 +205,7 @@ function header(){
     D.environment && D.environment.warning ? `<b style="color:var(--inc)" title="${esc(D.environment.warning)}">OCR version differs from the calibrated one</b>` : "",
     (D.self_test_warnings||[]).length ? `<b style="color:var(--inc)" title="${esc(D.self_test_warnings.map(w=>w.filename+': '+w.sensor).join('; '))}">${D.self_test_warnings.length} sensor(s) blind on this case: they missed an edit SAKSHI planted itself</b>` : ""
   ].filter(Boolean).map(x=>`<span>${x}</span>`).join("");
-  const c = D.counts, cls = c.potential_manipulation ? "pm" : c.inconsistency ? "inc" : "ok";
+  const c = D.counts, cls = c.potential_manipulation ? "pm" : (c.inconsistency || !D.documents.length) ? "inc" : "ok";
   $("#h-status").innerHTML = `<span class="status ${cls}">${esc(D.status)}</span>`;
   $("#h-counts").innerHTML = `${tierTag("POTENTIAL_MANIPULATION")} <b>${c.potential_manipulation}</b> ${tierTag("INCONSISTENCY")} <b>${c.inconsistency}</b> ${tierTag("OBSERVATION")} <b>${c.observation}</b>`;
 }

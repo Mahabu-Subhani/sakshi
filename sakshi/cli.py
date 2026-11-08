@@ -26,6 +26,8 @@ def _report(d):
     print(f"\n{d['status']}")
     print(f"  potential manipulation {d['counts']['potential_manipulation']} · inconsistency {d['counts']['inconsistency']} "
           f"· observation {d['counts']['observation']} · {d['processing_seconds']}s")
+    for r in d.get("rejected", []):
+        print(f"  ! skipped {r['file']}: {r['reason'].removeprefix(r['file'] + ': ')}")
     for t in d["threads"][:6]:
         print(f"  - [{t['tier']}] {t['title'][:150]}")
 
